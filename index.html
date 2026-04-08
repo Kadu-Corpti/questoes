@@ -63,7 +63,7 @@
     <div class="wrapper">
         <div class="header">
             <h1>Simulado Acadêmico - Versão Master</h1>
-            <p>57 questões com Ranking (Inclui Revisão Presencial)</p>
+            <p>57 questões com Ranking Global</p>
         </div>
 
         <div id="tela-login">
@@ -113,22 +113,21 @@
     </div>
 
     <script>
-        // API DO GOOGLE SHEETS VIA SHEETDB
         const API_URL = "https://sheetdb.io/api/v1/3kdw59bdva45d";
         let nomeUsuario = ""; let acertos = 0; let erros = 0; let respondidas = 0; let totalQuestoes = 0;
 
         // BANCO DE 57 QUESTÕES
         const conteudos = [
             {
-                titulo: "Módulo Especial: Revisão Presencial (Prof. Regina)",
+                titulo: "Módulo Oficial: Revisão de Sala (Slides e Fotos)",
                 questoes: [
-                    {p: "Para medir o consumo de tempo de um algoritmo independente do hardware, utilizamos um modelo matemático. Assinale a alternativa que indique a afirmação correta sobre esse modelo analítico.", o: {A: "É focado primordialmente na busca do melhor caso do algoritmo.", B: "Considera que a cada passo (operação primitiva) o algoritmo leva o mesmo tempo constante de execução.", C: "Tem como base exclusiva o número de acessos à memória e gargalos de I/O.", D: "Na computabilidade moderna, não se pode avaliar o custo independente do hardware físico."}, c: "B", e: "Correta (B): Na análise assintótica clássica baseada no modelo RAM (Random Access Machine), assume-se que as operações primitivas básicas custam sempre o mesmo tempo constante O(1), isolando a lógica matemática das limitações de hardware."},
-                    {p: "Existem várias classes de problemas na teoria da computação. Aqueles para os quais não existem algoritmos que garantam parada (ou seja, não sabemos se o algoritmo vai parar para qualquer entrada) são classificados formalmente como:", o: {A: "Problemas NP Completos.", B: "Problemas Decidíveis.", C: "Problemas Indecidíveis.", D: "Problemas Solucionáveis."}, c: "C", e: "Correta (C): A indecidibilidade significa matematicamente que não é possível construir uma Máquina de Turing que aja como um 'Decisor' universal para aquele problema (ex: a máquina pode entrar em loop em vez de parar)."},
-                    {p: "Qual é o problema não solucionável (indecidível) mais famoso e estudado da teoria da computação?", o: {A: "O Problema da Parada (Halting Problem).", B: "O Problema das N-Rainhas.", C: "O Problema do Caixeiro Viajante.", D: "O Problema da Mochila Fracionária."}, c: "A", e: "Correta (A): Proposto por Alan Turing em 1936, o Problema da Parada prova a impossibilidade de criar um programa universal que preveja se outro programa irá terminar de executar ou ficar travado em loop. Os demais são problemas da classe NP."},
-                    {p: "Considerando a análise de complexidade de algoritmos de ordenação, qual algoritmo possui, em seu pior caso, complexidade O(n²), mas apresenta um desempenho de O(n log n) em seu caso médio?", o: {A: "Merge Sort", B: "Heap Sort", C: "Quick Sort", D: "Bubble Sort"}, c: "C", e: "Correta (C): O Quick Sort é extremamente eficiente no caso médio (n log n). Porém, seu 'Pior Caso' ocorre quando o pivô é mal escolhido sistematicamente (ex: tentar ordenar um vetor já ordenado escolhendo o primeiro elemento), degenerando sua velocidade para O(n²). Merge Sort e Heap Sort garantem O(n log n) sempre."},
-                    {p: "O problema da parada é o exemplo clássico de um problema indecidível. O que significa formalmente, na teoria dos autômatos, um problema ser indecidível?", o: {A: "Que ele exige tempo exponencial ou fatorial para ser resolvido na prática.", B: "Que ele não possui nenhuma resposta correta viável.", C: "Que não existe um algoritmo que sempre pare e forneça uma resposta correta (SIM/NÃO) para todas as instâncias de entrada possíveis.", D: "Que ele só pode ser resolvido com exatidão utilizando hardware quântico."}, c: "C", e: "Correta (C): A definição formal de Indecidibilidade dita que não há um algoritmo que garanta a parada (halt) para TODA e QUALQUER entrada. Ele pode até parar para algumas entradas, mas não é um 'Decisor Universal'."},
-                    {p: "A famosa Tese de Church-Turing, pilar fundamental da ciência da computação, afirma categoricamente que:", o: {A: "Qualquer função que seja intuitivamente computável (ou processo mecânico calculável) pode ser simulada e computada por uma Máquina de Turing.", B: "Todo algoritmo existente pode ser otimizado para executar em tempo polinomial P.", C: "Problemas NP-Completos jamais terão solução algorítmica exata.", D: "A Máquina de Turing é obsoleta diante de linguagens orientadas a objetos."}, c: "A", e: "Correta (A): A tese une a percepção humana de 'o que é um algoritmo' ao modelo matemático formal da MT, garantindo que a Máquina de Turing é o limite absoluto do cômputo possível."},
-                    {p: "O conceito da Máquina de Turing Universal (MTU) concebe fundamentalmente:", o: {A: "Uma máquina teórica especializada em resolver o problema da parada.", B: "O primeiro computador físico de válvulas operado durante a Segunda Guerra.", C: "Uma máquina teórica capaz de simular o comportamento de qualquer outra Máquina de Turing, recebendo sua descrição (código) e os dados de entrada.", D: "Um autômato finito com capacidade de transições não determinísticas em pilha."}, c: "C", e: "Correta (C): A MT Universal é a precursora da arquitetura dos computadores de Von Neumann, pois ela 'lê um programa da memória' (a descrição da máquina alvo na fita) e executa-o."}
+                    {p: "Considere que, durante a análise de um problema de programação, tenha sido obtida a seguinte fórmula recursiva que descreve a solução para o problema:\n\nC(i,j) = {\n 0 se i=0 ou j=0;\n 1+C(i-1,j-1) se 0<i<=M, 0<j<=N e i=j;\n max{C(i,j-1), C(i-1,j)} se 0<i<=M, 0<j<=N e i≠j \n}\n\nQual a complexidade da solução encontrada?", o: {A: "O (n × log n)", B: "O (n²)", C: "O (n² × log n)", D: "O (2^n)", E: "O (n³)"}, c: "D", e: "Correta (D): A fórmula apresentada é a clássica solução ingênua da Maior Subsequência Comum (LCS - Longest Common Subsequence). A instrução max{C(i,j-1), C(i-1,j)} gera uma árvore de recursão que bifurca a cada chamada, não reaproveitando cálculos. Isso resulta em uma complexidade de tempo exponencial O(2^n)."},
+                    {p: "Análise Assintótica: Um engenheiro precisa escolher entre dois algoritmos:\n• Algoritmo A: O(n²)\n• Algoritmo B: O(n log n)\n\nPara grandes volumes de dados:", o: {A: "O algoritmo A será mais eficiente.", B: "Ambos terão desempenho equivalente.", C: "O algoritmo B será mais eficiente.", D: "A escolha não depende do tamanho da entrada."}, c: "C", e: "Correta (C): Para volumes massivos de dados, a função logarítmica cresce muito mais lentamente que a quadrática (n²). Logo, o tempo de execução do Algoritmo B será imensamente menor."},
+                    {p: "Problema da Decisão: Uma empresa deseja automatizar decisões jurídicas complexas por meio de algoritmos. Com base na teoria da computabilidade:", o: {A: "Todo problema de decisão pode ser resolvido por um algoritmo.", B: "Problemas indecidíveis não possuem algoritmo geral que determine a resposta.", C: "Problemas de decisão são sempre resolvidos por força bruta.", D: "A indecidibilidade depende apenas da capacidade computacional."}, c: "B", e: "Correta (B): Na teoria, provar que um problema é indecidível significa atestar que é matematicamente impossível criar um algoritmo universal que responda SIM ou NÃO (e sempre pare) para todas as instâncias daquele problema."},
+                    {p: "Tese de Church-Turing: Em um laboratório de pesquisa em inteligência artificial, um grupo propõe um novo modelo computacional baseado em redes neurais avançadas, alegando que ele poderia resolver problemas que uma Máquina de Turing não consegue. Um pesquisador experiente contesta essa afirmação com base em fundamentos teóricos. Considerando a Tese de Church-Turing, assinale a alternativa correta:", o: {A: "A tese afirma que apenas Máquinas de Turing podem ser usadas na computação moderna.", B: "Qualquer função computável pode ser calculada por uma Máquina de Turing ou modelo equivalente.", C: "Modelos baseados em aprendizado de máquina superam a capacidade computacional da Máquina de Turing.", D: "A tese é um teorema formal que prova limitações da computação quântica."}, c: "B", e: "Correta (B): A Tese de Church-Turing garante que a MT é o limite absoluto do que é considerado algoritmo. Nem mesmo redes neurais ou IA avançada calculam lógicas que não possam, no limite teórico, ser simuladas por uma Máquina de Turing."},
+                    {p: "Recursividade: Um desenvolvedor implementa uma função recursiva para calcular o fatorial. Analise:", o: {A: "Recursão não pode ser substituída por iteração.", B: "Toda recursão implica complexidade exponencial.", C: "Recursão pode ser convertida em iteração com uso de pilha explícita.", D: "Recursão elimina o uso de memória adicional."}, c: "C", e: "Correta (C): Teorema clássico da computação: Todo algoritmo recursivo pode ser transformado em um iterativo (laço while/for) utilizando uma estrutura de dados de Pilha (Stack) para gerenciar o contexto manual da memória."},
+                    {p: "Mealy vs Moore: Um engenheiro está projetando um sistema embarcado para controle de semáforo inteligente, onde as saídas devem reagir imediatamente às entradas. Qual modelo é mais adequado?", o: {A: "Máquina de Moore, pois depende apenas do estado atual.", B: "Máquina de Mealy, pois considera estado e entrada para gerar saída imediata.", C: "Autômato Finito Determinístico, pois não utiliza saída.", D: "Máquina de Turing, pela sua generalidade."}, c: "B", e: "Correta (B): Máquinas de Mealy geram a saída nos arcos (transições). Assim, a saída muda no exato instante em que o sinal de entrada altera, perfeito para reações instantâneas em hardware."},
+                    {p: "Comparação entre Máquinas: Uma equipe avalia diferentes modelos computacionais para otimizar um sistema. Assinale a alternativa correta:", o: {A: "Máquinas mais poderosas sempre executam mais rápido.", B: "Autômatos finitos possuem maior poder computacional que Máquinas de Turing.", C: "Máquinas de Turing são mais gerais, mas podem ser menos eficientes na prática.", D: "Todos os modelos possuem mesma eficiência e capacidade."}, c: "C", e: "Correta (C): A Máquina de Turing resolve qualquer problema computável (é o modelo mais geral existente). No entanto, o seu mecanismo de ler/escrever em fita de forma bit a bit é altamente ineficiente se comparado a estruturas específicas como Autômatos na prática."}
                 ]
             },
             {
@@ -156,7 +155,7 @@
                     {p: "Qual a diferença comportamental que separa a Máquina de Moore da Máquina de Mealy?", o: {A:"Mealy usa pilha de memória; Moore usa fita infinita.", B:"A saída na Máquina de Moore depende estritamente do estado atual em que a máquina se encontra; na Máquina de Mealy, depende da transição (estado + entrada).", C:"Moore processa linguagens não determinísticas, Mealy apenas determinísticas.", D:"Mealy exige estados finais, Moore não."}, c: "B", e: "Correta (B): Moore emite a saída assim que entra no estado. Mealy emite a saída enquanto caminha pela seta (transição)."},
                     {p: "Pede-se um AFD para L = {w | w termina em 0 e |w| >= 3}. O que ocorre se a palavra '00' for lida por essa máquina?", o: {A:"Ela será aceita por terminar em 0.", B:"A máquina irá travar (entrar em loop).", C:"Ela será rejeitada, pois embora termine em 0, não atinge a condição de tamanho mínimo de 3 símbolos, parando fora do estado final.", D:"O cabeçote retrocederá a fita."}, c: "C", e: "Correta (C): Um AFD só aceita se TODAS as condições da linguagem forem cumpridas. O tamanho 2 impede a chegada no estado de aceitação."},
                     {p: "Um AFN é capaz de transitar sem ler nenhum símbolo (transição ε). Isso o torna capaz de reconhecer linguagens que o AFD não consegue?", o: {A:"Sim, AFNs reconhecem linguagens Livres de Contexto.", B:"Sim, resolve problemas indecidíveis.", C:"Não, todo AFN pode ser convertido em um AFD equivalente. Ambos reconhecem exatamente a mesma classe: Linguagens Regulares.", D:"Não, o AFN é menos poderoso que o AFD."}, c: "C", e: "Correta (C): Teorema de equivalência: o Não-Determinismo facilita a construção (o desenho), mas não expande o poder de computação do autômato finito."},
-                    {p: "Em uma tupla M = (Q, Σ, δ, q0, F), o que significa a função δ (Delta)?", o: {A:"A função de transição que mapeia o estado atual e a entrada lida para um estado de destino.", B:"A variável de fita infinita.", C:"O conjunto de todas as palavras rejerejected.", D:"O marcador do final da string."}, c: "A", e: "Correta (A): Delta é a alma do Autômato, determinando para qual nó o processamento deve navegar ao ler uma letra."},
+                    {p: "Em uma tupla M = (Q, Σ, δ, q0, F), o que significa a função δ (Delta)?", o: {A:"A função de transição que mapeia o estado atual e a entrada lida para um estado de destino.", B:"A variável de fita infinita.", C:"O conjunto de todas as palavras rejeitadas.", D:"O marcador do final da string."}, c: "A", e: "Correta (A): Delta é a alma do Autômato, determinando para qual nó o processamento deve navegar ao ler uma letra."},
                     {p: "A palavra '1100' é a concatenação das strings w1 = '11' e w2 = '00'. Se uma linguagem exige que o prefixo (w1) seja par e o sufixo (w2) ímpar, essa palavra seria aceita?", o: {A:"Sim, é uma concatenação perfeita.", B:"Não, pois '00' é um número par, o que viola a regra do sufixo exigir ímpar.", C:"Sim, pois '11' é ímpar.", D:"O autômato converteria para decimal antes de validar."}, c: "B", e: "Correta (B): Regras formais são estritas. Se a regra exige final ímpar e ele acaba em 00, a máquina rejeita no ato."},
                     {p: "Qual classe de linguagem é formalmente superior às Linguagens Regulares, exigindo o uso de Autômatos com Pilha para reconhecimento (ex: contar n letras A seguidas de n letras B)?", o: {A:"Linguagens Turing-Decidíveis", B:"Linguagens Finitas O(1)", C:"Linguagens Livres de Contexto", D:"Linguagens Indecidíveis"}, c: "C", e: "Correta (C): A pilha provê memória para a máquina, permitindo contar parênteses ou balancear letras, o que é impossível em AFDs estritos."}
                 ]
@@ -301,13 +300,12 @@
             if (respondidas === totalQuestoes) { finalizarESalvar(); }
         }
 
-        // ESPIAR RANKING (MUDANÇA NOVA)
+        // ESPIAR RANKING 
         function carregarRanking(isFinal = true) {
             document.getElementById('tela-ranking').style.display = 'block';
             document.getElementById('corpo-ranking').innerHTML = '<tr><td colspan="3" style="text-align:center;">Carregando dados da nuvem... ⏳</td></tr>';
             document.getElementById('tela-ranking').scrollIntoView({ behavior: 'smooth' });
 
-            // Lógica de botões
             if(isFinal) {
                 document.getElementById('btn-voltar-simulado').style.display = 'none';
                 document.getElementById('btn-nova-tentativa').style.display = 'inline-block';
@@ -315,7 +313,6 @@
                 document.getElementById('btn-voltar-simulado').style.display = 'inline-block';
                 document.getElementById('btn-nova-tentativa').style.display = 'none';
                 
-                // Oculta as outras telas para focar no ranking
                 document.getElementById('tela-login').style.display = 'none';
                 document.getElementById('quiz-container').style.display = 'none';
                 document.getElementById('placar-topo').style.display = 'none';
@@ -350,11 +347,9 @@
 
         function fecharRanking() {
             document.getElementById('tela-ranking').style.display = 'none';
-            // Se o usuário ainda não colocou o nome, ele estava na tela inicial
             if (nomeUsuario === "") {
                 document.getElementById('tela-login').style.display = 'block';
             } else {
-                // Se já tinha nome, ele estava no meio da prova
                 document.getElementById('placar-topo').style.display = 'flex';
                 document.getElementById('quiz-container').style.display = 'block';
             }
@@ -386,7 +381,6 @@
             });
         }
 
-        // INIT
         prepararSistema();
     </script>
 </body>
