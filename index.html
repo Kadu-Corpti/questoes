@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MasterSimulado - Teoria da Computação</title>
+    <title>Simulado Acadêmico - Teoria da Computação</title>
     <style>
         :root { --primary: #2563eb; --bg: #f1f5f9; --text: #1e293b; --success: #22c55e; --danger: #ef4444; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; margin: 0; }
@@ -58,8 +58,8 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            <h1>Simulado Acadêmico Completo</h1>
-            <p>80 questões focadas em Computabilidade e Complexidade</p>
+            <h1>Simulado Avançado - Teoria da Computação</h1>
+            <p>Avaliação formal de Computabilidade, Complexidade e Autômatos</p>
         </div>
 
         <div id="tela-login">
@@ -71,7 +71,7 @@
 
         <div class="scoreboard" id="placar-topo">
             <div class="score-item">Jogador<span class="score-val" id="display-nome" style="color: var(--primary);">-</span></div>
-            <div class="score-item">Respondidas<span class="score-val" id="display-resp">0/80</span></div>
+            <div class="score-item">Progresso<span class="score-val" id="display-resp">0/0</span></div>
             <div class="score-item">Acertos<span class="score-val val-acertos" id="display-acertos">0</span></div>
             <div class="score-item">Erros<span class="score-val val-erros" id="display-erros">0</span></div>
         </div>
@@ -80,7 +80,7 @@
 
         <div id="resultado-final">
             <h2>Simulado Concluído! 🎉</h2>
-            <p style="font-size: 1.2rem;">Você acertou <strong id="final-acertos" style="color: var(--success);">0</strong> de 80 questões.</p>
+            <p style="font-size: 1.2rem;">Você acertou <strong id="final-acertos" style="color: var(--success);">0</strong> questões.</p>
             <p style="font-size: 1.5rem; font-weight: bold;">Sua nota final é: <span id="final-nota" style="color: var(--primary);">0%</span></p>
             <div id="status-db" class="loading">Sincronizando pontuação com a base de dados... ⏳</div>
         </div>
@@ -96,7 +96,7 @@
                     </tr>
                 </thead>
                 <tbody id="corpo-ranking">
-                    </tbody>
+                </tbody>
             </table>
             <div style="text-align: center; margin-top: 30px;">
                 <button onclick="location.reload()" style="background: #64748b; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;">↻ Fazer Nova Tentativa</button>
@@ -112,119 +112,64 @@
         let acertos = 0;
         let erros = 0;
         let respondidas = 0;
-        const totalQuestoes = 80;
+        let totalQuestoes = 0; // Agora será calculado automaticamente!
 
-        // SEU BANCO DE QUESTÕES (Mantido intacto para não perder o conteúdo de estudo)
+        // BANCO DE QUESTÕES ELABORADAS - NÍVEL UNIVERSITÁRIO
         const conteudos = [
             {
-                titulo: "Unidade 1: Complexidade de Algoritmos",
+                titulo: "Módulo I: Complexidade de Algoritmos e Corretude",
                 questoes: [
-                    {p: "Se um algoritmo possui complexidade f(n) = 3n² + 40n + 200, qual sua notação Big O?", o: {A:"O(n)", B:"O(n²)", C:"O(40n)", D:"O(1)"}, c: "B", e: "Ignoramos constantes e consideramos apenas o termo de maior grau."},
-                    {p: "Qual a complexidade de tempo do algoritmo de Busca Binária?", o: {A:"O(n)", B:"O(n log n)", C:"O(log n)", D:"O(1)"}, c: "C", e: "Reduz o espaço pela metade a cada iteração."},
-                    {p: "A complexidade O(1) indica que o tempo de execução:", o: {A:"É proporcional ao tamanho", B:"É fixo", C:"Cresce de forma exponencial", D:"Dobra a cada iteração"}, c: "B", e: "O(1) denota tempo constante."},
-                    {p: "Qual destas ordens de crescimento é a mais custosa computacionalmente?", o: {A:"O(n log n)", B:"O(n³)", C:"O(2^n)", D:"O(n!)"}, c: "D", e: "Fatorial O(n!) supera exponencial rapidamente."},
-                    {p: "No problema MinMax (buscar mínimo e máximo), o Caso 3 é otimizado através de:", o: {A:"Busca linear", B:"Comparação par-a-par", C:"Ordenação", D:"Árvores"}, c: "B", e: "Realiza cerca de 3n/2 comparações."},
-                    {p: "Qual a complexidade de dois laços 'for' aninhados (1 a n)?", o: {A:"O(n)", B:"O(n²)", C:"O(2n)", D:"O(log n)"}, c: "B", e: "Um roda dentro do outro (n * n)."},
-                    {p: "Em f(n) = O(n), a variável 'n' tipicamente representa:", o: {A:"O número de variáveis", B:"Tempo", C:"O tamanho da entrada", D:"Memória"}, c: "C", e: "A cardinalidade da entrada processada."},
-                    {p: "Verificar se um número é par possui complexidade:", o: {A:"O(n)", B:"O(1)", C:"O(log n)", D:"O(n²)"}, c: "B", e: "Operação aritmética executada em tempo constante."},
-                    {p: "Quando dois algoritmos são O(n), como ocorre o desempate?", o: {A:"Idênticos", B:"Analisa-se a constante multiplicativa omitida", C:"Número de variáveis", D:"Hardware"}, c: "B", e: "A constante omitida define qual é mais rápido na prática."},
-                    {p: "Comportamento característico de O(log n)?", o: {A:"Entrada dobra, tempo dobra", B:"Entrada dobra, tempo aumenta em 1", C:"Aumenta 1, dobra tempo", D:"Não altera"}, c: "B", e: "Dobrar n apenas adiciona mais 1 passo."},
-                    {p: "Partes: O(1), O(log n) e O(n log n). Qual a complexidade final?", o: {A:"O(n log n)", B:"O(1)", C:"O(n)", D:"O(log n)"}, c: "A", e: "Ditada pelo termo de maior peso."},
-                    {p: "Algoritmos 'Dividir para Conquistar' resultam em fator:", o: {A:"Fatorial", B:"Logarítmico", C:"Quadrático", D:"Cúbico"}, c: "B", e: "Subdivisões geram proporções logarítmicas."},
-                    {p: "Um loop de 1 a n iterando com 'i = i * 2' tem complexidade:", o: {A:"O(n)", B:"O(n²)", C:"O(log n)", D:"O(n/2)"}, c: "C", e: "Multiplicar alcança 'n' em passos logarítmicos."},
-                    {p: "O Pior Caso foca em:", o: {A:"Garantir limite superior", B:"Tempo exato", C:"Reduzir memória", D:"Descobrir erros"}, c: "A", e: "Garante que o algoritmo nunca passará daquele tempo."},
-                    {p: "Percorrer um vetor imprimindo tudo:", o: {A:"O(n)", B:"O(1)", C:"O(n²)", D:"O(log n)"}, c: "A", e: "Cada item visitado exatamente uma vez."},
-                    {p: "Qual função cresce de forma mais lenta?", o: {A:"n²", B:"n * log n", C:"n", D:"log n"}, c: "D", e: "Cresce mais lentamente que a linear."}
+                    {p: "Na análise de complexidade de algoritmos, quando duas soluções distintas apresentam a mesma ordem de complexidade assintótica (por exemplo, ambas O(n²)), qual é o critério matemático usualmente empregado para determinar a mais eficiente na prática?", o: {A:"A quantidade de iterações do laço externo", B:"O espaço alocado em memória secundária", C:"A constante multiplicativa da função de complexidade omitida na notação Big O", D:"A linguagem de programação utilizada"}, c: "C", e: "Na notação assintótica, as constantes são ignoradas para focar no grau de crescimento. Contudo, em casos de empate assintótico, a constante da função dita a velocidade real da execução."},
+                    {p: "Sobre os métodos de validação de software, a teoria clássica postula uma distinção clara entre testes empíricos e provas formais. Qual afirmativa define corretamente essa distinção?", o: {A:"Testes rigorosos são suficientes para demonstrar que um algoritmo está matematicamente correto.", B:"Testes empíricos demonstram apenas a presença de erros, enquanto métodos formais (como o Invariante de Laço) podem provar a corretude.", C:"Provas formais são aplicáveis apenas a algoritmos de complexidade constante O(1).", D:"Testes de mesa em algoritmos recursivos garantem a ausência de loops infinitos."}, c: "B", e: "O Invariante de Laço é uma propriedade lógica que, uma vez provada verdadeira na inicialização, manutenção e término, assegura matematicamente o funcionamento correto do algoritmo, ao passo que testes revelam falhas, mas não garantem sua inexistência total."},
+                    {p: "O algoritmo de Busca Binária constitui um exemplo clássico do paradigma 'dividir para conquistar'. Qual é a consequência direta dessa abordagem analítica sobre a sua complexidade de tempo no pior caso?", o: {A:"O(n), pois a cada passo uma parte linear do arranjo é avaliada.", B:"O(n log n), uma vez que requer uma pré-ordenação interna contínua.", C:"O(log n), dado que o espaço de busca é reduzido à metade a cada iteração consecutiva.", D:"O(1), pois acessa o índice médio de forma direta."}, c: "C", e: "A divisão sistemática do vetor à metade resulta no decréscimo exponencial do subproblema, cuja base teórica é modelada pela função logarítmica."},
+                    {p: "No contexto da recursividade computacional, como é caracterizada a técnica de 'recursão múltipla' (como na implementação ingênua da série de Fibonacci) e qual seu impacto predominante?", o: {A:"É caracterizada por uma única chamada à função em cada execução, otimizando a memória.", B:"A função invoca a si mesma múltiplas vezes no mesmo escopo, gerando uma árvore de execução com complexidade de tempo exponencial.", C:"Ocorre exclusivamente na ausência de um caso base, gerando Stack Overflow.", D:"Possui complexidade O(n) independentemente da profundidade da árvore gerada."}, c: "B", e: "A recursão múltipla cria um crescimento exponencial de chamadas (nós da árvore), recalculando repetidas vezes subproblemas idênticos, resultando na ordem O(2^n)."},
+                    {p: "O que implica, do ponto de vista do custo computacional, afirmar que uma operação analítica (como determinar a paridade de um número) tem complexidade O(1)?", o: {A:"Que sua execução requer, impreterivelmente, apenas uma única instrução em código de máquina.", B:"Que o tempo de execução é delimitado por uma constante, independendo do volume ou magnitude dos dados de entrada.", C:"Que o algoritmo processará os dados numa velocidade diretamente proporcional à capacidade do hardware.", D:"Que ela não necessita de alocação de memória RAM na sua instrução."}, c: "B", e: "Complexidade O(1), ou tempo constante, define que a quantidade de passos necessários será a mesma independentemente do valor ou dimensão do dado fornecido (n)."}
                 ]
             },
             {
-                titulo: "Unidade 2: Autômatos Finitos",
+                titulo: "Módulo II: Autômatos Finitos e Linguagens Formais",
                 questoes: [
-                    {p: "Na tupla do AFD (Q, Σ, δ, q0, F), o que representa o Σ?", o: {A:"Estados finais", B:"Função de transição", C:"Alfabeto de entrada", D:"Estado de erro"}, c: "C", e: "Caracteres permitidos na entrada."},
-                    {p: "A palavra de comprimento zero é designada por:", o: {A:"∅", B:"ε (Epsilon)", C:"#", D:"ω"}, c: "B", e: "Representa a ausência de símbolos."},
-                    {p: "Na Máquina de Mealy, a saída associa-se:", o: {A:"Ao estado atual", B:"À fita", C:"À transição", D:"Ao estado de aceitação"}, c: "C", e: "Mealy emite a saída no arco."},
-                    {p: "Quantos estados simultâneos um AFD ocupa?", o: {A:"Vários", B:"Apenas um por vez", C:"Nenhum", D:"Dois"}, c: "B", e: "Determinismo significa unicidade."},
-                    {p: "O Fecho de Kleene (Σ*) engloba:", o: {A:"Ímpares", B:"Todas as cadeias finitas (incluindo ε)", C:"Infinitas", D:"Invertidas"}, c: "B", e: "Infinitas combinações de tamanho finito."},
-                    {p: "Uma palavra é 'Aceita' por um AFD se:", o: {A:"Para no estado inicial", B:"Sem erros", C:"Termina num estado de F", D:"Fita apagada"}, c: "C", e: "Requer término em estado final marcado."},
-                    {p: "AFDs reconhecem a classe das:", o: {A:"Sensíveis ao Contexto", B:"Turing-Decidíveis", C:"Linguagens Regulares", D:"Recursivas"}, c: "C", e: "Reconhecem gramáticas tipo 3."},
-                    {p: "Na Máquina de Moore, a emissão de saída depende do:", o: {A:"Símbolo lido", B:"Alfabeto", C:"Estado em que se encontra", D:"Direção"}, c: "C", e: "Saídas ficam impressas no estado."},
-                    {p: "O símbolo δ designa:", o: {A:"Estados", B:"Função de transição", C:"Saída", D:"Palavra vazia"}, c: "B", e: "Rege o comportamento do autômato."},
-                    {p: "Diferença central AFD vs AFN?", o: {A:"Fita", B:"AFNs podem ter múltiplas transições para a mesma entrada", C:"Complexidade", D:"Finais"}, c: "B", e: "Não-determinismo permite múltiplos caminhos."},
-                    {p: "Sem caminho para um símbolo lido num AFD?", o: {A:"Retrocede", B:"Aceita", C:"Palavra rejeitada", D:"Apaga"}, c: "C", e: "Formalmente rejeitada por não haver consumo."},
-                    {p: "Círculo duplo no diagrama significa:", o: {A:"Inicial", B:"Aceitação", C:"Inalcançável", D:"Múltiplas"}, c: "B", e: "Subconjunto F de finais."},
-                    {p: "Concatenação de '11' e '00':", o: {A:"{11, 00}", B:"{1100}", C:"{1, 0}", D:"{0011}"}, c: "B", e: "Justapõe na exata ordem."},
-                    {p: "Autômatos com pilha reconhecem:", o: {A:"Livres de Contexto", B:"Regulares", C:"Indecidíveis", D:"Nenhuma"}, c: "A", e: "Pilha resolve problemas como a^n b^n."},
-                    {p: "Complemento de linguagem Regular:", o: {A:"Sensível", B:"Será Regular", C:"Indecidível", D:"Não existe"}, c: "B", e: "Fechada sob complemento."},
-                    {p: "Moore e Mealy fundamentam:", o: {A:"Quânticos", B:"Analisadores léxicos e circuitos sequenciais", C:"Baixo nível", D:"Bancos"}, c: "B", e: "Design lógico de hardware e tokens."}
+                    {p: "No estudo das linguagens formais, a palavra ou cadeia vazia constitui o elemento neutro da operação de concatenação. Como este elemento é representado e qual é o seu comprimento formal (|w|)?", o: {A:"Representa-se por ∅, e possui comprimento indefinido.", B:"Representa-se por Σ, e possui comprimento nulo.", C:"Representa-se por ε (Epsilon) ou λ (Lambda), e possui comprimento igual a zero.", D:"Representa-se por x^0, possuindo comprimento igual a 1."}, c: "C", e: "A palavra vazia denota uma sequência composta por zero símbolos do alfabeto, sendo imprescindível na teoria de autômatos não-determinísticos e fechos."},
+                    {p: "Um Autômato Finito Determinístico (AFD) é abstraído matematicamente pela 5-tupla (Q, Σ, δ, q0, F). Dentro deste modelo formal, qual é a definição exata de F?", o: {A:"A função de transição que mapeia o estado atual para o subsequente.", B:"O conjunto que engloba o alfabeto de símbolos reconhecidos.", C:"Um subconjunto pertencente a Q, designado para conter todos os estados de aceitação do modelo.", D:"O estado inicial singular e obrigatório para o cômputo da máquina."}, c: "C", e: "F ⊆ Q estabelece formalmente os estados nos quais, se a máquina finalizar o processamento da cadeia, a palavra será declarada como pertencente à linguagem do autômato."},
+                    {p: "A operação de Fecho de Kleene (estrela de Kleene), quando aplicada a um alfabeto Σ, dá origem ao conjunto denotado por Σ*. Como este conjunto é estritamente definido?", o: {A:"O conjunto de todas as palavras de comprimento infinito formadas pelo alfabeto.", B:"O conjunto irrestrito contendo todas as concatenações finitas possíveis dos símbolos de Σ, incluindo a ocorrência da cadeia vazia.", C:"Um subconjunto finito de palavras aceitas por uma máquina de Moore.", D:"O conjunto resultante da união de dois alfabetos mutuamente excludentes."}, c: "B", e: "O fechamento reflexivo engloba absolutamente todas as permutações de tamanho finito, desde o comprimento zero (ε) até n."},
+                    {p: "Em arquiteturas de Autômatos Finitos com Saída, qual é a distinção teórica fundamental que separa a Máquina de Moore da Máquina de Mealy?", o: {A:"A Máquina de Moore processa linguagem sensível ao contexto, e a de Mealy linguagem regular.", B:"A Máquina de Moore condiciona a geração de sua saída exclusivamente ao estado vigente; já a Máquina de Mealy a condiciona de modo combinado ao estado atual e à entrada lida na transição.", C:"Na Máquina de Mealy o estado final é desnecessário, diferentemente da de Moore onde é imperativo.", D:"Moore opera em tempo não-determinístico, enquanto Mealy é estritamente determinística."}, c: "B", e: "A característica delimitadora: Moore (Saída(Estado)); Mealy (Saída(Estado, Entrada))."},
+                    {p: "Para provar que uma linguagem é classificada como 'Linguagem Regular', é condição necessária e suficiente a existência de qual construto matemático capaz de reconhecê-la?", o: {A:"Uma Máquina de Turing de fita dupla.", B:"Um Autômato Finito (seja ele determinístico ou não-determinístico).", C:"Um Autômato com Pilha estrito.", D:"Uma arquitetura baseada em transdutores de Mealy."}, c: "B", e: "O teorema de Kleene estabelece a equivalência matemática direta entre expressões regulares e as linguagens reconhecidas por Autômatos Finitos."}
                 ]
             },
             {
-                titulo: "Unidade 3: Máquinas de Turing",
+                titulo: "Módulo III: Teoria e Variantes da Máquina de Turing",
                 questoes: [
-                    {p: "O símbolo 'b' ou '□' na MT é:", o: {A:"Operador", B:"Branco delimitador", C:"Inativo", D:"Fim"}, c: "B", e: "Preenche as células infinitas vazias."},
-                    {p: "A revolução da MT é a capacidade de:", o: {A:"Tempo constante", B:"Ler, reescrever e mover bidirecional", C:"Indecidíveis", D:"Sem transições"}, c: "B", e: "Memória infinita bidirecional."},
-                    {p: "Tese de Church-Turing:", o: {A:"Limites físicos", B:"Todo algoritmo concebível pode ser simulado pela MT", C:"Modernos não seguem", D:"Humanas"}, c: "B", e: "MT como limite do computável."},
-                    {p: "MT que entra em parada (halt) para qualquer entrada:", o: {A:"Universal", B:"Reconhecedora", C:"Decisora", D:"Absoluta"}, c: "C", e: "Garantem que nunca ficarão em loop."},
-                    {p: "Acrescentar fitas à MT:", o: {A:"Exponencial", B:"Expande classe", C:"Apenas otimiza, não altera o poder", D:"Indecidível"}, c: "C", e: "Equivalente matemático à fita única."},
-                    {p: "Configuração 't' da MT:", o: {A:"Alfabeto", B:"Símbolos escritos, estado e posição", C:"Temperatura", D:"Código"}, c: "B", e: "Instantâneo para reproduzir estado."},
-                    {p: "Instrução (q2, b, R). O 'R' impõe:", o: {A:"Reject", B:"Read", C:"Move Right (Direita)", D:"Return"}, c: "C", e: "Avançar para direita."},
-                    {p: "A MT Universal possui propriedade de:", o: {A:"Simular outra MT via código", B:"Zero memória", C:"Parada", D:"Não-determinística"}, c: "A", e: "Toma descrição de outra como entrada."},
-                    {p: "MT reconhece L, mas entra em loop se não estiver em L. L é:", o: {A:"Livre", B:"Recursivamente Enumerável", C:"Decidível", D:"Regular"}, c: "B", e: "Máquinas reconhecedoras podem loopar em casos negativos."},
-                    {p: "MT Não-Determinística:", o: {A:"Mais poderosa", B:"Mesmo poder computacional que MTD", C:"Impossível", D:"Não atinge final"}, c: "B", e: "Toda MTND simulada por MTD."},
-                    {p: "Fita infinita para ambos os lados:", o: {A:"Não simula", B:"Mais poder", C:"Equivalente à fita limitada à esquerda", D:"Loop"}, c: "C", e: "Dobrando alfabeto a MTD simula fita dupla."},
-                    {p: "Γ (Gama) representa:", o: {A:"Entrada estrito", B:"Estados", C:"Alfabeto da Fita", D:"Mapeamento"}, c: "C", e: "Entrada + Branco + auxiliares."},
-                    {p: "MT Transdutora visa:", o: {A:"Sim/Não", B:"Calcular uma função e deixar resposta", C:"Regulares", D:"Otimizar"}, c: "B", e: "Computam resultados (ex: soma)."},
-                    {p: "Transição vazia (Epsilon) na MTD:", o: {A:"Sempre", B:"Leva a finais", C:"Não existe na definição padrão", D:"Pula"}, c: "C", e: "Processa 1 caractere por passo."},
-                    {p: "Movimento L na extremidade esquerda limitante:", o: {A:"Quebra", B:"Estica", C:"Cabeça continua na 1ª célula", D:"Apaga"}, c: "C", e: "Por convenção, não cai da fita."},
-                    {p: "Provar equivalência de MTs exige mostrar que:", o: {A:"Mesma velocidade", B:"Ambas podem simular o comportamento da outra", C:"Mesmos estados", D:"Físico"}, c: "B", e: "Simulação recíproca garante poder matemático igual."}
+                    {p: "A especificação de uma Máquina de Turing (MT) impõe uma distinção teórica entre o alfabeto de entrada (Σ) e o alfabeto da fita (Γ). Qual é a premissa matemática para essa diferenciação?", o: {A:"Σ e Γ são idênticos em modelos determinísticos, sendo distintos apenas na presença de não-determinismo.", B:"O alfabeto da fita (Γ) engloba estritamente o alfabeto de entrada (Σ), adicionando a este o símbolo especial em branco e eventuais símbolos auxiliares utilizados durante o cômputo interno.", C:"O alfabeto de entrada (Σ) contém os estados finais, enquanto Γ administra os estados de transição.", D:"Γ atua como um limitador de memória, garantindo a parada da fita num ponto finito."}, c: "B", e: "Matematicamente, Σ ⊆ Γ - {b}. Γ necessita ser maior para permitir o trabalho de leitura/escrita e marcar células que não receberam inputs iniciais."},
+                    {p: "Em uma representação de diagrama de transição de uma MT, uma instrução formatada como (q1, a) -> (q2, b, R) expressa explicitamente qual sequência comportamental?", o: {A:"Estando em q1, caso a cabeça encontre um 'a', transita para q2, reinsere 'b' na pilha e reinicia a execução.", B:"Estando no estado q1, ao proceder a leitura do símbolo 'a', a máquina fará a transição para o estado q2, transcreverá o símbolo 'b' sobrepondo o atual, e deslocará o cabeçote de leitura uma posição à direita (R).", C:"Determina que, do estado q1, a máquina leia 'a' e avance para a direita, buscando o símbolo 'b'.", D:"Transita para q2 e limpa o valor da célula substituindo-o por um branco."}, c: "B", e: "É a abstração clássica do comportamento da MT: Símbolo Lido / Símbolo Gravado / Direção do Movimento (Right/Left)."},
+                    {p: "Quando projetada como uma 'MT Transdutora', a finalidade primária da máquina difere dos modelos clássicos de reconhecimento. Qual é a sua finalidade exata?", o: {A:"Processar cadeias e computar um resultado formal que permanecerá gravado na fita após o estado de parada, em contraposição a simplesmente determinar pertinência com 'Sim' ou 'Não'.", B:"Provar indecidibilidade em tempo polinomial não superior a O(n²).", C:"Converter códigos de alto nível para linguagem de montagem universal.", D:"Emitir a palavra vazia ao invés de entrar em looping infinito."}, c: "A", e: "Transdutores vão além da aceitação; eles calculam funções, produzindo dados (ex: converter binário para decimal, ou somar matrizes) e deixando a resposta na fita."},
+                    {p: "Como a Teoria da Computabilidade lida com a capacidade algorítmica de extensões ao modelo original de Turing, como a inserção de Múltiplas Fitas ou o Não-Determinismo (MTND)?", o: {A:"Elas quebram a validade da Tese de Church-Turing, ampliando drasticamente o conjunto de problemas decidíveis.", B:"Tornam possível o cômputo infinito, garantindo que o Problema da Parada encontre solução viável.", C:"Essas arquiteturas modificadas não ampliam o limite do que é computável; qualquer programa escrito nelas possui um equivalente funcional simulável pela Máquina de Turing determinística de fita única.", D:"O Não-Determinismo diminui o poder da máquina, restringindo as linguagens computáveis às de hierarquia 2."}, c: "C", e: "Modelos variados agregam conveniência ou velocidade, mas não resolvem problemas intrinsecamente insolúveis para o modelo basilar. Possuem o exato mesmo poder computacional."},
+                    {p: "Dentro da formalização da indecidibilidade, o que assegura que uma linguagem é classificada na categoria das 'Linguagens Decidíveis' (ou Linguagens Recursivas)?", o: {A:"A existência de uma MT que rejeite todas as sentenças através de paradas forçadas com erro.", B:"A necessidade de que a linguagem possua tamanho finito.", C:"A garantia matemática de existência de uma MT (um decisor) que, invariavelmente e para qualquer entrada, alcançará estado de parada em tempo finito, sinalizando aceitação ou rejeição cabal.", D:"A característica da máquina reconhecedora de entrar em loop contínuo nas cadeias inválidas para não corromper o disco."}, c: "C", e: "A propriedade fundamental de uma máquina Decisora é a absoluta garantia de terminação do algoritmo sem a possibilidade de laços infinitos."}
                 ]
             },
             {
-                titulo: "Unidade 4: Decidibilidade",
+                titulo: "Módulo IV: Fundamentação Lógica e Problemas Insolúveis",
                 questoes: [
-                    {p: "Problema da Parada afirma:", o: {A:"Todo para", B:"Impossível algoritmo universal prever se qualquer programa para", C:"Loops", D:"Todos decidíveis"}, c: "B", e: "Não há solução algorítmica universal."},
-                    {p: "Gödel (1931) provou que:", o: {A:"Consistente", B:"Sistemas formais possuem verdades improváveis internamente", C:"Linguagens sem erro", D:"Fitas existem"}, c: "B", e: "Teorema da Incompletude quebrou limites lógicos."},
-                    {p: "Método de Cantor para demonstrar indecidibilidade:", o: {A:"Dedução", B:"Redutibilidade", C:"Diagonalização", D:"Transdução"}, c: "C", e: "Gera contradição formal."},
-                    {p: "Problemas de Decisão exigem saída:", o: {A:"Real", B:"Vetor", C:"Binárias SIM/NÃO", D:"Loop"}, c: "C", e: "Foco na pertinência."},
-                    {p: "Se A reduz a B, e B é decidível:", o: {A:"A indecidível", B:"A decidível", C:"Mais difícil", D:"Incomparáveis"}, c: "B", e: "Solução de B resolve A."},
-                    {p: "A_MT determina se:", o: {A:"Fita longa", B:"A MT aceita a cadeia w", C:"Espaço", D:"Sintaxe"}, c: "B", e: "Problema Turing-reconhecível padrão."},
-                    {p: "Linguagens Recursivas formam o conjunto de:", o: {A:"Indecidíveis", B:"Decisão", C:"Linguagens decidíveis (MT sempre para)", D:"Não-reconhecíveis"}, c: "C", e: "Decisor formal existe."},
-                    {p: "Teorema da Recursão fundamenta:", o: {A:"Apagar-se", B:"Injetar", C:"Obter e processar a própria descrição", D:"10x mais rápido"}, c: "C", e: "Vírus e quines."},
-                    {p: "O Décimo Problema de Hilbert é:", o: {A:"Fácil", B:"Indecidível", C:"O(n)", D:"Decidível"}, c: "B", e: "Matiyasevich (1970). Sem solução algorítmica para equações diofantinas."},
-                    {p: "Se L e L' são Turing-reconhecíveis, L é:", o: {A:"Não-Decidível", B:"Sensível", C:"Decidível", D:"Inválida"}, c: "C", e: "Garante parada sem loop para ambos lados."},
-                    {p: "A máquina D do Problema da Parada:", o: {A:"Testa", B:"Faz o contrário do que H prevê (contradição)", C:"Dobra fita", D:"Pares"}, c: "B", e: "Máquina abnegada."},
-                    {p: "Post Correspondence Problem (PCP):", o: {A:"Linear", B:"Pilhas", C:"Indecidível", D:"AFD"}, c: "C", e: "Não tem limite de paragem algorítmico garantido."},
-                    {p: "Redução em tempo polinomial baliza estudo de:", o: {A:"P vs NP", B:"Decidibilidade", C:"Regulares", D:"Grafos"}, c: "A", e: "Classes de complexidade."},
-                    {p: "MT rejeita entrando em loop, ela é:", o: {A:"Decisor", B:"Inútil", C:"Reconhecedor", D:"Violou"}, c: "C", e: "Reconhecedor não tem obrigação de parada formal."},
-                    {p: "Paradoxo que baliza indecidibilidade:", o: {A:"Aniversário", B:"Mentiroso (Russell)", C:"Zênon", D:"Gato"}, c: "B", e: "Autorreferência impeditiva lógica."}
-                ]
-            },
-            {
-                titulo: "Unidade 5: Recursividade",
-                questoes: [
-                    {p: "Todo algoritmo recursivo necessita de um:", o: {A:"FOR", B:"Ponteiro", C:"Caso Base", D:"Print"}, c: "C", e: "Garante a parada."},
-                    {p: "Na Pilha de Execução, o que é empilhado?", o: {A:"Resultado", B:"Endereço, variáveis e parâmetros", C:"Arquivo", D:"Instrução"}, c: "B", e: "Contexto de Execução salva o frame atual."},
-                    {p: "Complexidade temporal de Torre de Hanói:", o: {A:"O(n log n)", B:"O(2^n)", C:"O(n²)", D:"O(n!)"}, c: "B", e: "Exponencial base 2."},
-                    {p: "Fibonacci recursivo puro sofre com:", o: {A:"Loop", B:"Sintaxe", C:"Superposição de subproblemas repetidos", D:"Strings"}, c: "C", e: "Re-calcula a mesma coisa diversas vezes."},
-                    {p: "Complexidade espacial do Fatorial(n):", o: {A:"O(1)", B:"O(n)", C:"O(log n)", D:"O(n²)"}, c: "B", e: "Abre n chamadas até o caso base."},
-                    {p: "Ausência de Caso Base gera exceção:", o: {A:"Null Pointer", B:"Out of Bounds", C:"Stack Overflow", D:"Division"}, c: "C", e: "Estoura a pilha RAM do OS."},
-                    {p: "Técnica por trás de QuickSort (O(n log n)):", o: {A:"Dinâmica", B:"Gulosos", C:"Dividir para Conquistar", D:"Backtracking"}, c: "C", e: "Particiona problema recursivamente."},
-                    {p: "Somar vetor recursivamente altera O(n) do laço?", o: {A:"Sim, log", B:"Exponencial", C:"Não, continua O(n)", D:"O(1)"}, c: "C", e: "Ler todos os 'n' elementos dita a complexidade final."},
-                    {p: "Tail Recursion otimiza porquê?", o: {A:"Meio", B:"Chamada é a última instrução da função, sem operações pendentes", C:"Linha única", D:"Evita Base"}, c: "B", e: "Compilador reaproveita frame de memória."},
-                    {p: "Em grafos, chamadas recursivas desenham-se como:", o: {A:"Lista", B:"Cíclico", C:"Árvore", D:"Matriz"}, c: "C", e: "Raiz que abre em folhas."},
-                    {p: "Base da Busca Binária:", o: {A:"Valor achado ou ponteiros cruzam", B:"Contador infinito", C:"Vazio", D:"O(n)"}, c: "A", e: "Partição acaba."},
-                    {p: "Complexidade espacial do MergeSort:", o: {A:"O(1)", B:"O(log n)", C:"O(n)", D:"O(n²)"}, c: "C", e: "Precisa de vetor auxiliar de mesmo tamanho da entrada original."},
-                    {p: "Profundidade árvore de T(n) = 2T(n/2) + O(n):", o: {A:"O(n)", B:"O(log n)", C:"O(1)", D:"O(2^n)"}, c: "B", e: "Metades reduzem via log2."},
-                    {p: "O que menos se beneficia de recursividade?", o: {A:"Árvore", B:"QuickSort", C:"Impressão 1 a 100", D:"Fractais"}, c: "C", e: "Laços simples não justificam o overhead do Call Stack."},
-                    {p: "Backtracking baseia-se em:", o: {A:"Pilhas", B:"Estáticas", C:"Árvore mapeada com recuos ao falhar", D:"Arquivos"}, c: "C", e: "Avança profundamente e volta se caminho der errado."}
+                    {p: "Em 1931, o matemático Kurt Gödel promoveu uma alteração irrevogável na base filosófica da matemática através dos Teoremas da Incompletude. Qual é a tese estrutural contida em seu primeiro teorema?", o: {A:"Assegura que todo modelo matemático de axiomatização é integralmente consistente e livre de paralogismos.", B:"Demonstra que, em sistemas formais consistentes e suficientemente complexos (capazes de modelar a aritmética), residem inexoravelmente proposições verdadeiras que são categoricamente não prováveis a partir dos axiomas daquele sistema.", C:"Afirma que o infinito é incontável, refutando as asserções de Cantor sobre conjuntos finitos.", D:"Postula que todo problema que pode ser concebido logicamente pode ser decodificado por uma Máquina de Turing."}, c: "B", e: "A Incompletude quebrou a visão de que a matemática poderia, hipoteticamente, provar com absoluta clareza todas as afirmações derivadas de si mesma."},
+                    {p: "O histórico da computabilidade e indecidibilidade faz alusão constante a uma lista de problemas propostos no ano 1900, os quais guiaram a pesquisa matemática ao longo do século. Quem foi o autor dessa proposta?", o: {A:"Alonzo Church, ao conceber a teoria do Cálculo Lambda.", B:"Alan Turing, através de sua formalização das fitas infinitas.", C:"David Hilbert, o qual desafiou a comunidade científica com 23 problemas complexos não resolvidos à época.", D:"Georg Cantor, com o dilema da cardinalidade dos contínuos."}, c: "C", e: "Hilbert apresentou seus 23 problemas; posteriormente descobriu-se que vários possuíam natureza computacional profunda, como o 10º (Diophantinas), provado indecidível décadas mais tarde."},
+                    {p: "O Artigo basilar da computação moderna, publicado em 1936 por Alan Turing, foi criado originalmente para solucionar qual problema de decisão proeminente na matemática da época?", o: {A:"O problema da alocação de registros (Register Allocation).", B:"A conjectura de Riemann nos conjuntos primários.", C:"O Entscheidungsproblem (Problema da Decisão), demonstrando a impossibilidade de um procedimento mecânico geral para validar universalmente teoremas de primeira ordem.", D:"O P versus NP."}, c: "C", e: "O papel fundamental da MT de Turing foi provar que o procedimento de decisão universal solicitado pelo Entscheidungsproblem é matematicamente impossível."},
+                    {p: "O 'Problema da Parada' (Halting Problem) atua como pilar nas comprovações matemáticas de indecidibilidade sistêmica. Qual postulado define a tese desse problema?", o: {A:"É estritamente impossível formular um algoritmo universal de validação encarregado de examinar o código fonte de todos os demais programas e determinar, com precisão para qualquer entrada arbitrária, se eles eventualmente terminarão a execução ou operarão ad infinitum.", B:"A memória ram finita dos sistemas de Von Neumann causará a parada sistemática de todos os algoritmos antes do ciclo 1 bilhão.", C:"Problemas que exigem laços infinitos não devem compilar.", D:"Todo código que contenha instruções recursivas eventualmente sofrerá anomalias e forçará a parada do cômputo."}, c: "A", e: "O Teorema da Parada comprova que não pode existir um depurador universal e absoluto capaz de atestar a completude ou interrupção de todos os laços lógicos possíveis."}
                 ]
             }
         ];
 
-        // 1. LOGIN
+        // 1. INICIALIZAÇÃO DINÂMICA DO TOTAL DE QUESTÕES
+        function prepararSistema() {
+            totalQuestoes = 0;
+            conteudos.forEach(sec => {
+                totalQuestoes += sec.questoes.length;
+            });
+            document.getElementById('display-resp').innerText = `0/${totalQuestoes}`;
+        }
+
+        // 2. LOGIN
         function iniciarSimulado() {
             const input = document.getElementById('input-nome').value.trim();
-            if (input === "") { alert("Por favor, informe seu nome!"); return; }
+            if (input === "") { alert("Por favor, informe seu nome de registro!"); return; }
             
             nomeUsuario = input;
             document.getElementById('tela-login').style.display = 'none';
@@ -236,7 +181,7 @@
             renderizarQuestoes();
         }
 
-        // 2. RENDERIZAÇÃO E CLIQUE
+        // 3. RENDERIZAÇÃO
         function renderizarQuestoes() {
             const container = document.getElementById('quiz-container');
             let qIndexGlobal = 1;
@@ -274,6 +219,7 @@
             });
         }
 
+        // 4. LÓGICA DE CORREÇÃO IMEDIATA
         function responder(idInterno, letraSelecionada, letraCorreta, explicacao) {
             const caixaExplicacao = document.getElementById(`exp-${idInterno}`);
             const inputs = document.querySelectorAll(`input[name="res-${idInterno}"]`);
@@ -291,7 +237,7 @@
                 erros++;
                 document.getElementById(`opt-${idInterno}-${letraSelecionada}`).classList.add('wrong');
                 caixaExplicacao.classList.add('error');
-                caixaExplicacao.innerHTML = `<strong>[Incorreto]</strong> A resposta era a <strong>${letraCorreta}</strong>.<br>${explicacao}`;
+                caixaExplicacao.innerHTML = `<strong>[Incorreto]</strong> A alternativa fundamentada era a <strong>${letraCorreta}</strong>.<br>${explicacao}`;
             } else {
                 acertos++;
                 caixaExplicacao.classList.add('success');
@@ -312,16 +258,15 @@
             }
         }
 
-        // 3. INTEGRAÇÃO COM BANCO DE DADOS (SHEETDB)
+        // 5. INTEGRAÇÃO COM A PLANILHA
         function finalizarESalvar() {
             const porcentagemFinal = ((acertos / totalQuestoes) * 100).toFixed(1);
             
             document.getElementById('resultado-final').style.display = 'block';
-            document.getElementById('final-acertos').innerText = acertos;
+            document.getElementById('final-acertos').innerText = `${acertos}/${totalQuestoes}`;
             document.getElementById('final-nota').innerText = `${porcentagemFinal}%`;
             document.getElementById('resultado-final').scrollIntoView({ behavior: 'smooth' });
 
-            // Enviando para a Planilha...
             fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -333,12 +278,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('status-db').innerText = "✅ Salvo no banco de dados! Baixando ranking...";
+                document.getElementById('status-db').innerText = "✅ Avaliação processada e registrada na base central! Organizando Ranking...";
                 document.getElementById('status-db').style.color = "var(--success)";
-                carregarRanking(); // Puxa os dados atualizados para exibir
+                carregarRanking(); 
             })
             .catch(error => {
-                document.getElementById('status-db').innerText = "⚠️ Erro de conexão com o banco. O ranking não pôde ser salvo.";
+                document.getElementById('status-db').innerText = "⚠️ Ocorreu uma anomalia na conexão. Os dados de ranking não puderam ser recuperados.";
                 document.getElementById('status-db').style.color = "var(--danger)";
             });
         }
@@ -347,7 +292,7 @@
             fetch(API_URL)
             .then(response => response.json())
             .then(dados => {
-                // Ordenar por acertos (Maior para o menor)
+                // Ordenação decrescente baseada no número de Acertos
                 dados.sort((a, b) => b.ACERTOS - a.ACERTOS);
                 
                 let tbody = document.getElementById('corpo-ranking');
@@ -361,7 +306,7 @@
                         <tr style="${destaque}">
                             <td style="font-weight:bold;">${medalha}</td>
                             <td>${aluno.NOME}</td>
-                            <td style="color:var(--success); font-weight:bold;">${aluno.ACERTOS} / 80</td>
+                            <td style="color:var(--success); font-weight:bold;">${aluno.ACERTOS} pt(s)</td>
                         </tr>
                     `;
                 });
@@ -371,6 +316,9 @@
                 document.getElementById('tela-ranking').scrollIntoView({ behavior: 'smooth' });
             });
         }
+
+        // Chama a função preparatória ao carregar a página
+        prepararSistema();
     </script>
 </body>
 </html>
