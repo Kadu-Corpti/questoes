@@ -3,156 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MasterSimulado - Computação</title>
+    <title>MasterSimulado - Teoria da Computação</title>
     <style>
         :root { --primary: #2563eb; --bg: #f1f5f9; --text: #1e293b; --success: #22c55e; --danger: #ef4444; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
-        .wrapper { max-width: 700px; margin: auto; }
+        .wrapper { max-width: 800px; margin: auto; }
         .header { text-align: center; margin-bottom: 40px; }
-        .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 24px; border: 1px solid #e2e8f0; transition: 0.3s; }
-        .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; }
+        .header h1 { color: var(--primary); margin-bottom: 5px; }
         
-        /* Estilo das Opções */
-        .option { display: block; background: #f8fafc; padding: 14px 18px; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; position: relative; }
+        .section-title { background: var(--primary); color: white; padding: 15px 20px; border-radius: 12px; margin: 40px 0 20px 0; font-size: 1.3rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        
+        .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; }
+        
+        .option { display: block; background: #f8fafc; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; position: relative; font-size: 0.95rem; }
         .option:hover { background: #f1f5f9; border-color: #cbd5e1; }
-        .option input { display: none; } /* Esconde o rádio original */
-
-        /* Feedback Visual */
+        .option input { display: none; }
+        
         .option.correct { background: #dcfce7 !important; border-color: var(--success) !important; color: #166534; font-weight: 600; }
         .option.wrong { background: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.8; }
         .option.disabled { pointer-events: none; cursor: default; }
 
-        .explanation { margin-top: 15px; padding: 15px; border-radius: 10px; font-size: 0.95rem; display: none; animation: fadeIn 0.4s; }
+        .explanation { margin-top: 15px; padding: 15px; border-radius: 8px; font-size: 0.9rem; display: none; animation: fadeIn 0.4s; }
         .explanation.show { display: block; }
+        .explanation.success { background: #dcfce7; border-left: 4px solid var(--success); }
+        .explanation.error { background: #fee2e2; border-left: 4px solid var(--danger); }
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .img-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; text-align: center; color: #94a3b8; border-radius: 12px; margin: 15px 0; font-size: 0.85rem; }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="header">
-            <h1>Simulado Computabilidade</h1>
-            <p>Clique na resposta para validar instantaneamente</p>
+            <h1>Simulado Acadêmico Completo</h1>
+            <p>80 questões focadas em Computabilidade e Complexidade</p>
         </div>
 
-        <div id="questions-container"></div>
+        <div id="quiz-container"></div>
 
-        <div style="text-align: center; margin-top: 40px; opacity: 0.6; padding-bottom: 40px;">
-            <p>Foco nos estudos! 🚀</p>
+        <div style="text-align: center; margin-top: 50px; padding-bottom: 40px; color: #64748b; font-weight: bold;">
+            <p>Fim do Simulado. Bons estudos.</p>
         </div>
     </div>
 
     <script>
-        const questoes = {
-            1: {p: "Na análise assintótica, se um algoritmo possui complexidade f(n) = 2n² + 50n + 100, qual sua notação Big O?", o: {A:"O(n)", B:"O(n²)", C:"O(50n)", D:"O(1)"}, c: "B", e: "Ignoramos constantes e termos de menor grau para focar no crescimento assintótico."},
-            2: {p: "Qual a complexidade de tempo da Busca Binária?", o: {A:"O(n)", B:"O(n log n)", C:"O(log n)", D:"O(1)"}, c: "C", e: "A cada iteração o espaço de busca é reduzido pela metade (Dividir para Conquistar)."},
-            3: {p: "A complexidade O(1) indica que o tempo de execução:", o: {A:"Aumenta linearmente com n", B:"É fixo, independente do tamanho da entrada", C:"Cresce logaritmicamente", D:"Dobra a cada novo elemento"}, c: "B", e: "O tempo de execução é constante."},
-            4: {p: "Qual destas ordens de crescimento é a MENOS eficiente para grandes valores de n?", o: {A:"O(n log n)", B:"O(n³)", C:"O(2^n)", D:"O(n!)"}, c: "D", e: "O crescimento fatorial O(n!) ultrapassa rapidamente qualquer exponencial ou polinomial."},
-            5: {p: "O algoritmo MinMax (Caso 3) utiliza qual estratégia para ser o mais eficiente?", o: {A:"Busca linear simples", B:"Comparação par-a-par", C:"Ordenação prévia do vetor", D:"Recursão múltipla"}, c: "B", e: "A comparação par-a-par realiza 3n/2 - 2 comparações, sendo a mais otimizada."},
-            6: {p: "Qual a complexidade de um algoritmo com dois laços 'for' aninhados, ambos indo de 1 até n?", o: {A:"O(2n)", B:"O(n²)", C:"O(n)", D:"O(log n)"}, c: "B", e: "Como um laço roda dentro do outro, temos n * n = n²."},
-            7: {p: "Em análise assintótica, o que significa o 'n' na função f(n)?", o: {A:"Número de variáveis", B:"Tamanho da entrada de dados", C:"Tempo em milissegundos", D:"Número de processadores"}, c: "B", e: "n representa o volume/quantidade de elementos a serem processados."},
-            8: {p: "Qual a complexidade de verificar se um número em um vetor é par?", o: {A:"O(1)", B:"O(n)", C:"O(n²)", D:"O(log n)"}, c: "A", e: "É uma operação aritmética única que não depende do tamanho do vetor."},
-            9: {p: "Um Autômato Finito Determinístico (AFD) é definido por uma 5-tupla. O que representa o símbolo Σ?", o: {A:"Conjunto de estados", B:"Função de transição", C:"Alfabeto de entrada", D:"Estado inicial"}, c: "C", e: "Sigma define o conjunto finito de símbolos lidos pela máquina."},
-            10: {p: "A palavra vazia em linguagens formais é comumente representada por:", o: {A:"Ø", B:"ε (Epsilon)", C:"Σ", D:"∞"}, c: "B", e: "Epsilon representa uma string de comprimento zero."},
-            11: {p: "Qual a principal diferença entre a Máquina de Mealy e a de Moore?", o: {A:"Mealy não tem estados finais", B:"Moore depende da entrada para a saída", C:"A saída de Mealy depende da transição (estado e entrada)", D:"Moore é sempre infinita"}, c: "C", e: "Em Mealy a saída é gerada na transição; em Moore, no estado."},
-            12: {p: "Um AFD pode estar em quantos estados simultaneamente?", o: {A:"Apenas um", B:"Dois", C:"Infinitos", D:"Depende do alfabeto"}, c: "A", e: "Por ser determinístico, há apenas um caminho possível por vez."},
-            13: {p: "O fechamento reflexivo de um alfabeto Σ é denotado por Σ*. O que ele contém?", o: {A:"Apenas palavras infinitas", B:"Todas as palavras possíveis, incluindo a vazia", C:"Apenas números binários", D:"Apenas palavras com um único símbolo"}, c: "B", e: "O fecho de Kleene representa todas as combinações finitas (incluindo ε)."},
-            14: {p: "Se um autômato M termina em um estado q que pertence ao conjunto F, dizemos que a palavra foi:", o: {A:"Rejeitada", B:"Aceita", C:"Anulada", D:"Processada"}, c: "B", e: "F é o conjunto de estados finais ou de aceitação."},
-            15: {p: "Autômatos Finitos são adequados para reconhecer quais linguagens?", o: {A:"Linguagens Regulares", B:"Linguagens Sensíveis ao Contexto", C:"Linguagens Recursivas", D:"Linguagens Humanas"}, c: "A", e: "AFDs reconhecem a classe das linguagens regulares (gramáticas tipo 3)."},
-            16: {p: "Em um grafo de autômato, como é representado o estado inicial?", o: {A:"Círculo duplo", B:"Círculo com uma seta vinda do 'nada'", C:"Um quadrado", D:"Uma linha tracejada"}, c: "B", e: "A seta aponta onde o processamento da cadeia de entrada começa."},
-            17: {p: "A Máquina de Turing (MT) é definida por uma 7-upla. O que é o símbolo 'b'?", o: {A:"Símbolo de início", B:"Símbolo branco (fita vazia)", C:"Símbolo de erro", D:"Alfabeto de saída"}, c: "B", e: "O símbolo em branco (blank) indica células não preenchidas da fita."},
-            18: {p: "Diferente de um AFD, a Máquina de Turing pode:", o: {A:"Apenas ler", B:"Ler e gravar na fita", C:"Apenas mover para a direita", D:"Processar apenas 0 e 1"}, c: "B", e: "A MT tem capacidade de leitura, escrita e movimento bidirecional."},
-            19: {p: "O que afirma a Tese de Church-Turing?", o: {A:"Computadores quânticos são impossíveis", B:"A Máquina de Turing define o limite do que é computável", C:"Todo algoritmo é O(n)", D:"O Problema da Parada tem solução"}, c: "B", e: "Qualquer cálculo/algoritmo executável mecanicamente pode ser simulado por uma MT."},
-            20: {p: "Uma MT que nunca entra em loop e sempre aceita ou rejeita uma palavra é chamada de:", o: {A:"Reconhecedora", B:"Decisora", C:"Recursiva", D:"Infinita"}, c: "B", e: "Máquinas decisoras garantem a parada para qualquer entrada finita."},
-            21: {p: "Adicionar múltiplas fitas a uma Máquina de Turing:", o: {A:"Aumenta seu poder computacional", B:"Não aumenta o poder, apenas a facilidade/velocidade", C:"Torna a máquina indecidível", D:"Diminui o poder da máquina"}, c: "B", e: "MTs multifitas são equivalentes em poder computacional à MT padrão de uma fita."},
-            22: {p: "O que é uma configuração de uma Máquina de Turing?", o: {A:"O estado atual e a posição do cabeçote", B:"Apenas o alfabeto", C:"O estado corrente, conteúdo da fita e posição do cabeçote", D:"O manual de instruções"}, c: "C", e: "A configuração (descrição instantânea) define o estado total da máquina no tempo t."},
-            23: {p: "O Problema da Parada (Halting Problem) é:", o: {A:"Decidível", B:"Indecidível", C:"Simples", D:"Linear"}, c: "B", e: "Turing provou que não existe um algoritmo geral para prever se um código para ou entra em loop."},
-            24: {p: "Uma linguagem é 'Recursivamente Enumerável' se existe uma MT que:", o: {A:"Sempre para", B:"Aceita se a palavra está na linguagem (pode travar se não estiver)", C:"Nunca aceita nada", D:"Só move para a esquerda"}, c: "B", e: "A máquina reconhece a linguagem, mas não necessariamente a decide (pode não parar para cadeias inválidas)."},
-            25: {p: "Quem provou os Teoremas da Incompletude em 1931?", o: {A:"Alan Turing", B:"Kurt Gödel", C:"David Hilbert", D:"Georg Cantor"}, c: "B", e: "Gödel provou que em sistemas formais consistentes existem verdades que não podem ser provadas."},
-            26: {p: "O que é o Problema da Aceitação (A_MT)?", o: {A:"Verificar se uma MT aceita uma string w", B:"Verificar se uma MT tem 5 estados", C:"Contar símbolos na fita", D:"Mudar o estado inicial"}, c: "A", e: "É o problema de determinar se uma MT específica aceita uma entrada w."},
-            27: {p: "A técnica de Diagonalização foi originalmente criada por quem para comparar infinitos?", o: {A:"Cantor", B:"Hilbert", C:"Church", D:"Moore"}, c: "A", e: "Cantor usou a diagonalização para mostrar que os números reais são incontáveis."},
-            28: {p: "Se o Problema A se reduz ao Problema B (A ≤ B) e B é fácil, então:", o: {A:"A é impossível", B:"A também é fácil", C:"A é muito difícil", D:"Nada se conclui"}, c: "B", e: "A redutibilidade permite que a solução de B seja aplicada para resolver A."},
-            29: {p: "Um problema é dito 'Indecidível' quando:", o: {A:"O computador quebra", B:"Não existe algoritmo que dê resposta Sim/Não para todos os casos", C:"A resposta é sempre Não", D:"Leva mais de 1 hora para resolver"}, c: "B", e: "Não há um procedimento efetivo de decisão universal para o problema."},
-            30: {p: "O Teorema da Recursão permite que uma MT faça o quê?", o: {A:"Calcule 2+2", B:"Obtenha sua própria descrição/código", C:"Apague a fita inteira", D:"Mude o alfabeto de entrada"}, c: "B", e: "Permite que programas obtenham seu próprio código fonte (autorreferência)."},
-            31: {p: "O 10º Problema de Hilbert (sobre equações diofantinas) foi provado como:", o: {A:"Fácil", B:"Indecidível", C:"Linear", D:"Recursivo"}, c: "B", e: "Foi provado que não existe algoritmo geral para resolver equações diofantinas."},
-            32: {p: "Uma linguagem Recursiva é aquela que:", o: {A:"Tem um loop infinito", B:"É decidida por uma MT", C:"Não pode ser mapeada", D:"É apenas para números"}, c: "B", e: "Linguagens recursivas são aquelas onde a MT sempre para (decidíveis)."},
-            33: {p: "Qual o caso base para calcular o Fatorial de n de forma recursiva?", o: {A:"n = 10", B:"n = 0 ou n = 1", C:"n < 0", D:"n = n - 1"}, c: "B", e: "Fatorial de 0 ou 1 é definido como 1 para encerrar as chamadas."},
-            34: {p: "A complexidade da Torre de Hanói é O(2^n). Isso significa que se adicionarmos 1 disco, o tempo:", o: {A:"Aumenta 1 segundo", B:"Dobra", C:"Fica igual", D:"Divide por 2"}, c: "B", e: "No crescimento exponencial de base 2, cada incremento em n dobra o esforço."},
-            35: {p: "Qual a complexidade de espaço (pilha) do Fibonacci recursivo simples?", o: {A:"O(1)", B:"O(n)", C:"O(2^n)", D:"O(log n)"}, c: "B", e: "A profundidade máxima da pilha de recursão é n."},
-            36: {p: "Recursividade Múltipla ocorre quando:", o: {A:"Há um loop dentro da função", B:"A função chama a si mesma mais de uma vez (ex: Fibonacci)", C:"A função nunca para", D:"A função chama outra função diferente"}, c: "B", e: "Ocorre quando há duas ou mais chamadas recursivas no corpo da função."},
-            37: {p: "A Soma dos elementos de um vetor de tamanho n feita de forma recursiva tem complexidade:", o: {A:"O(n²)", B:"O(n)", C:"O(log n)", D:"O(1)"}, c: "B", e: "Cada elemento é visitado uma única vez na pilha de recursão."},
-            38: {p: "Em C, o que acontece se uma função recursiva não tiver um caso base?", o: {A:"O programa termina com sucesso", B:"Estouro de pilha (Stack Overflow)", C:"O computador reinicia", D:"A variável zera sozinha"}, c: "B", e: "As chamadas acumulam na memória até esgotar o limite da pilha de execução."},
-            39: {p: "O algoritmo QuickSort (em média) possui complexidade:", o: {A:"O(n)", B:"O(n log n)", C:"O(n²)", D:"O(1)"}, c: "B", e: "É a complexidade média padrão para ordenação eficiente."},
-            40: {p: "A estratégia de 'Dividir para Conquistar' é típica de algoritmos com complexidade:", o: {A:"O(n!)", B:"O(log n) ou O(n log n)", C:"O(2^n)", D:"O(n³)"}, c: "B", e: "Divisões recursivas sucessivas em partes menores geram o comportamento logarítmico."}
-        };
+        const conteudos = [
+            {
+                titulo: "Unidade 1: Complexidade de Algoritmos e Análise Assintótica",
+                questoes: [
+                    {p: "Se um algoritmo possui complexidade f(n) = 3n² + 40n + 200, qual sua notação Big O?", o: {A:"O(n)", B:"O(n²)", C:"O(40n)", D:"O(1)"}, c: "B", e: "Ignoramos constantes e consideramos apenas o termo de maior grau (dominância)."},
+                    {p: "Qual a complexidade de tempo do algoritmo de Busca Binária?", o: {A:"O(n)", B:"O(n log n)", C:"O(log n)", D:"O(1)"}, c: "C", e: "O espaço de busca é reduzido pela metade a cada iteração, caracterizando tempo logarítmico."},
+                    {p: "A complexidade O(1) indica que o tempo de execução:", o: {A:"É proporcional ao tamanho da entrada", B:"É fixo, independente do tamanho da entrada", C:"Cresce de forma exponencial", D:"Dobra a cada iteração"}, c: "B", e: "O(1) denota tempo constante, executando o mesmo número de passos sempre."},
+                    {p: "Para entradas massivas, qual destas ordens de crescimento é a mais custosa computacionalmente?", o: {A:"O(n log n)", B:"O(n³)", C:"O(2^n)", D:"O(n!)"}, c: "D", e: "O crescimento fatorial O(n!) supera exponencial e polinomial rapidamente."},
+                    {p: "No problema MinMax (buscar mínimo e máximo), o Caso 3 é otimizado através de:", o: {A:"Busca linear múltipla", B:"Comparação par-a-par", C:"Ordenação prévia", D:"Árvores binárias"}, c: "B", e: "O método de comparação par-a-par reduz o número total de testes no vetor para cerca de 3n/2."},
+                    {p: "Qual a complexidade de dois laços 'for' aninhados, ambos iterando de 1 a n?", o: {A:"O(n)", B:"O(n²)", C:"O(2n)", D:"O(log n)"}, c: "B", e: "O laço interno roda n vezes para cada iteração do laço externo (n * n)."},
+                    {p: "Em f(n) = O(n), a variável 'n' tipicamente representa:", o: {A:"O número de variáveis no código", B:"O tempo em milissegundos", C:"O tamanho da entrada de dados", D:"A quantidade de memória alocada"}, c: "C", e: "n representa a cardinalidade da entrada processada pelo algoritmo."},
+                    {p: "Verificar se um número armazenado em uma variável é par possui complexidade:", o: {A:"O(n)", B:"O(1)", C:"O(log n)", D:"O(n²)"}, c: "B", e: "A verificação de paridade (módulo 2) é uma operação aritmética executada em tempo constante."},
+                    {p: "Quando dois algoritmos têm a mesma complexidade assintótica (ex: ambos O(n)), como ocorre o desempate?", o: {A:"Eles são idênticos em desempenho prático", B:"Analisa-se a constante multiplicativa omitida", C:"Verifica-se o número de variáveis", D:"Apenas testando no mesmo hardware"}, c: "B", e: "A constante multiplicativa, ignorada no Big-O, define qual é mais rápido na prática para valores normais de n."},
+                    {p: "Qual o comportamento característico de um algoritmo O(log n)?", o: {A:"Se a entrada dobra, o tempo dobra", B:"Se a entrada dobra, o tempo aumenta em uma constante", C:"Se a entrada aumenta em 1, o tempo dobra", D:"O tempo não se altera"}, c: "B", e: "Em uma base binária, dobrar n apenas adiciona mais 1 passo à execução."},
+                    {p: "Um algoritmo tem três partes consecutivas: inicialização O(1), busca O(log n) e ordenação O(n log n). Qual a complexidade final?", o: {A:"O(n log n)", B:"O(1)", C:"O(n)", D:"O(log n)"}, c: "A", e: "A complexidade final é ditada pelo termo de maior peso da soma das partes."},
+                    {p: "Algoritmos da classe 'Dividir para Conquistar' normalmente resultam em complexidade com fator:", o: {A:"Fatorial", B:"Logarítmico", C:"Quadrático", D:"Cúbico"}, c: "B", e: "As subdivisões do problema geram proporções logarítmicas na árvore de execução."},
+                    {p: "Um loop que vai de i=1 até n, iterando com 'i = i * 2' tem complexidade:", o: {A:"O(n)", B:"O(n²)", C:"O(log n)", D:"O(n/2)"}, c: "C", e: "Multiplicar o iterador faz com que o laço alcance 'n' em um número logarítmico de passos."},
+                    {p: "Na análise assintótica, o Pior Caso foca em:", o: {A:"Garantir o limite superior do tempo de execução", B:"Encontrar o tempo exato em nanosegundos", C:"Reduzir o tamanho da memória", D:"Descobrir erros lógicos do código"}, c: "A", e: "O pior caso (Big O) garante que o algoritmo nunca passará daquele limite de tempo."},
+                    {p: "Qual a complexidade de percorrer um vetor de n posições, do início ao fim, imprimindo todos os elementos?", o: {A:"O(n)", B:"O(1)", C:"O(n²)", D:"O(log n)"}, c: "A", e: "É um percurso linear onde cada item é visitado exatamente uma vez."},
+                    {p: "Qual função cresce de forma mais lenta (mais eficiente)?", o: {A:"n²", B:"n * log n", C:"n", D:"log n"}, c: "D", e: "A função logarítmica cresce muito mais lentamente que a linear e a quadrática."}
+                ]
+            },
+            {
+                titulo: "Unidade 2: Autômatos Finitos e Linguagens Formais",
+                questoes: [
+                    {p: "Na tupla do AFD (Q, Σ, δ, q0, F), o que representa o Σ?", o: {A:"Conjunto de estados finais", B:"Função de transição", C:"Alfabeto finito de símbolos de entrada", D:"Estado de erro"}, c: "C", e: "Sigma (Σ) define os caracteres permitidos na entrada do autômato."},
+                    {p: "A palavra de comprimento zero, em linguagens formais, é designada por:", o: {A:"∅ (Vazio)", B:"ε (Epsilon)", C:"#", D:"ω (Ômega)"}, c: "B", e: "Epsilon representa a ausência de símbolos, sendo diferente do conjunto vazio."},
+                    {p: "Na Máquina de Mealy, a saída gerada está diretamente associada:", o: {A:"Apenas ao estado atual", B:"Apenas à fita de entrada", C:"À transição (estado atual + entrada)", D:"Ao estado de aceitação"}, c: "C", e: "Diferente de Moore, Mealy emite a saída no arco (transição)."},
+                    {p: "Quantos estados simultâneos um Autômato Finito Determinístico pode ocupar?", o: {A:"Vários, dependendo da palavra", B:"Apenas um estado por vez", C:"Nenhum", D:"Dois: atual e próximo"}, c: "B", e: "A característica 'Determinística' significa unicidade de transição e estado."},
+                    {p: "O Fecho de Kleene (Σ*) de um alfabeto Σ engloba:", o: {A:"Apenas palavras de tamanho ímpar", B:"Todas as cadeias finitas possíveis, incluindo ε", C:"Todas as cadeias infinitas", D:"O próprio alfabeto de forma invertida"}, c: "B", e: "Representa as infinitas combinações possíveis de tamanho finito de um alfabeto."},
+                    {p: "Uma palavra é formalmente 'Aceita' por um AFD se, após todo o seu processamento:", o: {A:"O autômato para no estado inicial", B:"Não houver transições de erro", C:"A máquina termina em um estado do conjunto F", D:"A fita for totalmente apagada"}, c: "C", e: "A condição de aceitação requer o término em um dos estados finais marcados."},
+                    {p: "AFDs são modelos teóricos responsáveis pelo reconhecimento da classe das:", o: {A:"Linguagens Sensíveis ao Contexto", B:"Linguagens Turing-Decidíveis", C:"Linguagens Regulares", D:"Linguagens Recursivas"}, c: "C", e: "Autômatos finitos reconhecem expressões e linguagens regulares."},
+                    {p: "Na Máquina de Moore, a emissão de saída depende unicamente do:", o: {A:"Símbolo recém lido", B:"Alfabeto de entrada", C:"Estado em que a máquina se encontra", D:"Direção da fita"}, c: "C", e: "As saídas ficam impressas 'dentro' do estado no diagrama de Moore."},
+                    {p: "O símbolo δ em um autômato designa:", o: {A:"Os estados finais", B:"A função de transição", C:"O alfabeto de saída", D:"A palavra vazia"}, c: "B", e: "Delta rege o comportamento: Dado estado X e entrada Y, vá para estado Z."},
+                    {p: "Qual a diferença central entre um AFD e um AFN?", o: {A:"AFDs possuem fita; AFNs não", B:"AFNs podem ter múltiplas transições para a mesma entrada a partir de um estado", C:"AFNs reconhecem linguagens mais complexas", D:"AFDs não têm estados finais"}, c: "B", e: "O Não-determinismo permite múltiplos caminhos ou transições em vazio (ε)."},
+                    {p: "O que ocorre se a função de transição de um AFD não prevê caminho para um símbolo lido?", o: {A:"A fita retrocede", B:"O autômato aceita a palavra", C:"A palavra é rejeitada", D:"O símbolo é apagado"}, c: "C", e: "Se não há caminho válido para consumo total da palavra, ela é formalmente rejeitada."},
+                    {p: "No desenho em grafos de um AFD, um círculo envolto por outro círculo (círculo duplo) simboliza:", o: {A:"Estado inicial", B:"Estado de aceitação", C:"Estado inalcançável", D:"Múltiplas transições"}, c: "B", e: "É a notação padrão para representar o subconjunto F de estados finais."},
+                    {p: "A operação de concatenação entre as palavras w1 = '11' e w2 = '00' resulta na linguagem:", o: {A:"{11, 00}", B:"{1100}", C:"{1, 1, 0, 0}", D:"{0011}"}, c: "B", e: "Concatenação justapõe as strings formadas na exata ordem w1w2."},
+                    {p: "Autômatos com pilha (AP) diferem dos AFDs pois conseguem reconhecer:", o: {A:"Linguagens Livres de Contexto", B:"Linguagens Regulares apenas", C:"Todas as linguagens indecidíveis", D:"Nenhuma das anteriores"}, c: "A", e: "A memória em pilha resolve problemas como a^n b^n, que o AFD não consegue."},
+                    {p: "Se uma linguagem L é Regular, então o seu complemento:", o: {A:"Sempre será Sensível ao Contexto", B:"Também será uma linguagem Regular", C:"Será Indecidível", D:"Não existe"}, c: "B", e: "A classe das linguagens regulares é fechada sob a operação de complemento."},
+                    {p: "Máquinas de Moore e Mealy são modelos fundamentais para criar:", o: {A:"Computadores quânticos", B:"Analisadores léxicos e circuitos sequenciais", C:"Linguagens de baixo nível", D:"Bancos de dados relacionais"}, c: "B", e: "Comumente aplicadas em design lógico e reconhecimento inicial de tokens."}
+                ]
+            },
+            {
+                titulo: "Unidade 3: Máquinas de Turing e Variantes",
+                questoes: [
+                    {p: "A tupla definidora da Máquina de Turing introduz o símbolo 'b' ou '□'. O que ele é?", o: {A:"Operador binário", B:"Símbolo Branco delimitador de fita", C:"Estado inativo", D:"Fim de arquivo"}, c: "B", e: "O Branco preenche as infinitas células não utilizadas da fita."},
+                    {p: "A grande revolução do modelo da Máquina de Turing em relação aos AFDs é a sua capacidade de:", o: {A:"Operar em tempo constante", B:"Ler, reescrever e mover livremente o cabeçote", C:"Decidir problemas impossíveis", D:"Funcionar sem transições"}, c: "B", e: "A memória externa em fita permite a MT processar dados infinitos de forma bidirecional."},
+                    {p: "Segundo a Tese de Church-Turing:", o: {A:"A MT tem limites físicos estritos", B:"Qualquer algoritmo concebível pode ser simulado por uma MT", C:"Processadores modernos não seguem a MT", D:"Linguagens humanas são equivalentes a MTs"}, c: "B", e: "Estabelece a MT como o limite matemático definitivo do que é computável."},
+                    {p: "Uma MT que entra em parada (halt) para qualquer entrada é designada como:", o: {A:"Máquina Universal", B:"Máquina Reconhecedora", C:"Máquina Decisora", D:"Máquina Absoluta"}, c: "C", e: "Decisores garantem que nunca ficarão em loop, provendo sempre Sim ou Não."},
+                    {p: "Acrescentar fitas extras a uma Máquina de Turing:", o: {A:"Torna a máquina exponencial", B:"Expande a classe de linguagens aceitas", C:"Apenas otimiza a execução, sem alterar o poder computacional", D:"A torna indecidível"}, c: "C", e: "Qualquer MT multifita pode ser mapeada em uma MT de fita única padrão."},
+                    {p: "O que caracteriza a 'Configuração' de uma MT num instante 't'?", o: {A:"Apenas o alfabeto atual", B:"Símbolos escritos, estado interno e posição da cabeça de leitura", C:"A temperatura do processador", D:"O código do programa"}, c: "B", e: "A configuração define o instantâneo exato para reproduzir o estado do sistema."},
+                    {p: "Em uma instrução (q1, a) -> (q2, b, R) de uma MT, a letra 'R' impõe:", o: {A:"Reject", B:"Read", C:"Move Right (Direita)", D:"Return"}, c: "C", e: "Instrui a cabeça de leitura/escrita a avançar uma célula para a direita."},
+                    {p: "A Máquina de Turing Universal (MTU) possui a propriedade de:", o: {A:"Simular qualquer outra Máquina de Turing a partir do seu código", B:"Consumir zero memória", C:"Resolver o Problema da Parada", D:"Ser não-determinística"}, c: "A", e: "A MTU toma como entrada a descrição de outra MT e executa-a."},
+                    {p: "Se uma MT reconhece L, mas pode não parar ao ler entradas que não estão em L, L é dita:", o: {A:"Livre de contexto", B:"Linguagem Recursivamente Enumerável", C:"Linguagem Decidível", D:"Regular"}, c: "B", e: "Máquinas reconhecedoras podem entrar em loop em casos negativos."},
+                    {p: "Em variações teóricas, uma Máquina de Turing Não-Determinística:", o: {A:"É estritamente mais poderosa que a MT padrão", B:"Tem exatamente o mesmo poder computacional que a MT Determinística", C:"É impossível de ser modelada matematicada", D:"Nunca atinge o estado final"}, c: "B", e: "Todo MTND pode ser simulada por uma MTD (embora possa custar mais tempo)."},
+                    {p: "Uma Máquina de Turing com fita infinita para ambos os lados:", o: {A:"Não pode ser simulada", B:"Oferece mais poder computacional", C:"É equivalente à MT padrão com fita limitada à esquerda", D:"Entra em loop imediato"}, c: "C", e: "Dobrando o alfabeto ou dividindo a fita, a MT tradicional simula a fita dupla perfeitamente."},
+                    {p: "Na tupla da MT, Γ (Gama) representa o:", o: {A:"Alfabeto de Entrada estrito", B:"Conjunto de estados", C:"Alfabeto da Fita (incluindo Branco)", D:"Mapeamento inicial"}, c: "C", e: "Gama contém os símbolos de entrada mais o Branco e símbolos auxiliares graváveis."},
+                    {p: "Uma MT que atua como Transdutora visa:", o: {A:"Somente dizer Sim ou Não", B:"Calcular uma função, deixando a resposta gravada na fita", C:"Reconhecer linguagens Regulares", D:"Otimizar AFDs"}, c: "B", e: "Transdutores computam resultados (ex: soma matemática) e param na resposta final."},
+                    {p: "A transição vazia (Epsilon) em uma Máquina de Turing determinística:", o: {A:"Ocorre a todo momento", B:"Leva a estados finais", C:"Formalmente não existe na definição padrão da MTD", D:"Pula fitas"}, c: "C", e: "MTs padrão processam um caractere determinístico por passo."},
+                    {p: "Se uma MT move-se à esquerda (L) enquanto está na primeira célula esquerda da fita (extremidade limitante):", o: {A:"A MT quebra", B:"A fita é esticada", C:"A cabeça de leitura continua na primeira célula", D:"O símbolo é apagado"}, c: "C", e: "Por convenção de borda, L na posição inicial não altera a posição do cabeçote."},
+                    {p: "Para provar que duas variantes de MT são equivalentes, é preciso mostrar que:", o: {A:"Possuem a mesma velocidade", B:"Ambas podem simular o comportamento uma da outra", C:"Compartilham os mesmos estados", D:"Ocupam o mesmo espaço físico"}, c: "B", e: "Simulação recíproca garante igualdade de poder computacional matemático."}
+                ]
+            },
+            {
+                titulo: "Unidade 4: Decidibilidade, Indecidibilidade e Halting Problem",
+                questoes: [
+                    {p: "O Problema da Parada (Halting Problem), estabelecido por Turing, afirma que:", o: {A:"Todo programa para eventualmente", B:"É impossível criar um algoritmo universal capaz de prever se qualquer programa para", C:"Linguagens recursivas causam loops", D:"Todos os problemas são decidíveis"}, c: "B", e: "Turing provou não existir solução algorítmica para testar paradas universais."},
+                    {p: "Kurt Gödel causou impacto profundo na lógica computacional em 1931 ao provar que:", o: {A:"Todo sistema formal é consistente e completo", B:"Sistemas formais consistentes possuem verdades improváveis internamente", C:"Linguagens de programação não podem ter erros", D:"Fitas infinitas existem"}, c: "B", e: "O Teorema da Incompletude quebrou a visão de que a matemática poderia provar tudo."},
+                    {p: "O método matemático introduzido por Cantor, amplamente usado para demonstrar indecidibilidade, é a:", o: {A:"Dedução Estrita", B:"Redutibilidade Linear", C:"Diagonalização", D:"Transdução em Pilha"}, c: "C", e: "A Diagonalização prova que conjuntos possuem cardinalidades não mapeáveis e gera contradições em MTs simuladas."},
+                    {p: "Problemas de Decisão são estritamente aqueles em que a saída exige:", o: {A:"Um número real calculado", B:"Um vetor de dados", C:"Respostas binárias do tipo SIM ou NÃO", D:"Um laço infinito"}, c: "C", e: "A teoria foca na decisão sobre pertinência: pertence à linguagem (Sim) ou não (Não)."},
+                    {p: "Se provamos que o Problema A se reduz a B (A ≤ B), e confirmamos que B é decidível, então:", o: {A:"A é indecidível", B:"A também é decidível", C:"A é mais difícil que B", D:"A e B são incomparáveis"}, c: "B", e: "Se você converte A em B e resolve B, a lógica prova que A tem solução finita também."},
+                    {p: "A linguagem descrita como A_MT (Aceitação da Máquina de Turing) determina se:", o: {A:"A fita é longa o bastante", B:"A MT aceita uma cadeia w específica", C:"Há espaço vazio", D:"A sintaxe do código está correta"}, c: "B", e: "Este é o problema padrão que é Turing-reconhecível, mas indecidível universalmente."},
+                    {p: "Uma característica central das Linguagens Recursivas é que elas formam exatamente o conjunto de:", o: {A:"Linguagens indecidíveis", B:"Todos os Problemas de Decisão", C:"Linguagens decidíveis (a MT sempre para)", D:"Linguagens não-reconhecíveis"}, c: "C", e: "Linguagem recursiva implica a existência de um decisor formal para ela."},
+                    {p: "O Teorema da Recursão fundamenta a possibilidade de um programa:", o: {A:"Apagar a si mesmo", B:"Injetar código externo", C:"Obter e processar a própria descrição/código", D:"Rodar 10x mais rápido"}, c: "C", e: "Explica a criação matemática de quines e softwares autorreferenciados matematicamente válidos."},
+                    {p: "O Décimo Problema de Hilbert perguntava sobre um algoritmo para raízes de equações diofantinas. A computabilidade provou que:", o: {A:"O problema é trivial de resolver", B:"O problema é Indecidível", C:"O problema exige O(n)", D:"O problema é decidível em 2020"}, c: "B", e: "Matiyasevich provou em 1970 que não há solução computacional generalista possível."},
+                    {p: "Se uma linguagem L é indecidível e B se reduz a L, o que podemos afirmar categoricamente sobre B?", o: {A:"B é decidível", B:"B é infinito", C:"B também é indecidível", D:"Não há informação suficiente para classificar B"}, c: "D", e: "Cuidado: Reduzir de A para B preserva indecidibilidade para B, mas o inverso (reduzir para o problema difícil) não gera inferência trivial na teoria padrão."},
+                    {p: "Se L e seu complemento L' são ambos Turing-reconhecíveis, conclui-se que L é:", o: {A:"Não-Decidível", B:"Sensível ao Contexto", C:"Decidível", D:"Invalida a MT"}, c: "C", e: "Se pode reconhecer afirmação e negação sem loop infinito, o processo é decidível."},
+                    {p: "Na construção da prova do Problema da Parada, Turing formula uma máquina H e depois uma máquina D. A máquina D é feita para:", o: {A:"Testar vírus", B:"Fazer o contrário do que H prevê (contradição)", C:"Dobrar a fita de H", D:"Aceitar números pares"}, c: "B", e: "D é a máquina abnegada da diagonalização. Se H diz que D para, D entra em loop."},
+                    {p: "O 'Post Correspondence Problem' (PCP) é um exemplo clássico de um problema que manipula strings de blocos e é:", o: {A:"Decidível em tempo linear", B:"Resolvido com pilhas", C:"Indecidível", D:"Uma subclasse de AFD"}, c: "C", e: "Apesar da aparência de 'quebra-cabeça', o PCP não tem limite de paragem para arranjos sem correspondência."},
+                    {p: "A redução em tempo polinomial (A ≤_P B) é o cerne do estudo de:", o: {A:"P vs NP", B:"Decidibilidade de Turing", C:"Autômatos Regulares", D:"Grafos planares"}, c: "A", e: "É a métrica de transposição entre as classes de complexidade determinísticas e não-determinísticas."},
+                    {p: "Se uma Máquina de Turing sempre rejeita as cadeias erradas entrando em loop, e não em estado de rejeição expresso:", o: {A:"Ela atua como um Decisor", B:"Ela é inútil", C:"Ela é apenas um Reconhecedor", D:"Ela violou as regras de transição"}, c: "C", e: "O reconhecedor não é obrigado a avisar que a cadeia está errada parando a execução."},
+                    {p: "O paradoxo central que baliza os estudos matemáticos da indecidibilidade é o Paradoxo do:", o: {A:"Aniversário", B:"Barbeiro / Mentiroso (Russell)", C:"Zênon", D:"Gato de Schrödinger"}, c: "B", e: "Sistemas autorreferenciados com contradição direta impedem o fechamento lógico (Russell)." }
+                ]
+            },
+            {
+                titulo: "Unidade 5: Recursividade e Prática de Algoritmos",
+                questoes: [
+                    {p: "Para a estabilidade da execução, todo algoritmo recursivo em programação necessita de um:", o: {A:"Laço FOR", B:"Ponteiro de memória", C:"Caso Base bem definido", D:"Comando Print"}, c: "C", e: "O Caso Base garante a parada das chamadas recursivas, evitando o esgotamento da pilha."},
+                    {p: "Na estrutura de dados 'Pilha de Execução' (Call Stack), o que é empilhado a cada nova chamada recursiva?", o: {A:"Apenas o resultado numérico", B:"Endereço de retorno, variáveis locais e parâmetros da função", C:"Um novo arquivo do sistema", D:"Apenas a instrução atual do laço"}, c: "B", e: "É o Contexto de Execução, justificando o alto custo de memória de recursões ineficientes."},
+                    {p: "A complexidade temporal analítica para resolver o problema da Torre de Hanói com n discos é:", o: {A:"O(n log n)", B:"O(2^n)", C:"O(n²)", D:"O(n!)"}, c: "B", e: "Exige 2^n - 1 movimentos na sua solução padrão, configurando tempo exponencial."},
+                    {p: "O Fibonacci implementado na sua forma recursiva natural (sem cache/memoization) sofre com qual problema?", o: {A:"Laço infinito", B:"Erro de sintaxe", C:"Superposição de subproblemas repetidos múltiplas vezes", D:"Alocação excessiva de strings"}, c: "C", e: "O re-cálculo da mesma raiz da árvore exaure processamento repetitivo atoa (Recursão Múltipla)."},
+                    {p: "Qual a complexidade espacial intrínseca de uma recursão linear simples, como no cálculo do Fatorial(n)?", o: {A:"O(1)", B:"O(n)", C:"O(log n)", D:"O(n²)"}, c: "B", e: "Gera 'n' chamadas abertas ativas simultaneamente na memória até atingir Fatorial(1)."},
+                    {p: "A ausência ou defeito grave no teste do Caso Base desencadeará qual exceção na linguagem C/Java?", o: {A:"Null Pointer", B:"Array Out of Bounds", C:"Stack Overflow", D:"Division by Zero"}, c: "C", e: "As chamadas vão estourar o limite rígido de memória da Pilha do SO."},
+                    {p: "A técnica algorítmica por trás da eficácia O(n log n) de métodos como QuickSort e MergeSort é:", o: {A:"Programação Dinâmica", B:"Algoritmos Gulosos", C:"Dividir para Conquistar", D:"Backtracking"}, c: "C", e: "Particionar recursivamente o problema em problemas menores baliza os algoritmos de ordenação rápidos."},
+                    {p: "Somar os itens de um vetor usando recursão (dividindo pela metade sucessivamente) altera a complexidade de tempo em relação a um laço de repetição?", o: {A:"Sim, fica O(log n)", B:"Sim, fica exponencial O(2^n)", C:"Não, ambas leem todos os itens, sendo tempo O(n)", D:"Torna a execução constante O(1)"}, c: "C", e: "Mesmo alterando a forma de acessar, a necessidade de ler todos os elementos trava o tempo no linear."},
+                    {p: "No estudo de Recursividade em Cauda (Tail Recursion):", o: {A:"A função chama a si mesma no meio do código", B:"A chamada recursiva é estritamente a última instrução avaliada, otimizando o stack", C:"Existem várias chamadas na mesma linha", D:"Nunca atinge o caso base"}, c: "B", e: "Compiladores modernos descartam a moldura antiga se for Tail Recursion, igualando o espaço para O(1)."},
+                    {p: "Em grafos teóricos, as chamadas recursivas são visualmente traçadas usando uma estrutura de:", o: {A:"Lista encadeada", B:"Grafo cíclico perfeito", C:"Árvore", D:"Matriz adjunta"}, c: "C", e: "A 'Árvore de Recursão' evidencia chamadas raízes gerando sub-nós folhosos no caso base."},
+                    {p: "Qual é a base recursiva típica da Busca Binária?", o: {A:"Valor encontrado ou ponteiro Left cruza ponteiro Right (Não encontrado)", B:"Contador chegar a infinito", C:"Array ficar vazio por desalocação", D:"Iteração atingir O(n)"}, c: "A", e: "A busca para no acerto ou quando a partição testada matematicamente esvazia."},
+                    {p: "A complexidade espacial do MergeSort, considerando a necessidade da estrutura auxiliar no interlace, escala para:", o: {A:"O(1)", B:"O(log n)", C:"O(n)", D:"O(n²)"}, c: "C", e: "O algoritmo exige duplicação de estruturas de mesmo tamanho de memória."},
+                    {p: "Ao traçar uma árvore recursiva para T(n) = 2T(n/2) + O(n), qual a profundidade alcançada pelos galhos?", o: {A:"O(n)", B:"O(log n)", C:"O(1)", D:"O(2^n)"}, c: "B", e: "Reduzir o input em metades baliza a profundidade em log base 2 de n."},
+                    {p: "Qual das seguintes aplicações menos se beneficiaria do método recursivo tradicional de programação?", o: {A:"Percurso em Árvore", B:"Ordenação rápida (QuickSort)", C:"Impressão contínua 1 a 100", D:"Fractais matemáticos"}, c: "C", e: "Para tarefas triviais lineares, o custo de empilhar chamadas degrada o tempo injustificadamente."},
+                    {p: "Backtracking, muito usado em Inteligência Artificial em xadrez e no problema das N-Rainhas, depende massivamente de:", o: {A:"Pilhas FIFO iterativas", B:"Funções estáticas", C:"Estruturas de Árvore mapeadas recursivamente com recuos", D:"Arquivos TXT"}, c: "C", e: "O algoritmo investiga um caminho profundamente recursivo, desfazendo-o ao falhar (return falso)."},
+                    {p: "Se uma chamada recursiva passa uma cópia de um vetor de tamanho 'n' ao invés de referência, o custo espacial escala para:", o: {A:"O(n)", B:"O(log n)", C:"O(n²)", D:"Não se altera"}, c: "C", e: "Alocar novos vetores lineares a cada grau da árvore de profundidade linear causa explosão de memória."}
+                ]
+            }
+        ];
 
-        function renderQuestions() {
-            const container = document.getElementById('questions-container');
-            Object.entries(questoes).forEach(([id, q]) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.id = 'q' + id;
-                
-                let optionsHTML = '';
-                Object.entries(q.o).forEach(([letra, txt]) => {
-                    optionsHTML += `
-                        <label class="option" id="opt-${id}-${letra}">
-                            <input type="radio" name="res${id}" value="${letra}" onchange="selectOption(${id}, '${letra}')">
-                            <strong>${letra})</strong> ${txt}
-                        </label>
+        function renderizarQuestoes() {
+            const container = document.getElementById('quiz-container');
+            let qIndexGlobal = 1;
+
+            conteudos.forEach((secao, secIndex) => {
+                // Adiciona o título da unidade
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section-title';
+                sectionDiv.innerText = secao.titulo;
+                container.appendChild(sectionDiv);
+
+                // Adiciona as questões da unidade
+                secao.questoes.forEach((q, qIndex) => {
+                    const idInterno = `s${secIndex}q${qIndex}`;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.id = idInterno;
+                    
+                    let opcoesHTML = '';
+                    Object.entries(q.o).forEach(([letra, texto]) => {
+                        opcoesHTML += `
+                            <label class="option" id="opt-${idInterno}-${letra}">
+                                <input type="radio" name="res-${idInterno}" value="${letra}" onchange="responder('${idInterno}', '${letra}', '${q.c}', '${q.e.replace(/'/g, "\\'")}')">
+                                <strong>${letra})</strong> ${texto}
+                            </label>
+                        `;
+                    });
+                    
+                    card.innerHTML = `
+                        <span class="q-text">Questão ${qIndexGlobal}. ${q.p}</span>
+                        <div class="options-container">
+                            ${opcoesHTML}
+                        </div>
+                        <div class="explanation" id="exp-${idInterno}"></div>
                     `;
+                    
+                    container.appendChild(card);
+                    qIndexGlobal++;
                 });
-                
-                card.innerHTML = `
-                    <span class="q-text">${id}. ${q.p}</span>
-                    <div class="img-placeholder" id="img-${id}">[Foto da Questão ${id} - Adicione foto_q${id}.png na pasta]</div>
-                    <div class="options-container">
-                        ${optionsHTML}
-                    </div>
-                    <div class="explanation" id="exp-${id}"></div>
-                `;
-                
-                container.appendChild(card);
             });
         }
 
-        function selectOption(id, letra) {
-            const correct = questoes[id].c;
-            const explanation = questoes[id].e;
-            const expDiv = document.getElementById(`exp-${id}`);
+        function responder(idInterno, letraSelecionada, letraCorreta, explicacao) {
+            const caixaExplicacao = document.getElementById(`exp-${idInterno}`);
+            const inputs = document.querySelectorAll(`input[name="res-${idInterno}"]`);
             
-            // Desabilita outras opções da mesma questão
-            const inputs = document.querySelectorAll(`input[name="res${id}"]`);
             inputs.forEach(input => {
                 input.disabled = true;
                 const parentLabel = input.parentElement;
                 parentLabel.classList.add('disabled');
                 
-                // Marca a correta de verde
-                if (input.value === correct) {
+                if (input.value === letraCorreta) {
                     parentLabel.classList.add('correct');
                 }
             });
 
-            // Se errou, marca a selecionada de vermelho
-            if (letra !== correct) {
-                const selectedLabel = document.getElementById(`opt-${id}-${letra}`);
-                selectedLabel.classList.add('wrong');
-                expDiv.classList.add('error');
-                expDiv.style.background = '#fee2e2';
-                expDiv.innerHTML = `<strong>✗ Errado.</strong> A resposta correta é <strong>${correct}</strong>.<br>${explanation}`;
+            if (letraSelecionada !== letraCorreta) {
+                const labelSelecionado = document.getElementById(`opt-${idInterno}-${letraSelecionada}`);
+                labelSelecionado.classList.add('wrong');
+                caixaExplicacao.classList.add('error');
+                caixaExplicacao.innerHTML = `<strong>[Incorreto]</strong> A resposta era a letra <strong>${letraCorreta}</strong>.<br><br>${explicacao}`;
             } else {
-                expDiv.classList.add('success');
-                expDiv.style.background = '#dcfce7';
-                expDiv.innerHTML = `<strong>✓ Correto!</strong><br>${explanation}`;
+                caixaExplicacao.classList.add('success');
+                caixaExplicacao.innerHTML = `<strong>[Correto]</strong><br><br>${explicacao}`;
             }
 
-            expDiv.classList.add('show');
+            caixaExplicacao.classList.add('show');
         }
 
-        renderQuestions();
+        // Inicializar o simulado ao carregar a página
+        renderizarQuestoes();
     </script>
 </body>
 </html>
