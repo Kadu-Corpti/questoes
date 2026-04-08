@@ -1,7 +1,7 @@
 <?php
 /**
  * name: simulado_mestre.php
- * Finalidade: Estudo Intensivo - Computabilidade e Complexidade. html
+ * Finalidade: Estudo Intensivo - Computabilidade e Complexidade.
  * Total: 40 Questões Baseadas no Conteúdo Anhanguera/Kroton.
  */
 
