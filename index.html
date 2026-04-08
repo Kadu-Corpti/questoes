@@ -17,6 +17,8 @@
         #tela-login input { width: 90%; padding: 15px; border-radius: 10px; border: 2px solid #cbd5e1; margin-bottom: 20px; font-size: 1.1rem; text-align: center; }
         #tela-login button { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem; transition: 0.2s; }
         #tela-login button:hover { background: #1d4ed8; }
+        .btn-ranking-login { background: #fbbf24 !important; color: #1e293b !important; margin-top: 15px; }
+        .btn-ranking-login:hover { background: #f59e0b !important; }
 
         /* PLACAR FIXO */
         .scoreboard { position: sticky; top: 10px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; justify-content: space-between; align-items: center; z-index: 100; border: 2px solid var(--primary); font-weight: bold; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
@@ -24,6 +26,8 @@
         .score-val { font-size: 1.4rem; color: var(--text); }
         .val-acertos { color: var(--success); }
         .val-erros { color: var(--danger); }
+        .btn-espia-ranking { background: #fbbf24; color: #1e293b; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-espia-ranking:hover { background: #f59e0b; }
         
         .section-title { background: #0f172a; color: white; padding: 15px 20px; border-radius: 12px; margin: 40px 0 20px 0; font-size: 1.3rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid #fbbf24; }
         .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
@@ -66,7 +70,8 @@
             <h2 style="color: var(--primary); margin-top: 0;">Identifique-se</h2>
             <p style="color: #64748b; margin-bottom: 25px;">Insira seu nome para iniciar a avaliação e registrar no Ranking:</p>
             <input type="text" id="input-nome" placeholder="Seu Nome ou Apelido..." autocomplete="off">
-            <button onclick="iniciarSimulado()">Entrar no Simulado</button>
+            <button onclick="iniciarSimulado()">▶ Entrar no Simulado</button>
+            <button onclick="carregarRanking(false)" class="btn-ranking-login">🏆 Ver Ranking Atual</button>
         </div>
 
         <div class="scoreboard" id="placar-topo">
@@ -74,6 +79,7 @@
             <div class="score-item">Progresso<span class="score-val" id="display-resp">0/57</span></div>
             <div class="score-item">Acertos<span class="score-val val-acertos" id="display-acertos">0</span></div>
             <div class="score-item">Erros<span class="score-val val-erros" id="display-erros">0</span></div>
+            <div class="score-item"><button onclick="carregarRanking(false)" class="btn-espia-ranking">🏆 Ranking</button></div>
         </div>
 
         <div id="quiz-container" style="display: none;"></div>
@@ -97,8 +103,11 @@
                 </thead>
                 <tbody id="corpo-ranking"></tbody>
             </table>
+            
             <div style="text-align: center; margin-top: 30px;">
-                <button onclick="location.reload()" style="background: #64748b; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;">↻ Fazer Nova Tentativa</button>
+                <button id="btn-voltar-simulado" onclick="fecharRanking()" style="display:none; background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 10px;">⬅ Voltar de onde parei</button>
+                
+                <button id="btn-nova-tentativa" onclick="location.reload()" style="display:none; background: #64748b; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer;">↻ Fazer Nova Tentativa</button>
             </div>
         </div>
     </div>
@@ -108,7 +117,7 @@
         const API_URL = "https://sheetdb.io/api/v1/3kdw59bdva45d";
         let nomeUsuario = ""; let acertos = 0; let erros = 0; let respondidas = 0; let totalQuestoes = 0;
 
-        // BANCO DE 57 QUESTÕES (7 da Foto + 50 Anteriores)
+        // BANCO DE 57 QUESTÕES
         const conteudos = [
             {
                 titulo: "Módulo Especial: Revisão Presencial (Prof. Regina)",
@@ -147,7 +156,7 @@
                     {p: "Qual a diferença comportamental que separa a Máquina de Moore da Máquina de Mealy?", o: {A:"Mealy usa pilha de memória; Moore usa fita infinita.", B:"A saída na Máquina de Moore depende estritamente do estado atual em que a máquina se encontra; na Máquina de Mealy, depende da transição (estado + entrada).", C:"Moore processa linguagens não determinísticas, Mealy apenas determinísticas.", D:"Mealy exige estados finais, Moore não."}, c: "B", e: "Correta (B): Moore emite a saída assim que entra no estado. Mealy emite a saída enquanto caminha pela seta (transição)."},
                     {p: "Pede-se um AFD para L = {w | w termina em 0 e |w| >= 3}. O que ocorre se a palavra '00' for lida por essa máquina?", o: {A:"Ela será aceita por terminar em 0.", B:"A máquina irá travar (entrar em loop).", C:"Ela será rejeitada, pois embora termine em 0, não atinge a condição de tamanho mínimo de 3 símbolos, parando fora do estado final.", D:"O cabeçote retrocederá a fita."}, c: "C", e: "Correta (C): Um AFD só aceita se TODAS as condições da linguagem forem cumpridas. O tamanho 2 impede a chegada no estado de aceitação."},
                     {p: "Um AFN é capaz de transitar sem ler nenhum símbolo (transição ε). Isso o torna capaz de reconhecer linguagens que o AFD não consegue?", o: {A:"Sim, AFNs reconhecem linguagens Livres de Contexto.", B:"Sim, resolve problemas indecidíveis.", C:"Não, todo AFN pode ser convertido em um AFD equivalente. Ambos reconhecem exatamente a mesma classe: Linguagens Regulares.", D:"Não, o AFN é menos poderoso que o AFD."}, c: "C", e: "Correta (C): Teorema de equivalência: o Não-Determinismo facilita a construção (o desenho), mas não expande o poder de computação do autômato finito."},
-                    {p: "Em uma tupla M = (Q, Σ, δ, q0, F), o que significa a função δ (Delta)?", o: {A:"A função de transição que mapeia o estado atual e a entrada lida para um estado de destino.", B:"A variável de fita infinita.", C:"O conjunto de todas as palavras rejeitadas.", D:"O marcador do final da string."}, c: "A", e: "Correta (A): Delta é a alma do Autômato, determinando para qual nó o processamento deve navegar ao ler uma letra."},
+                    {p: "Em uma tupla M = (Q, Σ, δ, q0, F), o que significa a função δ (Delta)?", o: {A:"A função de transição que mapeia o estado atual e a entrada lida para um estado de destino.", B:"A variável de fita infinita.", C:"O conjunto de todas as palavras rejerejected.", D:"O marcador do final da string."}, c: "A", e: "Correta (A): Delta é a alma do Autômato, determinando para qual nó o processamento deve navegar ao ler uma letra."},
                     {p: "A palavra '1100' é a concatenação das strings w1 = '11' e w2 = '00'. Se uma linguagem exige que o prefixo (w1) seja par e o sufixo (w2) ímpar, essa palavra seria aceita?", o: {A:"Sim, é uma concatenação perfeita.", B:"Não, pois '00' é um número par, o que viola a regra do sufixo exigir ímpar.", C:"Sim, pois '11' é ímpar.", D:"O autômato converteria para decimal antes de validar."}, c: "B", e: "Correta (B): Regras formais são estritas. Se a regra exige final ímpar e ele acaba em 00, a máquina rejeita no ato."},
                     {p: "Qual classe de linguagem é formalmente superior às Linguagens Regulares, exigindo o uso de Autômatos com Pilha para reconhecimento (ex: contar n letras A seguidas de n letras B)?", o: {A:"Linguagens Turing-Decidíveis", B:"Linguagens Finitas O(1)", C:"Linguagens Livres de Contexto", D:"Linguagens Indecidíveis"}, c: "C", e: "Correta (C): A pilha provê memória para a máquina, permitindo contar parênteses ou balancear letras, o que é impossível em AFDs estritos."}
                 ]
@@ -163,7 +172,7 @@
                     {p: "Se a função de transição manda a cabeça se mover para a esquerda (L), mas a MT já está na primeira célula limitante da fita, o que ocorre por convenção?", o: {A:"A máquina entra em crash absoluto.", B:"A fita expande-se dinamicamente.", C:"A cabeça de leitura desliza em falso, permanecendo na mesma primeira célula sem causar erro.", D:"A máquina inverte o vetor."}, c: "C", e: "Correta (C): Na convenção padrão de MT com fita unilateral esquerda, bater na parede esquerda ignora o movimento mantendo a cabeça intacta."},
                     {p: "Uma MT é classificada como 'Decisora' sob qual condição estrita?", o: {A:"Ela aceita cadeias, mas pode travar nas inválidas.", B:"Possui mais de 10 estados finais.", C:"Opera como fita somente-leitura.", D:"Garante parada absoluta para qualquer entrada, atestando Aceita/Rejeita sem jamais entrar em loop infinito."}, c: "D", e: "Correta (D): Decisor implica fim de execução. Um algoritmo decisor tem garantia de entregar uma resposta conclusiva."},
                     {p: "A configuração (descrição instantânea) de uma MT num instante 't' é o agrupamento de quais três informações?", o: {A:"Tamanho da fita, quantidade de estados e brancos.", B:"Estado atual do controle, o conteúdo lido e gravado na fita, e a posição atual da cabeça.", C:"Variáveis locais, tempo e Σ.", D:"Função Delta e conjuntos Q."}, c: "B", e: "Correta (B): É o 'Save State' da máquina. Com esses 3 dados, o cômputo pode ser retomado ou simulado em qualquer instante exato."},
-                    {p: "Se a Tese de Church-Turing é aceita, que limite prático recai sobre as Linguagens de Programação modernas (C, Java, Python)?", o: {A: "Linguagens modernas são inerentemente mais poderosas que a MT matemática.", B: "Linguagens modernas conseguem resolver o Problema da Parada por conta da compilação JIT.", C: "Nenhuma linguagem moderna, por mais avançada que seja, conseguirá calcular ou decidir algo que uma Máquina de Turing padrão não consiga.", D: "Linguagens modernas não utilizam os conceitos de Von Neumann." }, c: "C", e: "Correta (C): Qualquer linguagem 'Turing-Completa' (C, Java, etc.) detém exatamente o mesmo teto de poder computacional matemático da máquina idealizada nos anos 30. O que muda é apenas a abstração e velocidade humana."}
+                    {p: "Se a Tese de Church-Turing é aceita, que limite prático recai sobre as Linguagens de Programação modernas (C, Java, Python)?", o: {A: "Linguagens modernas são inerentemente mais poderosas que a MT matemática.", B: "Linguagens modernas conseguem resolver o Problema da Parada por conta da compilação JIT.", C: "Nenhuma linguagem moderna, por mais avançada que seja, conseguirá calcular ou decidir algo que uma Máquina de Turing padrão não consiga.", D: "Linguagens modernas não utilizam os conceitos de Von Neumann." }, c: "C", e: "Correta (C): Qualquer linguagem 'Turing-Completa' (C, Java, etc.) detém exatamente o mesmo teto de poder computacional matemático da máquina idealizada nos anos 30."}
                 ]
             },
             {
@@ -205,7 +214,7 @@
         // LOGIN
         function iniciarSimulado() {
             const input = document.getElementById('input-nome').value.trim();
-            if (input === "") { alert("Por favor, informe seu nome de registro acadêmico!"); return; }
+            if (input === "") { alert("Por favor, informe seu nome ou apelido para entrar no Ranking!"); return; }
             
             nomeUsuario = input;
             document.getElementById('tela-login').style.display = 'none';
@@ -217,7 +226,7 @@
             renderizarQuestoes();
         }
 
-        // RENDERIZAÇÃO
+        // RENDERIZAÇÃO DAS QUESTÕES
         function renderizarQuestoes() {
             const container = document.getElementById('quiz-container');
             let qIndexGlobal = 1;
@@ -255,7 +264,7 @@
             });
         }
 
-        // CORREÇÃO E FEEDBACK
+        // LÓGICA DE CORREÇÃO IMEDIATA
         function responder(idInterno, letraSelecionada, letraCorreta, explicacao) {
             const caixaExplicacao = document.getElementById(`exp-${idInterno}`);
             const inputs = document.querySelectorAll(`input[name="res-${idInterno}"]`);
@@ -292,7 +301,66 @@
             if (respondidas === totalQuestoes) { finalizarESalvar(); }
         }
 
-        // SALVAMENTO NO RANKING
+        // ESPIAR RANKING (MUDANÇA NOVA)
+        function carregarRanking(isFinal = true) {
+            document.getElementById('tela-ranking').style.display = 'block';
+            document.getElementById('corpo-ranking').innerHTML = '<tr><td colspan="3" style="text-align:center;">Carregando dados da nuvem... ⏳</td></tr>';
+            document.getElementById('tela-ranking').scrollIntoView({ behavior: 'smooth' });
+
+            // Lógica de botões
+            if(isFinal) {
+                document.getElementById('btn-voltar-simulado').style.display = 'none';
+                document.getElementById('btn-nova-tentativa').style.display = 'inline-block';
+            } else {
+                document.getElementById('btn-voltar-simulado').style.display = 'inline-block';
+                document.getElementById('btn-nova-tentativa').style.display = 'none';
+                
+                // Oculta as outras telas para focar no ranking
+                document.getElementById('tela-login').style.display = 'none';
+                document.getElementById('quiz-container').style.display = 'none';
+                document.getElementById('placar-topo').style.display = 'none';
+            }
+
+            fetch(API_URL)
+            .then(response => response.json())
+            .then(dados => {
+                dados.sort((a, b) => b.ACERTOS - a.ACERTOS);
+                let tbody = document.getElementById('corpo-ranking');
+                let html = "";
+                
+                dados.forEach((aluno, index) => {
+                    let medalha = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+                    let destaque = (aluno.NOME === nomeUsuario && nomeUsuario !== "") ? "background: #fef08a; font-weight:bold;" : "";
+                    
+                    html += `
+                        <tr style="${destaque}">
+                            <td style="font-weight:bold;">${medalha}</td>
+                            <td>${aluno.NOME}</td>
+                            <td style="color:var(--success); font-weight:bold;">${aluno.ACERTOS} pt(s)</td>
+                        </tr>
+                    `;
+                });
+                
+                tbody.innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('corpo-ranking').innerHTML = '<tr><td colspan="3" style="text-align:center; color: red;">Erro ao conectar com o banco de dados.</td></tr>';
+            });
+        }
+
+        function fecharRanking() {
+            document.getElementById('tela-ranking').style.display = 'none';
+            // Se o usuário ainda não colocou o nome, ele estava na tela inicial
+            if (nomeUsuario === "") {
+                document.getElementById('tela-login').style.display = 'block';
+            } else {
+                // Se já tinha nome, ele estava no meio da prova
+                document.getElementById('placar-topo').style.display = 'flex';
+                document.getElementById('quiz-container').style.display = 'block';
+            }
+        }
+
+        // SALVAMENTO FINAL NO BANCO DE DADOS
         function finalizarESalvar() {
             const porcentagemFinal = ((acertos / totalQuestoes) * 100).toFixed(1);
             
@@ -310,7 +378,7 @@
             .then(data => {
                 document.getElementById('status-db').innerText = "✅ Avaliação processada e registrada na base central! Carregando Ranking...";
                 document.getElementById('status-db').style.color = "var(--success)";
-                carregarRanking(); 
+                carregarRanking(true); 
             })
             .catch(error => {
                 document.getElementById('status-db').innerText = "⚠️ Modo Offline Ativo: O ranking global não pôde ser atualizado.";
@@ -318,34 +386,7 @@
             });
         }
 
-        function carregarRanking() {
-            fetch(API_URL)
-            .then(response => response.json())
-            .then(dados => {
-                dados.sort((a, b) => b.ACERTOS - a.ACERTOS);
-                
-                let tbody = document.getElementById('corpo-ranking');
-                let html = "";
-                
-                dados.forEach((aluno, index) => {
-                    let medalha = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
-                    let destaque = aluno.NOME === nomeUsuario ? "background: #fef08a; font-weight:bold;" : "";
-                    
-                    html += `
-                        <tr style="${destaque}">
-                            <td style="font-weight:bold;">${medalha}</td>
-                            <td>${aluno.NOME}</td>
-                            <td style="color:var(--success); font-weight:bold;">${aluno.ACERTOS} pt(s)</td>
-                        </tr>
-                    `;
-                });
-                
-                tbody.innerHTML = html;
-                document.getElementById('tela-ranking').style.display = 'block';
-                document.getElementById('tela-ranking').scrollIntoView({ behavior: 'smooth' });
-            });
-        }
-
+        // INIT
         prepararSistema();
     </script>
 </body>
