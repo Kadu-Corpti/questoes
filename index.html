@@ -6,13 +6,21 @@
     <title>MasterSimulado - Teoria da Computação</title>
     <style>
         :root { --primary: #2563eb; --bg: #f1f5f9; --text: #1e293b; --success: #22c55e; --danger: #ef4444; }
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
-        .wrapper { max-width: 800px; margin: auto; }
-        .header { text-align: center; margin-bottom: 40px; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; margin: 0; }
+        .wrapper { max-width: 800px; margin: auto; padding-top: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
         .header h1 { color: var(--primary); margin-bottom: 5px; }
         
+        /* PLACAR FIXO NO TOPO */
+        .scoreboard { position: sticky; top: 10px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 100; border: 2px solid var(--primary); font-weight: bold; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+        .score-item { display: flex; flex-direction: column; align-items: center; font-size: 0.9rem; color: #64748b; }
+        .score-val { font-size: 1.4rem; color: var(--text); }
+        .val-acertos { color: var(--success); }
+        .val-erros { color: var(--danger); }
+        .btn-refazer { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-refazer:hover { background: #475569; }
+
         .section-title { background: var(--primary); color: white; padding: 15px 20px; border-radius: 12px; margin: 40px 0 20px 0; font-size: 1.3rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        
         .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; }
         
@@ -29,6 +37,9 @@
         .explanation.success { background: #dcfce7; border-left: 4px solid var(--success); }
         .explanation.error { background: #fee2e2; border-left: 4px solid var(--danger); }
         
+        #resultado-final { display: none; background: #fff; border: 3px solid var(--primary); padding: 30px; text-align: center; border-radius: 16px; margin-top: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #resultado-final h2 { color: var(--primary); font-size: 2rem; margin-top: 0; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -39,14 +50,35 @@
             <p>80 questões focadas em Computabilidade e Complexidade</p>
         </div>
 
+        <div class="scoreboard">
+            <div class="score-item">Respondidas<span class="score-val" id="display-resp">0/80</span></div>
+            <div class="score-item">Acertos<span class="score-val val-acertos" id="display-acertos">0</span></div>
+            <div class="score-item">Erros<span class="score-val val-erros" id="display-erros">0</span></div>
+            <div class="score-item">Aproveitamento<span class="score-val" id="display-porcentagem">0%</span></div>
+            <button class="btn-refazer" onclick="location.reload()">↻ Refazer</button>
+        </div>
+
         <div id="quiz-container"></div>
 
-        <div style="text-align: center; margin-top: 50px; padding-bottom: 40px; color: #64748b; font-weight: bold;">
-            <p>Fim do Simulado. Bons estudos.</p>
+        <div id="resultado-final">
+            <h2>Simulado Concluído! 🎉</h2>
+            <p style="font-size: 1.2rem;">Você acertou <strong id="final-acertos" style="color: var(--success);">0</strong> de 80 questões.</p>
+            <p style="font-size: 1.5rem; font-weight: bold;">Sua nota final é: <span id="final-nota" style="color: var(--primary);">0%</span></p>
+            <button class="btn-refazer" style="margin-top: 20px; font-size: 1.1rem;" onclick="window.scrollTo(0,0); location.reload();">Tentar Novamente</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-bottom: 40px; color: #64748b;">
+            <p>Bons estudos!</p>
         </div>
     </div>
 
     <script>
+        // Variáveis de controle de pontuação
+        let acertos = 0;
+        let erros = 0;
+        let respondidas = 0;
+        const totalQuestoes = 80;
+
         const conteudos = [
             {
                 titulo: "Unidade 1: Complexidade de Algoritmos e Análise Assintótica",
@@ -160,13 +192,11 @@
             let qIndexGlobal = 1;
 
             conteudos.forEach((secao, secIndex) => {
-                // Adiciona o título da unidade
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section-title';
                 sectionDiv.innerText = secao.titulo;
                 container.appendChild(sectionDiv);
 
-                // Adiciona as questões da unidade
                 secao.questoes.forEach((q, qIndex) => {
                     const idInterno = `s${secIndex}q${qIndex}`;
                     const card = document.createElement('div');
@@ -211,20 +241,51 @@
                 }
             });
 
+            // Atualiza Lógica do Placar
+            respondidas++;
+
             if (letraSelecionada !== letraCorreta) {
+                erros++;
                 const labelSelecionado = document.getElementById(`opt-${idInterno}-${letraSelecionada}`);
                 labelSelecionado.classList.add('wrong');
                 caixaExplicacao.classList.add('error');
                 caixaExplicacao.innerHTML = `<strong>[Incorreto]</strong> A resposta era a letra <strong>${letraCorreta}</strong>.<br><br>${explicacao}`;
             } else {
+                acertos++;
                 caixaExplicacao.classList.add('success');
                 caixaExplicacao.innerHTML = `<strong>[Correto]</strong><br><br>${explicacao}`;
             }
 
             caixaExplicacao.classList.add('show');
+            atualizarPlacar();
         }
 
-        // Inicializar o simulado ao carregar a página
+        function atualizarPlacar() {
+            document.getElementById('display-resp').innerText = `${respondidas}/${totalQuestoes}`;
+            document.getElementById('display-acertos').innerText = acertos;
+            document.getElementById('display-erros').innerText = erros;
+            
+            const porcentagem = ((acertos / respondidas) * 100).toFixed(1);
+            document.getElementById('display-porcentagem').innerText = `${porcentagem}%`;
+
+            // Verifica se terminou
+            if (respondidas === totalQuestoes) {
+                finalizarSimulado();
+            }
+        }
+
+        function finalizarSimulado() {
+            const porcentagemFinal = ((acertos / totalQuestoes) * 100).toFixed(1);
+            
+            document.getElementById('resultado-final').style.display = 'block';
+            document.getElementById('final-acertos').innerText = acertos;
+            document.getElementById('final-nota').innerText = `${porcentagemFinal}%`;
+            
+            // Rola a página suavemente até o resultado final
+            document.getElementById('resultado-final').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Inicializar
         renderizarQuestoes();
     </script>
 </body>
