@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MasterSimulado - Teoria da Computação</title>
+    <title>Simulado ENADE - Inovação e Estratégia em TI</title>
     <style>
         :root { --primary: #2563eb; --bg: #f1f5f9; --text: #1e293b; --success: #22c55e; --danger: #ef4444; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; margin: 0; }
@@ -31,7 +31,9 @@
         
         .section-title { background: #0f172a; color: white; padding: 15px 20px; border-radius: 12px; margin: 40px 0 20px 0; font-size: 1.3rem; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid #fbbf24; }
         .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; }
+        .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; white-space: pre-line; }
+        .q-num { display: block; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
+        .q-base { background: #f8fafc; border-left: 4px solid #94a3b8; padding: 12px 16px; border-radius: 6px; font-size: 0.92rem; color: #475569; margin-bottom: 16px; white-space: pre-line; }
         
         .option { display: block; background: #f8fafc; padding: 14px 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; position: relative; font-size: 0.95rem; }
         .option:hover { background: #f1f5f9; border-color: #cbd5e1; }
@@ -61,8 +63,8 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            <h1>Simulado Acadêmico - Versão Ágil</h1>
-            <p>80 Questões Diretas e Sem Enrolação com Ranking</p>
+            <h1>Simulado ENADE — Inovação e Estratégia em TI</h1>
+            <p>40 Questões • Inovação, Modelos de Negócios, Planejamento Estratégico e Governança de TI • com Ranking</p>
         </div>
 
         <div id="tela-login">
@@ -112,105 +114,551 @@
 
     <script>
         const API_URL = "https://sheetdb.io/api/v1/3kdw59bdva45d";
+        const SIMULADO_ID = "INOVACAO_TI"; // gravado na coluna SIMULADO da planilha para separar o ranking
         let nomeUsuario = ""; let acertos = 0; let erros = 0; let respondidas = 0; let totalQuestoes = 0;
 
-        // BANCO DE 80 QUESTÕES OTIMIZADAS (MUITO MAIS CURTAS)
+        // BANCO DE 40 QUESTÕES — SIMULADO ENADE: INOVAÇÃO, MODELOS DE NEGÓCIOS E PLANEJAMENTO ESTRATÉGICO EM TI
         const conteudos = [
-            {
-                titulo: "Módulo I: Revisão Presencial",
-                questoes: [
-                    {p: "Fórmula recursiva C(i,j) = max{C(i,j-1), C(i-1,j)}. Qual a complexidade da solução encontrada?", o: {A: "O (n × log n).", B: "O (n²).", C: "O (n² × log n).", D: "O (2^n)."}, c: "D", e: "A instrução 'max' bifurca a árvore a cada chamada, gerando tempo exponencial O(2^n)."},
-                    {p: "Algoritmo A: O(n²) / Algoritmo B: O(n log n). Para grandes volumes de dados, o que ocorre?", o: {A: "O algoritmo A processará os dados de forma mais rápida.", B: "Ambos os algoritmos terão um desempenho equivalente.", C: "O algoritmo B processará os dados de forma mais rápida.", D: "A velocidade não dependerá da complexidade assintótica."}, c: "C", e: "Logarítmico (n log n) cresce muito mais devagar que quadrático (n²). B é exponencialmente melhor."},
-                    {p: "No contexto da teoria da computabilidade, o que caracteriza perfeitamente um problema Indecidível?", o: {A: "Exige tempo estritamente exponencial.", B: "Não existe um algoritmo geral que sempre pare com uma resposta.", C: "São solucionados unicamente por força bruta.", D: "Afetam apenas memórias de fita unilateral."}, c: "B", e: "Indecidível significa que não existe um Decisor (algoritmo) que garanta parada com resposta SIM ou NÃO."},
-                    {p: "A famosa Tese de Church-Turing sustenta como premissa absoluta que:", o: {A: "Apenas Máquinas de Turing processam algoritmos reais.", B: "Modelos baseados em redes neurais superam a Máquina de Turing.", C: "Limitações físicas invalidam a alta complexidade.", D: "Qualquer função computável pode ser calculada por Máquina de Turing."}, c: "D", e: "A tese garante que a MT é o limite absoluto do que a humanidade considera ser um 'algoritmo'."},
-                    {p: "Sobre a aplicação de recursividade no desenvolvimento de algoritmos, assinale a opção correta:", o: {A: "Processos recursivos são insubstituíveis por loops.", B: "A recursão pode ser convertida em iteração mediante uso de pilha.", C: "A recursividade sempre implica em tempo exponencial.", D: "Algoritmos recursivos eliminam o uso excessivo de RAM."}, c: "B", e: "Todo algoritmo recursivo pode ser reescrito como iterativo usando uma estrutura de Pilha embutida."},
-                    {p: "Um semáforo exige reações imediatas às entradas dos sensores. Qual modelo teórico atende a isso?", o: {A: "Máquina de Moore, pois a saída condiz ao estado atual.", B: "Autômato Determinístico, pois processa apenas saídas nulas.", C: "Máquina de Turing, devido à sua capacidade universal.", D: "Máquina de Mealy, pois vincula a saída à transição imediata."}, c: "D", e: "Na Mealy, a saída ocorre na transição (arco), reagindo de forma perfeitamente síncrona à entrada."},
-                    {p: "Avaliando modelos computacionais quanto à sua aplicabilidade prática, é correto afirmar que:", o: {A: "Modelos com maior poder computacional são sempre os mais rápidos.", B: "Autômatos de pilha possuem maior poder que a MT.", C: "Máquinas de Turing são universais, porém ineficientes na prática.", D: "Todos os modelos abstratos possuem a mesma eficiência."}, c: "C", e: "A MT resolve tudo, mas ler/gravar em fita bit a bit é extremamente lento comparado a modelos reais."}
-                ]
-            },
-            {
-                titulo: "Módulo II: Complexidade e Corretude",
-                questoes: [
-                    {p: "No problema MinMax, qual a vantagem da estratégia do 'Caso 3'?", o: {A:"Aplica a recursão para suprimir o gasto da memória RAM.", B:"Garante a pré-ordenação do vetor na ordem linear.", C:"Agrupa as comparações em pares, reduzindo o custo para 3n/2.", D:"Utiliza uma árvore de decisão para indexar o maior e menor."}, c: "C", e: "Ao comparar pares antes de comparar com max/min, as comparações caem de 2n para 3n/2."},
-                    {p: "Qual é a diferença entre testes de software e a Invariante de Laço?", o: {A:"A invariante foca no tempo e os testes focam no gasto de RAM.", B:"Testes mostram as falhas; a invariante prova a corretude matemática.", C:"Testes estáticos possuem superioridade contra a prova invariante.", D:"Análises invariantes apenas detectam loops contínuos."}, c: "B", e: "Testes acham bugs, mas nunca provam a ausência deles. A prova matemática atesta a corretude universal."},
-                    {p: "Em desempate de algoritmos de mesma classe (ex: ambos O(n²)), o que deve ser observado?", o: {A:"A linguagem de programação na qual o algoritmo foi escrito.", B:"A quantidade total de variáveis primitivas que foram declaradas.", C:"A constante multiplicativa oculta pela notação assintótica Big-O.", D:"A quantidade de memória alocada dinamicamente pelo processo."}, c: "C", e: "Assintoticamente empatados, a constante dita a velocidade (ex: 2n² executa consideravelmente antes de 100n²)."},
-                    {p: "Na função de Fibonacci recursiva (F(n) = F(n-1) + F(n-2)), qual o impacto gerado?", o: {A:"Gera tempo fixo assintótico classificado em O(log n).", B:"Trata-se de recursão de cauda, possuindo tempo de execução O(n).", C:"Divide o vetor pela metade, caindo o tempo para a ordem O(n).", D:"Gera uma árvore exponencial e repete recálculos, resultando em O(2^n)."}, c: "D", e: "A recursão múltipla de Fibonacci gera cálculos idênticos repetidos vezes sem conta, saturando o processamento."},
-                    {p: "Se uma função tem complexidade descrita por O(1), o que isso significa?", o: {A:"O algoritmo processa condicionalmente apenas uma linha.", B:"O tempo de execução é fixo e independe do tamanho dos dados.", C:"O laço de repetição iterará exatamente uma vez.", D:"O algoritmo não precisará de conversões estáticas na memória."}, c: "B", e: "Tempo O(1) indica que o esforço computacional será igual se a entrada tiver 10 ou 1 bilhão de itens."},
-                    {p: "Na Busca Binária, qual o comportamento matemático que justifica o tempo O(log n)?", o: {A:"O vetor é varrido em ordem linear e inversamente.", B:"O espaço de busca é rigorosamente particionado à metade.", C:"Ela confronta o elemento alvo apenas nas pontas estáticas.", D:"Usa programação dinâmica salvando os passos anteriores."}, c: "B", e: "A divisão sucessiva por 2 até atingir 1 elemento remete diretamente à operação logarítmica (base 2)."},
-                    {p: "Em dois laços 'for' aninhados, ambos iterando de 1 a n, a complexidade final será:", o: {A:"Classificada como O(2n), devido à soma das duas iterações conjuntas.", B:"Atestada como O(n log n), pelo processamento contínuo das arrays.", C:"Comprovada como O(n²), posto que o loop interno executa n*n vezes.", D:"Subestimada como O(n), já que o compilador simplifica as chamadas."}, c: "C", e: "Para cada iteração do laço externo, o interno roda n vezes completas, resultando no quadrado da entrada."},
-                    {p: "Um Invariante de Laço precisa ser verificado matematicamente em quais três instantes?", o: {A:"Na estruturação, no limite temporal médio e no caso crítico.", B:"Antes de começar, na manutenção do loop, e após o término.", C:"Apenas na declaração da função e no instante do comando return.", D:"Durante a compilação, parsing estático e no runtime final."}, c: "B", e: "Regra formal (Inicialização, Manutenção e Término). Se a lógica for válida nos três cenários, o laço é correto."},
-                    {p: "Algoritmo em sequência: P1 é O(1), P2 é O(n log n) e P3 é O(n). Qual o tempo final?", o: {A:"Soma-se as variáveis e obtém-se o tempo final de O(n²).", B:"Prevalece o bloco dominante de maior ordem, atestando O(n log n).", C:"A constante atesta que a varredura se estabilizará em O(n).", D:"O valor inicial reduz a varredura fixando a operação em O(1)."}, c: "B", e: "Na soma de complexidades sequenciais, o termo de maior peso assintótico (dominante) dita a regra geral."},
-                    {p: "O consumo de Pilha de Execução do cálculo do Fatorial recursivo atinge a ordem de:", o: {A:"O(n), pois abre e congela 'n' escopos simultâneos de memória.", B:"O(2^n), pois gera uma árvore exponencial de chamadas pendentes.", C:"O(log n), devido à divisão matemática constante dos blocos.", D:"O(1), reciclando ativamente o ponteiro sem gasto paralelo."}, c: "A", e: "Fatorial é uma recursão linear. Desce n degraus na Call Stack armazenando 'n' funções abertas até resolver."}
-                ]
-            },
-            {
-                titulo: "Módulo III: Autômatos Finitos e Linguagens Formais",
-                questoes: [
-                    {p: "O que a notação x^0 representa na formalidade das linguagens?", o: {A:"A exclusão compulsória do símbolo em questão no alfabeto.", B:"A palavra vazia (ε), indicando exatamente zero ocorrências do símbolo.", C:"A eclosão de um estado de erro semântico nos Autômatos.", D:"A representação do símbolo convertido em binário puro."}, c: "B", e: "Uma letra com expoente zero denota uma string vazia (comprimento nulo)."},
-                    {p: "Em um AFD, qual é a responsabilidade exata da variável Σ (Sigma) na tupla?", o: {A:"Enquadrar o limite e as opções conjuntas dos estados finais.", B:"Consolidar o alfabeto finito de símbolos aceitos pela máquina.", C:"Atuar como estado inicial engatilhado para processar a fita.", D:"Sinalizar inequivocamente as transições corrompidas do sistema."}, c: "B", e: "Sigma define o conjunto de caracteres que compõem a linguagem lida pelo autômato (ex: Σ = {a,b})."},
-                    {p: "O que abrange a Estrela de Kleene ou Fecho Reflexivo (Σ*)?", o: {A:"Engloba cadeias contendo a palavra vazia e todas as combinações de Σ.", B:"Inverte as cadeias formadas pelos símbolos lidos sequencialmente.", C:"Filtra rigorosamente as palavras de tamanho exclusivo par.", D:"Força a exclusão profilática da cadeia vazia na regularidade."}, c: "A", e: "O operador estrela (*) gera infinitas strings de todas as concatenações possíveis, do tamanho 0 (ε) ao infinito."},
-                    {p: "Como identificamos universalmente os Estados Finais (F) em um diagrama de autômato?", o: {A:"Com uma seta flutuante apontando diretamente contra o estado.", B:"Por um quadro retangular ao redor do rótulo da transição.", C:"Através de um círculo com linha tracejada e fina.", D:"Usando um círculo desenhado com linha de borda dupla."}, c: "D", e: "O Círculo duplo atesta visualmente o estado final. A seta solta, por exemplo, atesta apenas o estado inicial."},
-                    {p: "Qual o comportamento que distingue a Máquina de Moore da Máquina de Mealy?", o: {A:"Mealy utiliza pilha de memória extra; Moore requer fita infinita.", B:"Moore associa a saída ao estado; Mealy atrela a saída à transição.", C:"Moore admite linguagens sensíveis; Mealy processa lógicas lineares.", D:"Mealy possui obrigatoriamente estados finais; Moore dispensa-os."}, c: "B", e: "Moore gera a saída na entrada do estado. Mealy manifesta a saída baseada no arco da transição percorrida."},
-                    {p: "Um AFD deve processar L (termina em '0' e possui tamanho >= 3). Se a entrada for '00':", o: {A:"Será reconhecida por terminar de fato com o símbolo zero exigido.", B:"A máquina ativará um loop infinito travando toda a fita.", C:"Será rejeitada por falhar no tamanho mínimo exigido (3 símbolos).", D:"O cabeçote recuará até ler um novo símbolo e complementar."}, c: "C", e: "Em lógicas determinísticas, todas as premissas da linguagem têm de ser contempladas. O tamanho invalidou a string."},
-                    {p: "Transições espontâneas sem leitura (Transições ε) tornam o AFN mais poderoso?", o: {A:"Sim, conferindo a capacidade extra de ler Livres de Contexto.", B:"Sim, resolve falhas analíticas de instâncias indecidíveis.", C:"Não, qualquer AFN pode ser plenamente refatorado para um AFD.", D:"Não, eles tornam o modelo frágil e analiticamente decrescente."}, c: "C", e: "O Não-Determinismo ajuda muito o desenho humano, mas ambos reconhecem apenas a classe de Linguagens Regulares."},
-                    {p: "Em uma tupla M = (Q, Σ, δ, q0, F), o que dita a função δ (Delta)?", o: {A:"Mapeia as ações de transição, conectando o estado ao seu destino.", B:"Controla a alocação dinâmica permitida na fita matriz.", C:"Concentra o banco lexicográfico contendo as cadeias erradas.", D:"Fomenta o marcador numérico posicionado ao final das strings."}, c: "A", e: "A Função Delta é o 'Mapa' da máquina, ditando para onde seguir baseado na letra que for lida no momento."},
-                    {p: "Se uma linguagem exige prefixo de tamanho ímpar e sufixo ímpar, a cadeia '1100' é válida?", o: {A:"Seria reconhecida, sendo validada pela totalidade rítmica de 4 bits.", B:"Seria sumariamente rejeitada por falhar no bloco final exigido (00).", C:"Seria validada, pois o primeiro quadrante (11) obedece à regra estrita.", D:"Sofreria transmutação para a base decimal visando uma validação."}, c: "B", e: "Regras formais operam estritamente sob rigor lógico. O sufixo '00' é par (tamanho 2), quebrando a validação."},
-                    {p: "Que classe exige Autômatos com Pilha para reconhecimento (ex: a^n b^n)?", o: {A:"Linguagens Decidíveis baseadas em instâncias limitadas e ativas.", B:"Linguagens Regulares que exigem validação binária contínua.", C:"Linguagens Livres de Contexto, requerendo contagem por memória.", D:"Linguagens puras Sensíveis ao Contexto em tempo real."}, c: "C", e: "A pilha LIFO adiciona a memória necessária para comparar simetria de tamanhos, recurso inexistente no AFD simples."},
-                    {p: "A linguagem L = { 0^k | k é par }. Qual máquina dá conta de processá-la perfeitamente?", o: {A:"Exige exclusivamente Máquinas de Turing devido à contagem contínua.", B:"Impõe o uso rigoroso de Autômato com Pilha de ordenação dupla.", C:"Linguagem Regular solucionada via AFD que alterna dois estados.", D:"Constitui um dos variados ramos do famigerado Teste da Parada."}, c: "C", e: "Paridade (010101, par/ímpar) não consome memória histórica longa; um AFD em looping com 2 nós resolve de imediato."}
-                ]
-            },
-            {
-                titulo: "Módulo IV: Máquinas de Turing e Computabilidade",
-                questoes: [
-                    {p: "A transição canônica δ(q, a) = (p, b, R) manifesta qual ação na Máquina de Turing?", o: {A:"Lê a letra 'R', salta para 'p' e apaga a instância 'b' na esteira.", B:"No estado 'q' lê 'a', grava 'b', muda para 'p' e move a cabeça à Direita.", C:"Inicia a formatação no destino final 'p' e retrocede ao começo.", D:"Repousa a cabeça ótica de leitura avaliando os dados paralelos."}, c: "B", e: "Sintaxe universal: (Estado Destino, Símbolo Gravado, Movimentação da Cabeça)."},
-                    {p: "Por qual razão matemática o alfabeto da fita (Γ) é sempre maior que o de entrada (Σ)?", o: {A:"Σ abarca a contagem numérica estrita e Γ formata letras puras.", B:"Γ engloba Σ integralmente, somando o branco e símbolos auxiliares.", C:"Γ propicia validação de processamento não-determinístico apenas.", D:"Σ restringe sua execução na esteira em modo 'somente leitura'."}, c: "B", e: "A fita funciona como um rascunho de contas para a MT. Símbolos extras são usados para marcar lógicas transitórias."},
-                    {p: "O escopo de aplicação prático de uma 'MT Transdutora' recai em qual habilidade?", o: {A:"Atuar com maestria em validações binárias atestando o SIM/NÃO.", B:"Fornecer matrizes focadas perante instâncias do problema de Russell.", C:"Processar operações matemáticas convertendo e gravando o resultado.", D:"Anular arranjos contidos em strings inválidas do escopo logarítmico."}, c: "C", e: "Diferente da máquina Reconhecedora, a Transdutora fabrica resultados matemáticos e os deixa cravados na fita."},
-                    {p: "Para calcular o quádruplo do binário '1010' na MT Transdutora, qual procedimento ocorre?", o: {A:"Converte tudo para a base decimal natural e multiplica em looping.", B:"Inverte o espectro posicional da string bit a bit formatando '0101'.", C:"A cabeça de leitura anexa rigorosamente dois zeros ('00') à direita.", D:"Clona toda a cadeia de forma sucessiva forçando dobras algorítmicas."}, c: "C", e: "Em base binária pura, empurrar o valor para a esquerda (adicionando dois zeros à direita) atinge a fatoração x4."},
-                    {p: "Adicionar Fitas Múltiplas e recursos de Não-Determinismo na Máquina de Turing causa o quê?", o: {A:"Mantém exatamente o mesmo teto e poder computacional da fita única.", B:"Propõe a solução definitiva para resolver problemas indecidíveis.", C:"Declínio nas instâncias em que o problema recai à estagnação pura.", D:"Mitigação absoluta do cômputo que resolve cálculos complexos reais."}, c: "A", e: "Essas facilidades tornam a programação da MT 'mais rápida' visualmente, mas não resolvem nenhum problema impossível a mais."},
-                    {p: "Se a máquina move para a esquerda (L), mas a cabeça já está na célula inicial 0 (extrema esquerda), o que ocorre?", o: {A:"O sistema trava emitindo flag de corrupção do estado atual contido.", B:"O bloco estende-se e a fita retrocede gerando os índices negativos.", C:"A cabeça desliza em falso e permanece ancorada na mesma célula 0.", D:"O comando inverte o movimento impositivo rumando direto ao leste."}, c: "C", e: "O padrão formal teórico atesta que a cabeça bate na parede imaginária da fita e não executa o deslocamento."},
-                    {p: "Uma Máquina de Turing taxada como 'Decisora' honra qual preceito universal?", o: {A:"Aceita as strings validadas, resguardando licença para loops avulsos.", B:"Agrupa em seu desenho formal incontáveis instâncias procedimentais.", C:"Limita o acesso rigoroso em fitas exclusivas de somente leitura.", D:"Garante a parada para qualquer entrada atestando firmemente Aceita/Rejeita."}, c: "D", e: "O 'Decisor' é o grau máximo. Ele nunca entra em um ciclo ad-infinitum; sempre fornece a resposta conclusiva em tempo hábil."},
-                    {p: "A Tese de Church-Turing se consagra perante a filosofia matemática afirmando que:", o: {A:"Há esgotamento processual submetido a limites lógicos do silício.", B:"Qualquer algoritmo (processo mecânico lógico) é simulável por uma MT.", C:"Impedimentos bloqueiam a formatação das linguagens atuais baseadas C.", D:"Desmascara as soluções polinomiais focadas nas ramificações atípicas."}, c: "B", e: "A tese amarra a definição abstrata humana de 'o que é computar' com o limite matemático irrefutável da Máquina de Turing."},
-                    {p: "A configuração (descrição instantânea) de uma Máquina de Turing abrange em sua essência:", o: {A:"Os limitadores físicos da fita e cômputos associativos nulos brancos.", B:"O estado atual, toda a cadeia gravada, e a posição da cabeça da fita.", C:"Diretrizes restritas envolvendo o tempo de execução total das varreduras.", D:"Cálculos vinculativos providos integralmente no núcleo lógico formador."}, c: "B", e: "A 'Configuração' permite salvar o estado da máquina num ponto exato e resumi-lo futuramente sem perder a lógica estática."},
-                    {p: "A base funcional da Máquina de Turing Universal (MTU) estabelece essencialmente que:", o: {A:"A taxa procedimental baseia-se em instâncias contínuas simultâneas.", B:"Ausenta-se fisicamente da mecânica de engrenagens contidas nas fitas.", C:"Pode simular outra MT, exigindo que lhe passem a descrição (código alvo).", D:"Resolve dogmaticamente qualquer problema classificado como intratável."}, c: "C", e: "Inaugurou a era do Software: A máquina agora pode interpretar outra lógica lendo as instruções diretamente gravadas na sua memória."}
-                ]
-            },
-            {
-                titulo: "Módulo V: Decidibilidade e Teorias Fundamentais",
-                questoes: [
-                    {p: "O Teorema da Incompletude (Gödel, 1931) abalou a matemática estipulando que:", o: {A:"A total invalidade analítica ocorre em axiomas gerando conflitos.", B:"A constatação perene afeta fronteiras de processamentos logarítmicos.", C:"Em sistemas consistentes há verdades matemáticas impossíveis de provar.", D:"A modelagem abstrata dos números decai no limite temporal da matriz."}, c: "C", e: "O Teorema liquidou a ambição de que uma lógica formal rígida pudesse provar ou refutar todas as afirmativas de seu domínio universal."},
-                    {p: "O Décimo Problema de Hilbert focava num algoritmo para equações diofantinas. Qual foi a resolução final?", o: {A:"Foi resolvida perfeitamente por processos logarítmicos recursivos.", B:"Atestou-se como Indecidível, comprovando a inexistência de solução.", C:"Formalizou respostas positivas advindas calcadas em autômatos gulosos.", D:"Concluiu-se ser passível de cálculo pelas esferas das linguagens nulas."}, c: "B", e: "Matiyasevich atestou ser impossível determinar algoritmicamente raízes universais, cravando o caso na lista de indecidibilidade."},
-                    {p: "O Artigo de 1936 de Turing refutou o 'Entscheidungsproblem' atestando que:", o: {A:"Era resolvível utilizando os processos contidos em grafos acíclicos.", B:"Era impossível existir algoritmo geral para validar toda a lógica abstrata.", C:"As linguagens precisavam obrigatoriamente da delimitação de fita finita.", D:"O teorema de Peano atuava com processamento analítico estático e fixo."}, c: "B", e: "Turing explodiu o Problema da Decisão comprovando que não havia como automatizar mecanicamente a checagem absoluta de toda a verdade matemática."},
-                    {p: "O 'Problema da Parada' (Halting Problem) ancora suas raízes em qual impossibilidade?", o: {A:"Bloqueios em virtude do esgotamento contínuo das memórias de registro.", B:"A impossibilidade de criar um algoritmo capaz de prever se outro vai parar.", C:"A premissa forçada de que todo código em loop travará o computador real.", D:"As contradições nos escopos limitantes contidos em recursões complexas."}, c: "B", e: "O Halting Problem formaliza o depurador imperfeito: nenhum código universal consegue atestar contra paradoxos lógicos autorreferenciados."},
-                    {p: "O Método da Diagonalização de Cantor serve à teoria da computação para provar o quê?", o: {A:"Que matrizes tridimensionais otimizam e gerenciam as estruturas base.", B:"Que os problemas infinitos são incontáveis perante a escassez dos algoritmos.", C:"Que as rotinas atestadas pelas fitas base da MT escalam eficientemente.", D:"Que os blocos restritivos estáticos garantem validação exata regular final."}, c: "B", e: "Como as lógicas dos problemas excedem matematicamente as descrições numéricas ordenadas das MTs criáveis, muitos problemas lógicos ficarão sem máquina solucionadora."},
-                    {p: "Linguagens 'Recursivamente Enumeráveis' abarcam qual estigma no veredito processual?", o: {A:"Garantem a devolutiva exata encerrando a validação em 100% dos testes.", B:"Restringem a resposta atrelada a blocos estruturais em números binários.", C:"Aceitam strings válidas, mas podem rodar infinitamente no caso negativo.", D:"Bloqueiam qualquer modelagem processual contida em fitas lineares simples."}, c: "C", e: "Garantem apenas a emissão do 'SIM'. Diante da falta de acerto, podem estagnar em processamento contínuo ignorando a rejeição e não atuando como Decisor."},
-                    {p: "Os postulados que norteiam a Redutibilidade (Reduzir A para B) implicam que:", o: {A:"As cargas inativas devem ser eliminadas do algoritmo A otimizando o fluxo.", B:"Se B é indecidível, e conseguimos transformar A em B, então A herda o fardo.", C:"Devemos comprimir os dados da fita agilizando as execuções das lógicas.", D:"Precisamos reduzir as classes assintóticas restritivas otimizando o hardware."}, c: "B", e: "Redutibilidade é a transferência do poder analítico: se você adapta um problema para o Halting Problem, o seu problema também torna-se sem solução formal garantida."},
-                    {p: "O Teorema da Recursão serve de fundamentação teórica geradora de qual faceta?", o: {A:"Engajamento estrutural voltado a sistemas paralelos remotos centralizados.", B:"Quines (códigos que imprimem a si mesmos) e do mecanismo central de vírus.", C:"Processamento matemático avançado em vetores focados nas telas poligonais.", D:"Bancos de dados regidos por matrizes analógicas lógicas base relacionais."}, c: "B", e: "Quines valem-se da autorreferência embasada. O Teorema comprovou a viabilidade das máquinas avaliarem e se utilizarem do seu próprio código."},
-                    {p: "Se uma linguagem L e sua complementar L' são ambas Turing-Reconhecíveis, afirma-se que:", o: {A:"Caem nas restrições englobadas e caracterizadas como puramente Indecidíveis.", B:"São atreladas estritamente no campo das premissas de linguagens Livres.", C:"Garantem ser Turing-Decidíveis, visto que a rodagem conjunta garante parada.", D:"Geram as bases para os paradoxos estipulados no limite de fita universal."}, c: "C", e: "Pelo Teorema de Intersecção: Se a prova e contraprova reconhecem fatos separados, uni-las e atuar simultaneamente resulta no fim garantido (Decisor perfeito)."}
-                ]
-            },
-            {
-                titulo: "Módulo VI: Recursividade Linear e Pilhas",
-                questoes: [
-                    {p: "Para a integridade lógica de processos recursivos na programação, impera-se primariamente:", o: {A:"A inserção de matrizes formatadas e arrays globais limitados processualmente.", B:"Instanciação atrelada aos escopos condizentes com múltiplas frentes Thread.", C:"A garantia estrutural fornecida pelo Caso Base, interrompendo as auto-chamadas.", D:"O enquadramento com vetores longos e robustos nas raízes estruturais bases."}, c: "C", e: "O Caso Base encerra a árvore e providencia devolução. A sua ausência condena o laço à progressão inesgotável e corrupção sistemática temporal da memória limitante LIFO."},
-                    {p: "Qual é a representação da complexidade gerada pelos movimentos da Torre de Hanói?", o: {A:"Ordem de limite estritamente enquadrada balizada na matemática O(n log n).", B:"Natureza exaustiva da ordem O(2^n), originando repetição e atraso exponencial.", C:"Tempo assintótico linear e restrito à ordem pautada sob a vertente O(n²).", D:"Resolução em etapas simplificadas atestadas na complexidade constante O(1)."}, c: "B", e: "O cálculo temporal reflete estritamente 2^n - 1. Comportamento clássico exponencial: adding um pequeno disco dobra violentamente a jornada processual completa."},
-                    {p: "Em chamadas recursivas empilhadas (C ou Java), o que afeta a memória espacial em O(n)?", o: {A:"A cópia linear contida e armazenada dos algoritmos base estáticos isolados.", B:"O armazenamento do Contexto de Execução de cada chamada não finalizada.", C:"A limitação sistêmica do disco rígido atrelada nas alíneas de indexação.", D:"A ineficiência do formato matriz processual atuante no vetor multidimensional."}, c: "B", e: "A 'Pilha de Execução' engaveta funções que ficam à espera das sucessoras (empilhando variáveis e retornos sucessivamente, estourando e exigindo fatias absurdas da RAM)."},
-                    {p: "O que define a essência estruturante da 'Recursão de Cauda' (Tail Recursion)?", o: {A:"Retorno obrigacional contido nas últimas linhas dos descritivos procedimentais.", B:"A chamada a si mesma figurar como absolutamente a última instrução da rotina.", C:"Sua declaração atrelada e encastelada unicamente após o encerramento do main.", D:"Recorrer massivamente a iteradores ignorando condicionais engessadas do tipo IF."}, c: "B", e: "Por inexistir cálculos pendentes no bloco após a invocação, o compilador extirpa o histórico do frame anterior, convertendo o gasto de pilha profundo numa virtual complexidade O(1)."},
-                    {p: "O Fatorial recursivo configura-se com Recursão Linear. Como ele afeta o espaço de pilha?", o: {A:"Reutiliza espaços limitantes atingindo peso neutro temporal enquadrado no O(1).", B:"Vai dividindo fatias processuais progressivas refletidas puramente na O(log n).", C:"Multiplica ponteiros e atinge limitação complexa assintótica de raiz igual O(n²).", D:"Gera 'n' quadros processuais suspensos abertos estagnando o limite atestando O(n)."}, c: "D", e: "Fatorial subtrai linearmente passo a passo. Abre N instâncias na Call Stack antes do caso base retornar, exigindo exatamente O(n) em uso irrestrito de memória do sistema."},
-                    {p: "Na Busca Binária recursiva, o caso base que atesta a absoluta falha (valor ausente) ocorre se:", o: {A:"As validações numéricas superarem o tamanho delimitador isolado restrito lógico.", B:"Os ponteiros limitantes colidirem e se inverterem (Esq > Dir), esgotando o escopo.", C:"Ocorrer reiterações consecutivas em instâncias do núcleo médio exaustivo fixado.", D:"Atingir o estouramento (overflow) matemático associado aos inteiros primitivos."}, c: "B", e: "A prova analítica que confirma o vazio espacial atesta-se assim que o fracionamento do limite reverte os vetores polares inviabilizando qualquer interseção restante na fita matriz linear logarítmica."},
-                    {p: "A técnica algorítmica associada ao rendimento O(n log n) do QuickSort denomina-se:", o: {A:"Programação Dinâmica estruturada estritamente focada nas diretrizes do Top-Down.", B:"Comportamentos iterativos focados puramente em processos do Algoritmo Guloso.", C:"Divisão e Conquista (Divide and Conquer) particionando o vetor base repetitivamente.", D:"Lógica imperativa encadeada de Backtracking estrito operando recursão exaustiva."}, c: "C", e: "Separar metades iterativas e reordená-las constrói árvore logarítmica em profundidade somada ao linearismo na mescla/partição. Fundamento da eficácia na computação para listas."},
-                    {p: "Passar vetores enormes 'por valor' (cópia integral) na recursão linear ocasiona falha na magnitude de:", o: {A:"O(n²), visto que n instâncias processuais carregarão n blocos de matriz copiados repetidas vezes.", B:"O(log n), devido ao contínuo e massivo expurgo processual atinente nas matrizes englobadas restritamente.", C:"Nenhum impacto extra, dada a reciclagem massiva atrelada nas diretrizes do coletor universal de sobras.", D:"O(1), uma vez que os referenciamentos nativos tratam do mapeamento restritivo estrutural processual puro fixo."}, c: "A", e: "Copiar dados pesados (N) de forma integral dentro de um laço de escopo LIFO profundo (N) devasta as capacidades RAM redundando na terrível degradação processual espacial. Passa-se sempre por referência."}
-                ]
-            },
-            {
-                titulo: "Módulo VII: Flashcards de Resposta Rápida",
-                questoes: [
-                    {p: "Qual a diferença primária distinguindo o comportamento funcional da Máquina de Moore perante Mealy?", o: {A: "Moore restringe a saída exata ao estado; Mealy depende de estado mais transição.", B: "Moore é determinístico e atua focado exclusivamente nas entradas geradas estritamente.", C: "Moore e Mealy diferem primariamente pelos saltos contidos analíticos em epsilon.", D: "Mealy atrela a emissão e leitura focada estritamente contida num único polo de nó."}, c: "A", e: "Na Moore, o nó imprime saída. Na Mealy, a linha (seta/arco) com a transição que imprime."},
-                    {p: "Um AFD possui suporte matemático concedendo múltiplas transições saindo sob o mesmo símbolo lido?", o: {A: "Sim, é a raiz operatória de flexibilidade formativa algorítmica determinística.", B: "Inviável na teoria estrita. Um único caminho obrigatório para cada letra isolada lida.", C: "Condicionado diretamente à formatação expressiva do vocábulo adotado pelo sistema.", D: "Possível caso aplique epsilon (vazio) operando em paralelo na base das chamadas."}, c: "B", e: "AFD não 'adivinha'. Para cada caractere do alfabeto o autômato sabe o exato e único trajeto contido estático a cursar."},
-                    {p: "Se um laço logico processa a iteração na proporção baseando-se em (i = i * 2), sua complexidade recairá:", o: {A: "Escalando para O(n), formatando amarra processual puramente estrita e sequencial.", B: "Delineando premissas de base atestando complexidade formativa exponencial O(n²).", C: "Saltando degraus expressivamente, enquadrando as métricas na estirpe rápida O(log n).", D: "Fixando ordem O(1) pelo desfecho matemático atrelado e reduzido em iterações curtas."}, c: "C", e: "O salto multiplicativo atinge o limite do conjunto logaritmicamente mais ágil que qualquer adição incremental sucessiva isolada."},
-                    {p: "Um AFN possui a permissão universal atrelada a embutir transições vazias do tipo epsilon?", o: {A: "Sim, a essência do Não-Determinismo prevê os saltos simultâneos sem ler conteúdo na fita.", B: "Vetado categoricamente; transições requerem validações explícitas de processamentos lidos.", C: "Permissivo estritamente limitando atuações nas linhas frontais de término do arranjo gráfico.", D: "Varia respeitando restrições atreladas limitantes associativas da cadeia de tamanho infinito."}, c: "A", e: "É a habilidade principal da classe; transitar de graça espalhando caminhos alternativos de simulação pela fita."},
-                    {p: "A conversão e transformação contínua de AFNs formatando instâncias para o crivo AFD é factível?", o: {A: "Inadmissível por quebrar preceitos da linguagem em detrimento das expansões analíticas.", B: "Sim, detêm exatamente e estritamente igual poder algorítmico, consolidando mesmas linguagens.", C: "Limita-se aos casos com restrição temporal de transições não providas em anel acíclico estrito.", D: "Depende intrinsecamente da profundidade da base matricial geradora dos blocos processuais."}, c: "B", e: "A construção do AFD pode gerar mais nós visuais para representar o caos do AFN, porém atesta incondicional mesma classe de aceitação teórica restritiva."}
-                ]
-            }
+          {
+            "titulo": "BLOCO I — Fundamentos de Inovação e Modelos de Negócios Disruptivos",
+            "questoes": [
+              {
+                "t": "Na segunda metade do século XX, a adoção da Tecnologia da Informação (TI) conferia vantagem competitiva imediata às organizações. Contudo, nas primeiras décadas do século XXI, a TI passou a atuar como requisito básico operacional, deslocando o verdadeiro diferencial competitivo para a capacidade de inovar, identificar oportunidades e reconfigurar modelos de negócios em mercados globalizados e hipercompetitivos.\n(Adaptado de SILVA et al., 2018; ROGERS, 2021).",
+                "p": "Considerando o papel estratégico da inovação no contexto organizacional contemporâneo, avalie as afirmações a seguir:\n\nI. A inovação restringe-se à criação de mercados inéditos, uma vez que mercados maduros já possuem cadeias de valor consolidadas que impedem a agregação de valor por modificações de processos.\nII. Organizações que incorporam a inovação à sua cultura corporativa tendem a ampliar sua participação de mercado e obter lucros progressivos em comparação a concorrentes tradicionais.\nIII. O empreendedorismo baseado em inovação pode ocorrer tanto na criação de novos empreendimentos independentes quanto internamente em empresas já estabelecidas, sob a forma de empreendedorismo corporativo.\n\nÉ correto o que se afirma em:",
+                "o": {
+                  "A": "I, apenas.",
+                  "B": "II, apenas.",
+                  "C": "I e III, apenas.",
+                  "D": "II e III, apenas.",
+                  "E": "I, II e III."
+                },
+                "c": "D",
+                "e": "A afirmativa I é incorreta porque a inovação também ocorre em mercados já existentes mediante modificação de produtos e processos para agregar valor. As afirmativas II e III estão corretas conforme os fundamentos de inovação e intraempreendedorismo."
+              },
+              {
+                "t": "De acordo com o Manual de Oslo (OECD, 2018), a inovação consiste em um produto ou processo novo ou aprimorado (ou uma combinação deles) que difere significativamente dos produtos ou processos anteriores da unidade e que foi disponibilizado a usuários potenciais ou colocado em uso pela organização. Além disso, a literatura classifica a inovação segundo seu grau de impacto e novidade nos mercados.",
+                "p": "Uma montadora tradicional de veículos a combustão decide aperfeiçoar o sistema de injeção eletrônica de um modelo já consolidado para reduzir em 8% o consumo de combustível. Paralelamente, uma startup desenvolve uma plataforma digital de mobilidade compartilhada sob demanda que elimina a necessidade de posse do veículo, alterando hábitos sociais e criando um novo mercado ('oceano azul').\n\nEssas duas iniciativas exemplificam, respectivamente, inovações:",
+                "o": {
+                  "A": "incremental e disruptiva.",
+                  "B": "radical e incremental.",
+                  "C": "organizacional e de marketing.",
+                  "D": "fechada e descontínua.",
+                  "E": "de processo e incremental."
+                },
+                "c": "A",
+                "e": "O aperfeiçoamento contínuo de um produto existente caracteriza inovação incremental, enquanto a criação de um novo mercado que quebra paradigmas e modifica hábitos de consumo caracteriza inovação disruptiva."
+              },
+              {
+                "t": "Ao analisar as atitudes que sustentam o empreendedorismo baseado em inovação, Farrell (2019) destaca comportamentos históricos emblemáticos: a criação da lixa (sandpaper) pela 3M a partir de uma demanda prática; a célebre afirmação de Akio Morita (Sony) de que se faz mais em um dia de crise do que em um mês de complacência; e o legado de Thomas Edison de que a invenção envolve 10% de inspiração e 90% de transpiração.",
+                "p": "A partir dessas referências, assinale a opção que apresenta corretamente as três atitudes do empreendedorismo inovador descritas pelo autor:",
+                "o": {
+                  "A": "Evitar riscos operacionais; terceirizar a pesquisa básica; aguardar a estabilidade do mercado.",
+                  "B": "Sentir o calor da necessidade; criar crise e urgência; fazer algo melhor a cada dia.",
+                  "C": "Priorizar o planejamento de longo prazo; manter processos rígidos; proteger patentes fechadas.",
+                  "D": "Reduzir investimentos em P&D; focar exclusivamente em marketing; replicar modelos tradicionais.",
+                  "E": "Centralizar decisões na alta cúpula; eliminar testes de mercado; padronizar rotinas administrativas."
+                },
+                "c": "B",
+                "e": "Farrell (2019) sintetiza as atitudes empreendedoras inovadoras em: sentir o calor da necessidade (3M), criar crise e urgência (Akio Morita) e fazer alguma coisa melhor a cada dia (Thomas Edison)."
+              },
+              {
+                "t": "Para Reis (2008), a ciência constitui o conjunto de conhecimentos organizados sobre os mecanismos de causalidade dos fenômenos empíricos, ao passo que a tecnologia aplica esse acervo científico às artes industriais e processos produtivos, gerando impactos socioeconômicos. Sob o ponto de vista operacional, a tecnologia manifesta-se em três categorias distintas nas organizações.",
+                "p": "Associe as categorias tecnológicas apresentadas na Coluna A aos seus respectivos exemplos ou definições na Coluna B:\n\nColuna A\n1. Tecnologia materializada\n2. Tecnologia documentada\n3. Tecnologia imaterial\n\nColuna B\n( ) Conhecimento tácito, teórico e prático adquirido por formação acadêmica e experiência profissional.\n( ) Equipamentos fabris, artefatos físicos, máquinas e dispositivos com atributos de design e durabilidade.\n( ) Manuais técnicos, plantas industriais, layouts, memórias descritivas e websites de orientação.\n\nA sequência correta, de cima para baixo, é:",
+                "o": {
+                  "A": "1 – 2 – 3.",
+                  "B": "2 – 3 – 1.",
+                  "C": "3 – 1 – 2.",
+                  "D": "3 – 2 – 1.",
+                  "E": "1 – 3 – 2."
+                },
+                "c": "C",
+                "e": "Tecnologia imaterial refere-se ao conhecimento tácito/teórico-prático (3); materializada refere-se a equipamentos e artefatos físicos (1); e documentada refere-se a manuais, plantas e layouts (2)."
+              },
+              {
+                "t": "Mendes (2020) aponta que grandes corporações consolidadas frequentemente enfrentam dificuldades para se reinventar diante das disrupções tecnológicas. Para estruturar modelos de negócios inovadores de sucesso, o autor propõe oito elementos essenciais: aspirar, escolher, descobrir, evoluir, acelerar, escalar, ampliar e mobilizar.",
+                "p": "Sobre esses elementos constitutivos de modelos de negócios inovadores, avalie as asserções a seguir e a relação proposta entre elas:\n\nI. O elemento 'Ampliar' pressupõe a abertura da organização para colaborações externas e a busca por talentos em ecossistemas e ambientes distribuídos.\nPORQUE\nII. O elemento 'Escalar' concentra-se exclusivamente na retenção interna de propriedade intelectual, impedindo parcerias externas para evitar vazamento tecnológico.\n\nA respeito dessas asserções, assinale a opção correta:",
+                "o": {
+                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
+                  "E": "As asserções I e II são proposições falsas."
+                },
+                "c": "C",
+                "e": "A asserção I é verdadeira (Ampliar envolve colaboração externa e talentos distribuídos). A asserção II é falsa, pois 'Escalar' trata da gestão da magnitude, recursos e alcance da inovação, sem proibir parcerias."
+              },
+              {
+                "t": "Segundo Diamandis e Kotler (2018), as tecnologias exponenciais utilizam sistemas automatizados com software para materializar ideias capazes de criar novos mercados e suprir demandas inéditas. Contudo, os autores alertam que o cérebro humano foi condicionado ao pensamento linear, gerando resistência inicial às ideias revolucionárias até que estas se tornem a nova norma social.",
+                "p": "Considerando a relação entre transformação digital, pensamento exponencial e resistência à mudança, assinale a alternativa correta:",
+                "o": {
+                  "A": "As tecnologias exponenciais caracterizam-se por ciclos lentos de adoção, permitindo que empresas tradicionais se adaptem sem alterar seus modelos de negócio.",
+                  "B": "Sistemas integrados tradicionais como ERP, CRM e SCM tornaram-se obsoletos e foram integralmente substituídos por redes sociais na gestão empresarial.",
+                  "C": "A inovação disruptiva geralmente alinha-se ao pensamento linear dos consumidores, razão pela qual é imediatamente compreendida e aceita pelo mercado.",
+                  "D": "Impressoras 3D, dispositivos de Internet das Coisas, realidade virtual e realidade aumentada constituem vetores de novas ondas de disrupção socioeconômica.",
+                  "E": "Empresas exponenciais, como Uber e Airbnb, consolidaram-se pela aquisição massiva de ativos físicos imobilizados como principal barreira de entrada."
+                },
+                "c": "D",
+                "e": "Diamandis e Kotler (2018) destacam smartphones, IoT, impressoras 3D, RV e RA como tecnologias exponenciais que impulsionam novas disrupções, desafiando o pensamento linear."
+              },
+              {
+                "t": "David Rogers (2021) afirma que 'as regras de negócio mudaram' com a transformação digital, exigindo que as organizações revisitem suas estratégias por meio de cinco domínios fundamentais: clientes, competição, dados, inovação e valor.",
+                "p": "Uma rede varejista tradicional decide transformar seu modelo de operação: deixa de atuar apenas como vendedora direta de estoque próprio e cria um marketplace aberto para pequenos lojistas e parceiros logísticos, integrando ferramentas de Business Intelligence ao seu CRM para antecipar necessidades ainda não percebidas pelos consumidores.\n\nDe acordo com os cinco domínios de Rogers (2021), a criação do marketplace aberto e a antecipação de necessidades latentes correspondem, respectivamente, às estratégias dos domínios:",
+                "o": {
+                  "A": "Competição (construir plataformas) e Valor (adaptar e criar propostas de valor disruptivas).",
+                  "B": "Dados (conversão em ativos) e Clientes (gerenciamento de redes sociais).",
+                  "C": "Inovação (experimentação autônoma) e Competição (guerra de preços tradicionais).",
+                  "D": "Clientes (comunidades de leitura) e Dados (armazenamento em nuvem).",
+                  "E": "Valor (redução de custos operacionais) e Inovação (controle hierárquico rígido)."
+                },
+                "c": "A",
+                "e": "No domínio Competição, Rogers recomenda construir plataformas em vez de apenas produtos; no domínio Valor, criar soluções disruptivas para necessidades ainda não percebidas pelos clientes."
+              },
+              {
+                "t": "No âmbito do planejamento estratégico voltado à transformação digital, o tratamento de dados deixou de ser uma atividade meramente operacional de registro contábil para converter-se em ativo estratégico essencial à sobrevivência empresarial.",
+                "p": "Para explorar o domínio 'Dados' de forma inovadora na transformação digital, uma organização deve:",
+                "o": {
+                  "A": "isolar os bancos de dados departamentais para garantir que cada setor tome decisões independentes sem interferência externa.",
+                  "B": "adotar sistemas de Business Analytics e Business Intelligence integrados a plataformas como ERP, SCM e CRM para converter dados em ativos estratégicos.",
+                  "C": "priorizar exclusivamente dados históricos estruturados em planilhas manuais, evitando o processamento de dados não estruturados de Big Data.",
+                  "D": "restringir o acesso às informações analíticas apenas aos acionistas majoritários, impedindo a autonomia operacional das equipes.",
+                  "E": "substituir ferramentas de gestão integrada por controles físicos, reduzindo a dependência da infraestrutura de conectividade."
+                },
+                "c": "B",
+                "e": "A estratégia recomendada para o domínio Dados envolve integrar Business Analytics e BI aos sistemas ERP, SCM e CRM para transformar dados dispersos em ativos estratégicos."
+              },
+              {
+                "t": "Camelo (2018) classifica a inovação sob múltiplas perspectivas: quanto ao objeto (produto, processo, marketing e organizacional), quanto ao grau de novidade (incremental, radical ou disruptiva/revolucionária) e quanto à estratégia de abertura (inovação aberta e inovação fechada).",
+                "p": "Uma indústria farmacêutica que antes conduzia todas as suas pesquisas exclusivamente em laboratórios próprios sob sigilo absoluto decide criar um portal colaborativo para receber propostas de moléculas desenvolvidas por universidades, startups biotecnológicas e pesquisadores independentes, compartilhando riscos e royalties.\n\nQuanto à estratégia adotada, essa mudança representa a transição da:",
+                "o": {
+                  "A": "inovação incremental para a inovação de marketing.",
+                  "B": "inovação fechada para a inovação aberta.",
+                  "C": "inovação de processo para a inovação organizacional.",
+                  "D": "tecnologia imaterial para a tecnologia materializada.",
+                  "E": "análise prescritiva para a análise descritiva."
+                },
+                "c": "B",
+                "e": "A abertura das fronteiras organizacionais para cocriação com universidades, startups e agentes externos caracteriza a transição da inovação fechada para a inovação aberta."
+              },
+              {
+                "t": "Para cultivar o domínio 'Inovação' proposto por Rogers (2021), as organizações precisam superar estruturas excessivamente burocráticas que punem o erro experimental e inibem a criatividade dos colaboradores.",
+                "p": "Assinale a alternativa que expressa uma prática coerente com o fortalecimento do domínio 'Inovação' na era digital:",
+                "o": {
+                  "A": "Exigir planos de negócios exaustivos com retorno financeiro garantido antes de autorizar qualquer teste de conceito.",
+                  "B": "Concentrar o desenvolvimento de novas ideias exclusivamente no departamento jurídico e financeiro.",
+                  "C": "Fomentar a experimentação autônoma dos times, alinhada ao propósito, missão, visão e valores da organização.",
+                  "D": "Eliminar métricas de aprendizado rápido, mantendo apenas indicadores tradicionais de produtividade fabril.",
+                  "E": "Impedir que equipes multidisciplinares interajam diretamente com usuários finais durante o desenvolvimento."
+                },
+                "c": "C",
+                "e": "O domínio Inovação preconiza cultivar uma cultura de experimentação onde os times tenham autonomia para testar ideias, guiados pelo propósito, missão, visão e valores corporativos."
+              }
+            ]
+          },
+          {
+            "titulo": "BLOCO II — Tecnologias Emergentes e seus Impactos em Modelos de Negócios",
+            "questoes": [
+              {
+                "t": "Embora os primeiros estudos teóricos sobre Inteligência Artificial (IA) remontem à década de 1940, sua explosão comercial e estratégica no século XXI decorre da convergência entre alto poder de processamento computacional, conectividade wireless e repositórios massivos de dados (Big Data), inaugurando o que Kai-Fu Lee (2019) denomina 'Terceira Onda da IA'.\n(Adaptado de DAY; SCHOEMAKER; GUNTHER, 2003; LEE, 2019).",
+                "p": "No suporte às decisões gerenciais contemporâneas, a análise de dados evoluiu em complexidade. Analise as definições abaixo:\n\nI. Análise Descritiva: utiliza algoritmos de otimização e simulação para recomendar automaticamente a melhor decisão estratégica futura.\nII. Análise Preditiva: emprega mineração de dados e aprendizado de máquina para projetar cenários e eventos futuros prováveis.\nIII. Análise Prescritiva: apoia decisões complexas por meio de modelos de decisão, simulação, otimização e sistemas especialistas.\n\nÉ correto o que se afirma em:",
+                "o": {
+                  "A": "I, apenas.",
+                  "B": "II, apenas.",
+                  "C": "I e III, apenas.",
+                  "D": "II e III, apenas.",
+                  "E": "I, II e III."
+                },
+                "c": "D",
+                "e": "A afirmativa I está incorreta pois descreve a análise prescritiva; a análise descritiva apenas relata o que ocorreu no passado por meio de consultas e gráficos históricos. II e III estão corretas."
+              },
+              {
+                "t": "Russell e Norvig (2021) definem um agente inteligente como qualquer entidade capaz de perceber seu ambiente por meio de sensores e agir sobre ele por intermédio de atuadores, buscando atingir objetivos segundo diferentes níveis de racionalidade (perfeita, cautelosa, limitada e otimização limitada).",
+                "p": "Um sistema de IA embarcado em um veículo autônomo precisa decidir, em frações de segundo, entre frear bruscamente ou desviar de um obstáculo repentino, operando sob restrições reais de tempo de resposta e capacidade de processamento embarcado para entregar uma solução suficientemente segura.\n\nSegundo a classificação de Russell e Norvig (2021), esse comportamento ilustra o conceito de:",
+                "o": {
+                  "A": "racionalidade perfeita, pois dispõe de tempo infinito e conhecimento onisciente do ambiente.",
+                  "B": "racionalidade limitada, pois delibera o necessário para apresentar uma resposta suficiente em tempo determinado.",
+                  "C": "inteligência artificial superinteligente, pois supera integralmente toda capacidade cognitiva humana.",
+                  "D": "análise descritiva passiva, uma vez que não utiliza atuadores físicos sobre o ambiente.",
+                  "E": "computação estática não adaptativa, incapaz de melhorar seu desempenho com novas observações."
+                },
+                "c": "B",
+                "e": "Na racionalidade limitada, agentes reais atuam por meio da satisfação, deliberando o necessário para entregar uma resposta suficiente dentro de uma janela crítica de tempo."
+              },
+              {
+                "t": "A comunidade científica classifica a Inteligência Artificial em três grandes categorias evolutivas, conforme a amplitude e a capacidade cognitiva dos algoritmos desenvolvidos.",
+                "p": "Sobre as categorias de Inteligência Artificial (Fraca, Forte e Superinteligente), assinale a alternativa correta:",
+                "o": {
+                  "A": "A IA Superinteligente já é amplamente empregada em assistentes virtuais comerciais como Siri, Alexa e Google Assistente.",
+                  "B": "A IA Fraca (Estreita) caracteriza-se pela capacidade de resolver qualquer problema humano generalizado sem necessidade de dados de treinamento.",
+                  "C": "Sistemas especialistas, sistemas de recomendação e assistentes digitais focados em domínios específicos são exemplos de IA Fraca (Estreita).",
+                  "D": "A IA Forte (Generalizada) dispensa o uso de Machine Learning e Deep Learning, operando apenas por regras lógicas fixas.",
+                  "E": "A IA Superinteligente é uma tecnologia consolidada desde os anos 1990 em sistemas bancários de processamento em lote."
+                },
+                "c": "C",
+                "e": "A IA Fraca (Estreita) resolve problemas complexos dentro de um domínio específico bem definido (ex.: assistentes virtuais e sistemas de recomendação). A Superinteligente ainda é teórica."
+              },
+              {
+                "t": "Sharda, Delen e Turban (2019) conceituam a Internet das Coisas (IoT) como o fenômeno de conectar o mundo físico à Internet por meio de dispositivos microeletrônicos dotados de sensores e comunicação sem fio, viabilizando a computação ubíqua em setores como saúde, logística, agricultura, varejo e cidades inteligentes.",
+                "p": "Avalie as asserções a seguir sobre o impacto da Internet das Coisas (IoT) nos modelos de negócios:\n\nI. A proliferação de sensores vestíveis (wearables) e medidores inteligentes permite que empresas migrem da simples venda de produtos físicos para a oferta de serviços contínuos baseados em monitoramento e dados em tempo real.\nPORQUE\nII. A tecnologia de IoT promove a fusão entre os mundos físico e digital, transformando objetos cotidianos em fontes permanentes de coleta e transmissão de informações.\n\nA respeito dessas asserções, assinale a opção correta:",
+                "o": {
+                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
+                  "E": "As asserções I e II são proposições falsas."
+                },
+                "c": "A",
+                "e": "Ambas as asserções são verdadeiras, e a fusão físico-digital promovida pela IoT (II) explica diretamente a possibilidade de modelos de negócios baseados em serviços e monitoramento contínuo (I)."
+              },
+              {
+                "t": "Com a evolução das interfaces homem-computador para além das telas bidimensionais tradicionais, tecnologias como Realidade Virtual (RV) e Realidade Aumentada (RA) vêm sendo incorporadas a treinamentos industriais, medicina diagnóstica, arquitetura e varejo.",
+                "p": "Assinale a alternativa que estabelece corretamente a distinção técnica entre Realidade Virtual (RV) e Realidade Aumentada (RA):",
+                "o": {
+                  "A": "A RV mistura elementos virtuais ao ambiente físico real captado por câmeras, enquanto a RA isola completamente o usuário em um mundo sintético.",
+                  "B": "A RV promove a imersão total do usuário em ambientes virtuais tridimensionais simulados por computador, enquanto a RA sobrepõe informações e objetos virtuais ao mundo real.",
+                  "C": "Ambas exigem obrigatoriamente o uso de capacetes opacos fechados, sendo impossível executar RA em smartphones ou tablets.",
+                  "D": "A RA é utilizada exclusivamente para jogos digitais, ao passo que a RV restringe-se ao controle de estoque em armazéns logísticos.",
+                  "E": "A RV e a RA eliminam a necessidade de processamento gráfico em tempo real, operando apenas com imagens estáticas pré-renderizadas."
+                },
+                "c": "B",
+                "e": "A Realidade Virtual imerge o usuário em mundos virtuais 3D gerados por computador, enquanto a Realidade Aumentada combina informações reais (captadas por câmeras/IoT) com projeções virtuais."
+              },
+              {
+                "t": "De acordo com Lenz et al. (2020), o desenvolvimento de soluções baseadas em Aprendizado de Máquina (Machine Learning - ML) segue um fluxo estruturado composto por sete etapas sequenciais: seleção, preparação, modelo, treino, avaliação, ajuste e aplicação.",
+                "p": "Durante o desenvolvimento de um algoritmo de ML para detecção de fraudes bancárias, a equipe de cientistas de dados realiza a limpeza de registros inconsistentes, a conversão de escalas monetárias e a normalização das variáveis numéricas antes de submeter os dados aos algoritmos de classificação.\n\nSegundo Lenz et al. (2020), essa atividade corresponde à etapa de:",
+                "o": {
+                  "A": "Aplicação.",
+                  "B": "Ajuste de hiperparâmetros.",
+                  "C": "Preparação dos dados.",
+                  "D": "Avaliação de precisão.",
+                  "E": "Seleção do modelo preditivo."
+                },
+                "c": "C",
+                "e": "Transformações de unidades, conversão de escalas, limpeza e normalização ocorrem na fase de Preparação dos dados, logo após a Seleção e antes da escolha do Modelo."
+              },
+              {
+                "t": "No ciclo de Aprendizado de Máquina, após a etapa de treinamento do algoritmo, é indispensável verificar se o modelo matemático generaliza adequadamente o conhecimento adquirido antes de colocá-lo em produção comercial.",
+                "p": "Na etapa de 'Avaliação' do processo de Aprendizado de Máquina, o procedimento técnico adequado consiste em:",
+                "o": {
+                  "A": "utilizar exatamente os mesmos dados empregados no treinamento para garantir 100% de acurácia aparente.",
+                  "B": "testar o modelo treinado com um conjunto de dados separado previamente (desconhecido pelo modelo) para aferir sua precisão na predição.",
+                  "C": "descartar os parâmetros ajustados na equação e reiniciar a coleta de dados brutos sem validação estatística.",
+                  "D": "alterar a taxa de aprendizado em tempo real durante o uso pelo cliente final sem testes prévios.",
+                  "E": "substituir algoritmos de classificação por planilhas descritivas estáticas."
+                },
+                "c": "B",
+                "e": "A etapa de Avaliação utiliza os dados separados no início do processo (conjunto de teste desconhecido) para verificar se o modelo apresenta a precisão esperada de predição."
+              },
+              {
+                "t": "A Análise de Sentimentos combina Processamento de Linguagem Natural (PLN), mineração de texto e Aprendizado de Máquina para identificar opiniões favoráveis, neutras ou desfavoráveis expressas por usuários em redes sociais, avaliações de e-commerce ou dispositivos IoT.",
+                "p": "Associe as aplicações da Análise de Sentimentos (Coluna A) aos seus respectivos focos gerenciais (Coluna B):\n\nColuna A\n1. Voz do Consumidor (VOC)\n2. Voz dos Funcionários (VOE)\n3. Gestão da Marca\n4. Mercados Financeiros\n\nColuna B\n( ) Monitorar percepções globais em redes sociais para moldar a imagem institucional além da experiência pontual.\n( ) Analisar resenhas de produtos e serviços no CRM analítico para administrar queixas e elogios de clientes.\n( ) Prever oscilações futuras de ações observando notícias, blogs, redes sociais e grupos de discussão.\n( ) Captar e interpretar continuamente o clima interno e o que os colaboradores expressam sobre a organização.\n\nA sequência correta, de cima para baixo, é:",
+                "o": {
+                  "A": "3 – 1 – 4 – 2.",
+                  "B": "1 – 3 – 2 – 4.",
+                  "C": "3 – 4 – 1 – 2.",
+                  "D": "2 – 1 – 4 – 3.",
+                  "E": "4 – 2 – 3 – 1."
+                },
+                "c": "A",
+                "e": "Gestão da Marca (3) molda percepções nas redes sociais; VOC (1) analisa resenhas de clientes no CRM; Mercados Financeiros (4) prevê ações; VOE (2) ouve os funcionários."
+              },
+              {
+                "t": "Gerd Leonhard (2018, p. 33) afirma: 'a tecnologia, por mais máquina que seja, é simplesmente uma ferramenta que usamos para atingir um fim: a tecnologia não é o que procuramos, mas como procuramos!'. Em outra passagem, o autor alerta que o maior perigo da Inteligência Artificial reside no fato de as pessoas concluírem prematuramente que já a compreendem.",
+                "p": "Considerando as implicações éticas e estratégicas apontadas por Leonhard (2018) e Russell e Norvig (2021) sobre a Inteligência Artificial, assinale a alternativa correta:",
+                "o": {
+                  "A": "A automação por IA deve substituir integralmente o julgamento ético humano nas decisões estratégicas das organizações.",
+                  "B": "Os sistemas de IA são neutros por natureza e não oferecem riscos à autonomia, privacidade ou liberdade humana.",
+                  "C": "A IA deve ser empregada como meio para ampliar o potencial humano e automatizar tarefas mecanizadas, exigindo governança ética contínua.",
+                  "D": "A compreensão completa dos algoritmos de Deep Learning já foi atingida, eliminando o fenômeno de 'caixa-preta' decisória.",
+                  "E": "O avanço da IA torna desnecessária a formação interdisciplinar entre engenheiros, administradores e profissionais de TI."
+                },
+                "c": "C",
+                "e": "Os autores destacam que a tecnologia é uma ferramenta para ampliar a existência humana e reduzir tarefas mecanizadas, mas exige cautela ética quanto à autonomia e privacidade."
+              },
+              {
+                "t": "No varejo moderno, a integração entre Internet das Coisas (IoT), computação móvel e Inteligência Artificial tem viabilizado o surgimento de lojas autônomas sem caixas tradicionais, nas quais sensores de prateleira, câmeras com visão computacional e aplicativos móveis identificam automaticamente os itens retirados pelo consumidor.",
+                "p": "Nesse modelo de negócio varejista baseado em tecnologias emergentes, qual é o principal ganho estratégico proporcionado pela integração entre IoT e IA?",
+                "o": {
+                  "A": "Eliminação completa da necessidade de gestão da cadeia de suprimentos (SCM).",
+                  "B": "Coleta automatizada de dados comportamentais em tempo real para personalização de ofertas, otimização de estoque e redução de atrito na jornada de compra.",
+                  "C": "Substituição da conectividade sem fio por registros manuais em papel para aumentar a segurança cibernética.",
+                  "D": "Restrição do acesso de consumidores que não possuam conhecimentos avançados de programação.",
+                  "E": "Padronização rígida do mix de produtos sem considerar variações regionais de demanda."
+                },
+                "c": "B",
+                "e": "A integração IoT + IA no varejo captura dados em tempo real sobre o comportamento de consumo, otimizando o SCM, personalizando ofertas e eliminando filas no checkout."
+              }
+            ]
+          },
+          {
+            "titulo": "BLOCO III — Implementação de Modelos Disruptivos, Lean Startup, Design Thinking e Modelagem Ágil",
+            "questoes": [
+              {
+                "t": "Silva et al. (2018) observam que muitas ideias inovadoras fracassam antes de chegar ao mercado por escassez de recursos e isolamento. Para mitigar esse risco, organizações inserem-se em ecossistemas de inovação — ambientes colaborativos que articulam pesquisadores, startups, investidores, universidades e indústrias, tendo o Vale do Silício como referência clássica.",
+                "p": "Segundo Silva et al. (2018), são características essenciais dos participantes de um ecossistema de inovação colaborativo:\n\nI. Valorização da diversidade de atores na rede para potencializar ideias disruptivas.\nII. Conexão entre líderes para promoção do capital social e articulação institucional.\nIII. Relacionamentos baseados na confiança mútua para superar conflitos naturais de ideação.\nIV. Isolamento competitivo entre demandantes e ofertantes para proteger segredos industriais.\n\nÉ correto apenas o que se afirma em:",
+                "o": {
+                  "A": "I e II.",
+                  "B": "III e IV.",
+                  "C": "I, II e III.",
+                  "D": "II, III e IV.",
+                  "E": "I, III e IV."
+                },
+                "c": "C",
+                "e": "As quatro características listadas por Silva et al. (2018) são: valorização da diversidade, ambiente de conexão, conexão entre líderes e relacionamento baseado na confiança. O item IV contraria o conceito de ecossistema."
+              },
+              {
+                "t": "Eric Ries (2019), ao sistematizar a metodologia Lean Startup (Startup Enxuta) inspirada no Sistema Toyota de Produção, define uma startup como uma instituição humana projetada para criar novos produtos e serviços sob condições de extrema incerteza, utilizando o método científico para validar hipóteses de negócio.",
+                "p": "No ciclo de aprendizado da Startup Enxuta ('Construir – Medir – Aprender'), o planejamento estratégico ocorre de maneira invertida em relação à administração tradicional porque:",
+                "o": {
+                  "A": "elabora-se primeiro um plano de negócios de 50 páginas para depois buscar clientes.",
+                  "B": "identifica-se primeiro o que é preciso aprender, define-se o que medir (contabilidade para inovação) e, por fim, constrói-se o produto mínimo para testar.",
+                  "C": "prioriza-se a execução perfeita de cronogramas plurianuais sem tolerância a falhas iniciais.",
+                  "D": "elimina-se a coleta de métricas quantitativas, baseando-se apenas na intuição dos fundadores.",
+                  "E": "desenvolve-se o produto completo com todas as funcionalidades antes de qualquer contato com usuários."
+                },
+                "c": "B",
+                "e": "Na Lean Startup, embora a execução siga Construir-Medir-Aprender, o planejamento ocorre de trás para frente: define-se o que se quer aprender, o que medir e, então, o que construir (MVP)."
+              },
+              {
+                "t": "Caroli (2015) define o Minimum Viable Product (MVP) como a versão mais simples de um produto capaz de ser disponibilizada para validar um conjunto reduzido de hipóteses de negócio. Como ilustra a clássica analogia da evolução da mobilidade (skate → patinete → bicicleta → moto → carro, em vez de construir roda isolada → eixo → chassi → carro), o MVP deve entregar valor funcional desde a primeira iteração.",
+                "p": "Após lançar um MVP de aplicativo de entregas e analisar as métricas de retenção, uma startup constata que os restaurantes aderiram bem à plataforma, mas os consumidores finais abandonam o pedido devido à taxa de entrega. A equipe decide manter a tecnologia base desenvolvida, mas altera o segmento de clientes para entregas corporativas B2B de documentos e insumos médicos.\n\nNa terminologia da Startup Enxuta (RIES, 2019), essa decisão estratégica denomina-se:",
+                "o": {
+                  "A": "Perseverar.",
+                  "B": "Pivotar.",
+                  "C": "Desagrupar.",
+                  "D": "Recongelar.",
+                  "E": "Padronizar."
+                },
+                "c": "B",
+                "e": "Pivotar consiste em manter a base ou visão original do que foi aprendido, realizando uma mudança estruturada de direção (como alteração de segmento de clientes ou proposta de valor) após validação."
+              },
+              {
+                "t": "Para Eric Ries (2019), o crescimento sustentável de uma startup enxuta é impulsionado por mecanismos que garantem que novos clientes surjam a partir das ações de clientes antigos, estruturados em três motores de crescimento.",
+                "p": "Assinale a alternativa que apresenta corretamente os três motores de crescimento definidos na metodologia Lean Startup:",
+                "o": {
+                  "A": "Motor hierárquico, motor burocrático e motor financeiro.",
+                  "B": "Motor de crescimento recorrente, motor de crescimento viral e motor de crescimento pago.",
+                  "C": "Motor de diversificação, motor de penetração e motor de liderança em custo.",
+                  "D": "Motor descritivo, motor preditivo e motor prescritivo.",
+                  "E": "Motor de digitalização, motor de desmonetização e motor de desmaterialização."
+                },
+                "c": "B",
+                "e": "Ries (2019) define três motores de crescimento: recorrente (retenção e uso repetitivo), viral (divulgação orgânica entre usuários) e pago (reinvestimento de receita em aquisição/publicidade)."
+              },
+              {
+                "t": "O Design Thinking, popularizado por Tim Brown (2020), é uma abordagem centrada no ser humano que integra desejabilidade humana, viabilidade econômica e praticabilidade tecnológica ('construir para pensar'), estruturando-se em espaços de inspiração, ideação e implementação, ou em cinco etapas operacionais: Empatia, Definição, Ideação, Prototipagem e Teste.",
+                "p": "Durante um projeto de redesenho de serviços hospitalares utilizando Design Thinking, a equipe passa dias acompanhando pacientes na recepção, observando suas angústias, ouvindo suas queixas sem julgamento e vivenciando o fluxo de atendimento antes de formular qualquer solução tecnológica.\n\nEssa prática corresponde à fase de:",
+                "o": {
+                  "A": "Teste, pois valida a eficácia final do software de triagem.",
+                  "B": "Prototipagem, pois materializa a interface digital do totem de atendimento.",
+                  "C": "Empatia, pois busca compreender profundamente o mundo, a linguagem e as necessidades do usuário.",
+                  "D": "Implementação, pois escala a solução para toda a rede hospitalar.",
+                  "E": "Contabilidade para inovação, pois mensura o retorno financeiro do projeto."
+                },
+                "c": "C",
+                "e": "A fase de Empatia envolve observar, ouvir e vivenciar o mundo do usuário para compreender suas dores reais antes da definição do problema e ideação."
+              },
+              {
+                "t": "Ao comparar o paradigma tradicional de planos de negócios textuais extensos (50+ páginas) com a modelagem ágil contemporânea baseada em ferramentas visuais como o Business Model Canvas (BMC) e o Lean Canvas, observa-se uma mudança profunda na gestão da incerteza.",
+                "p": "Analise as afirmações sobre a modelagem ágil de negócios:\n\nI. Enquanto o plano de negócios tradicional pressupõe tolerância zero ao erro e foco na execução de um plano estático, a modelagem ágil adota alta tolerância inicial ao erro ('errar rápido para corrigir cedo').\nII. O Business Model Canvas organiza-se em nove blocos lógicos que integram o 'cérebro direito' (valor, clientes, canais, relacionamento e receitas) e o 'cérebro esquerdo' (parcerias, atividades, recursos e estrutura de custos).\nIII. A principal vantagem dos painéis visuais (canvas) reside na substituição definitiva da validação com clientes reais por simulações internas de gabinete.\n\nÉ correto o que se afirma em:",
+                "o": {
+                  "A": "I, apenas.",
+                  "B": "II, apenas.",
+                  "C": "I e II, apenas.",
+                  "D": "II e III, apenas.",
+                  "E": "I, II e III."
+                },
+                "c": "C",
+                "e": "As afirmativas I e II estão corretas. A afirmativa III é incorreta porque o canvas deve ser seguido pela pesquisa primária e validação real com o público-alvo, não substituindo o contato com o cliente."
+              },
+              {
+                "t": "Desenvolvido por Jake Knapp (2017) na Google Ventures, o Design Sprint é um método intensivo de cinco dias projetado para encurtar drasticamente o ciclo de ideação, prototipagem e teste de hipóteses críticas antes de investimentos massivos em engenharia e codificação.",
+                "p": "Assinale a alternativa que apresenta a sequência cronológica correta das cinco etapas de um Design Sprint:",
+                "o": {
+                  "A": "Dia 1: Prototipar; Dia 2: Testar; Dia 3: Mapear; Dia 4: Esboçar; Dia 5: Decidir.",
+                  "B": "Dia 1: Mapear; Dia 2: Esboçar; Dia 3: Decidir; Dia 4: Prototipar; Dia 5: Testar.",
+                  "C": "Dia 1: Decidir; Dia 2: Mapear; Dia 3: Prototipar; Dia 4: Testar; Dia 5: Escalar.",
+                  "D": "Dia 1: Esboçar; Dia 2: Decidir; Dia 3: Testar; Dia 4: Mapear; Dia 5: Prototipar.",
+                  "E": "Dia 1: Testar; Dia 2: Prototipar; Dia 3: Decidir; Dia 4: Esboçar; Dia 5: Mapear."
+                },
+                "c": "B",
+                "e": "A anatomia rigorosa de 5 dias do Design Sprint segue a ordem: Dia 1 (Mapear), Dia 2 (Esboçar), Dia 3 (Decidir), Dia 4 (Prototipar) e Dia 5 (Testar com small data — cerca de 5 clientes)."
+              },
+              {
+                "t": "No 5º dia de um Design Sprint, a equipe submete o protótipo de alta fidelidade aparente ('fachada') construído no dia anterior à avaliação qualitativa profunda com uma amostra enxuta de usuários-alvo (small data, tipicamente 5 clientes).",
+                "p": "Qual é o principal objetivo estratégico da realização do teste no 5º dia do Design Sprint com apenas 5 clientes?",
+                "o": {
+                  "A": "Obter significância estatística censitária para lançar o produto em escala global imediatamente.",
+                  "B": "Identificar rapidamente padrões recorrentes de usabilidade e aderência de valor, reduzindo riscos antes de codificar o sistema real.",
+                  "C": "Comprovar que o protótipo não possui defeitos, dispensando ajustes futuros no modelo de negócios.",
+                  "D": "Substituir integralmente a pesquisa de mercado quantitativa e a análise financeira de viabilidade.",
+                  "E": "Realizar o treinamento operacional da equipe de vendas para comercialização em massa."
+                },
+                "c": "B",
+                "e": "Testes qualitativos profundos com 5 clientes revelam rapidamente padrões de comportamento, falhas de compreensão e validação de valor antes de investir na codificação completa."
+              },
+              {
+                "t": "Matsumoto (2020) propõe um roteiro prático em sete passos para o desenvolvimento de um MVP alinhado ao Design Thinking e à Startup Enxuta: (1) Objetivos, (2) Clientes, (3) Eleição, (4) Criação, (5) Lapidação, (6) Validação e (7) Melhoria.",
+                "p": "Na etapa de 'Lapidação' (Passo 5) proposta por Matsumoto (2020), a orientação central para a equipe de desenvolvimento é:",
+                "o": {
+                  "A": "adicionar o máximo possível de funcionalidades acessórias para impressionar investidores.",
+                  "B": "aplicar o princípio de que 'menos é mais', examinando arestas e simplificando a ideia ao essencial viável.",
+                  "C": "interromper o contato com potenciais clientes até que o código-fonte esteja 100% otimizado.",
+                  "D": "expandir o escopo inicial para atender simultaneamente a todos os segmentos demográficos.",
+                  "E": "elaborar um contrato jurídico definitivo de propriedade intelectual antes de testar a ideia."
+                },
+                "c": "B",
+                "e": "No Passo 5 (Lapidação), o foco é detalhar o MVP aplicando o conceito 'menos é mais', aparando arestas e mantendo apenas o núcleo indispensável para testar a proposta de valor."
+              },
+              {
+                "t": "Na era ágil e da Inteligência Artificial Generativa (como modelos de linguagem de grande escala), ferramentas digitais como Miro, Trello, Canva e interfaces de IA passaram a atuar como 'multiplicadores de força' cognitivos na modelagem de negócios.",
+                "p": "Sobre o papel da Inteligência Artificial Generativa na etapa de ideação e construção do Business Model Canvas ('Prompt-to-Canvas'), avalie as asserções a seguir:\n\nI. A IA Generativa elimina o 'bloqueio da tela em branco' ao gerar rapidamente primeiras iterações estruturadas de modelos de negócios e cenários.\nPORQUE\nII. A IA Generativa substitui integralmente o julgamento crítico humano e a validação empírica com clientes reais no mercado.\n\nA respeito dessas asserções, assinale a opção correta:",
+                "o": {
+                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
+                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
+                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
+                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
+                  "E": "As asserções I e II são proposições falsas."
+                },
+                "c": "C",
+                "e": "A asserção I é verdadeira (a IA acelera a primeira iteração e supera o bloqueio inicial). A asserção II é falsa, pois a saída da IA exige crítica, ajuste, refino humano e validação real com clientes."
+              }
+            ]
+          },
+          {
+            "titulo": "BLOCO IV — Planejamento Estratégico, Ferramentas de Gestão, Governança Corporativa e de TI",
+            "questoes": [
+              {
+                "t": "Segundo Oliveira (2013), o planejamento estratégico não deve ser confundido com previsão, projeção ou simples plano operacional; trata-se de um conjunto de providências para construir uma situação futura desejada. Ele se desdobra nos níveis estratégico (longo prazo, visão sistêmica, missão/visão/valores), tático (médio prazo, departamental) e operacional (curto prazo, rotinas e cronogramas).",
+                "p": "Para fundamentar o planejamento estratégico em TI e negócios, Oliveira (2013) estabelece quatro princípios fundamentais. Quando uma organização assegura que o planejamento anteceda as funções de organização, direção e controle — definindo previamente 'o que e como será feito' —, ela está aplicando o princípio da:",
+                "o": {
+                  "A": "contribuição aos objetivos.",
+                  "B": "precedência do planejamento.",
+                  "C": "maior eficiência, eficácia e efetividade.",
+                  "D": "maior influência e abrangência.",
+                  "E": "segregação funcional."
+                },
+                "c": "B",
+                "e": "O princípio da precedência do planejamento estabelece que o planejamento vem antes das demais funções administrativas, definindo 'o que e como vai ser feito'."
+              },
+              {
+                "t": "Na análise estratégica empresarial, diversas matrizes auxiliam os gestores a diagnosticar o ambiente competitivo, o portfólio de produtos e as oportunidades de expansão mercadológica.",
+                "p": "Uma empresa de software de gestão (ERP) tradicionalmente focada em indústrias brasileiras decide lançar um novo módulo de Inteligência Artificial preditiva direcionado especificamente à sua base atual de clientes industriais para aumentar o ticket médio.\n\nDe acordo com a Matriz Ansoff (Produto x Mercado), essa estratégia classifica-se como:",
+                "o": {
+                  "A": "Penetração de mercado (produtos existentes em mercados existentes).",
+                  "B": "Desenvolvimento de mercado (produtos existentes em novos mercados).",
+                  "C": "Desenvolvimento de produtos (novos produtos em mercados existentes).",
+                  "D": "Diversificação (novos produtos em novos mercados).",
+                  "E": "Liderança em custo (estratégia genérica de Porter)."
+                },
+                "c": "C",
+                "e": "Na Matriz Ansoff, oferecer um produto novo (módulo de IA) para um mercado já existente (base atual de clientes industriais) configura estratégia de Desenvolvimento de Produtos."
+              },
+              {
+                "t": "A Matriz BCG (Boston Consulting Group) classifica o portfólio de produtos ou unidades de negócio de uma empresa em quatro quadrantes com base na participação relativa de mercado e na taxa de crescimento do mercado.",
+                "p": "Um produto tecnológico consolidado que detém altíssima participação em um mercado maduro de baixo crescimento, gerando grande fluxo de caixa excedente com baixa necessidade de investimento adicional para financiar novas startups internas, é classificado na Matriz BCG como:",
+                "o": {
+                  "A": "Estrela.",
+                  "B": "Em questionamento (Ponto de interrogação).",
+                  "C": "Vaca leiteira.",
+                  "D": "Abacaxi (Cão).",
+                  "E": "Oceano azul."
+                },
+                "c": "C",
+                "e": "Na Matriz BCG, produtos com alta participação de mercado e baixo crescimento de mercado são 'Vacas Leiteiras', responsáveis pela geração sólida de caixa."
+              },
+              {
+                "t": "Laudon e Laudon (2014) classificam os Sistemas de Informação conforme os níveis organizacionais que atendem: Sistemas de Processamento de Transações (SPT/OLTP), Sistemas de Informações Gerenciais (SIG), Sistemas de Apoio à Decisão (SAD) e Sistemas de Apoio ao Executivo (SAE/SIE).",
+                "p": "Associe os sistemas de informação (Coluna A) às suas respectivas funções organizacionais (Coluna B):\n\nColuna A\n1. SPT (Processamento de Transações)\n2. SIG (Informações Gerenciais)\n3. SAD (Apoio à Decisão)\n4. SAE (Apoio ao Executivo)\n\nColuna B\n( ) Monitora tendências de longo prazo, indicadores externos de mercado e performance global para a alta direção.\n( ) Registra operações rotineiras em tempo real, como vendas no caixa, emissão de notas e movimentação de estoque.\n( ) Consolida dados operacionais em relatórios periódicos e de exceção para controle administrativo da média gerência.\n( ) Oferece modelos analíticos e simulações interativas para resolver problemas gerenciais semiestruturados específicos.\n\nA sequência correta, de cima para baixo, é:",
+                "o": {
+                  "A": "4 – 1 – 2 – 3.",
+                  "B": "1 – 4 – 3 – 2.",
+                  "C": "4 – 2 – 1 – 3.",
+                  "D": "3 – 1 – 2 – 4.",
+                  "E": "2 – 3 – 4 – 1."
+                },
+                "c": "A",
+                "e": "SAE (4) atende executivos/estratégico; SPT (1) registra transações operacionais; SIG (2) gera relatórios gerenciais de controle; SAD (3) apoia decisões específicas com modelos e dados."
+              },
+              {
+                "t": "O Balanced Scorecard (BSC), desenvolvido por Robert Kaplan e David Norton, traduz a missão e a estratégia organizacional em um conjunto equilibrado de objetivos, indicadores, metas e iniciativas distribuídos em quatro perspectivas interdependentes.",
+                "p": "No mapa estratégico do BSC, a perspectiva que sustenta todas as demais ao focar na capacitação de talentos, gestão do conhecimento, infraestrutura de TI e cultura de inovação responde à questão fundamental:",
+                "o": {
+                  "A": "'Para ter sucesso financeiramente, como devemos aparecer para nossos investidores?' (Perspectiva Financeira).",
+                  "B": "'Para alcançar nossa visão, como devemos ser vistos pelos clientes?' (Perspectiva do Cliente).",
+                  "C": "'Para satisfazer os clientes e acionistas, em quais processos devemos sobressair?' (Perspectiva de Processos Internos).",
+                  "D": "'Para alcançar nossa visão, como sustentar a habilidade de mudar e progredir?' (Perspectiva de Aprendizado e Crescimento).",
+                  "E": "'Para cumprir a legislação vigente, quais auditorias externas devemos contratar?' (Perspectiva de Compliance)."
+                },
+                "c": "D",
+                "e": "A perspectiva de Aprendizado e Crescimento (ou Aprendizagem e Renovação) sustenta a habilidade de mudar, inovar e progredir por meio de pessoas, sistemas e cultura."
+              },
+              {
+                "t": "Popularizados pela Google e sistematizados por John Doerr (2019), os OKRs (Objectives and Key Results) constituem uma metodologia ágil de gestão de metas em ciclos curtos (geralmente trimestrais), articulando 'Onde quero ir?' (Objetivos qualitativos e inspiradores) e 'Como sei que estou chegando lá?' (Resultados-chave quantitativos e verificáveis).",
+                "p": "Considerando as boas práticas de formulação de OKRs descritas por Doerr (2019) e Herrero Filho (2021), avalie as afirmações a seguir:\n\nI. Um Resultado-Chave (KR) eficaz deve ser mensurável, específico e limitado no tempo, não deixando margem para ambiguidade quanto ao seu cumprimento.\nII. Diferentemente dos modelos tradicionais secretos, os OKRs promovem transparência e alinhamento organizacional ao serem compartilhados entre todos os níveis da empresa.\nIII. Os objetivos estratégicos devem atender aos critérios SMART (Específico, Mensurável, Realizável, Relevante e Temporal) e estar vinculados a iniciativas concretas.\n\nÉ correto o que se afirma em:",
+                "o": {
+                  "A": "I, apenas.",
+                  "B": "II, apenas.",
+                  "C": "I e III, apenas.",
+                  "D": "II e III, apenas.",
+                  "E": "I, II e III."
+                },
+                "c": "E",
+                "e": "Todas as três afirmativas refletem fielmente os preceitos dos OKRs: KRs mensuráveis sem zona cinzenta, transparência organizacional e objetivos alinhados aos critérios SMART e iniciativas."
+              },
+              {
+                "t": "Na gestão da mudança organizacional impulsionada pela cultura digital, Levorato e Woida (2021) destacam que a transformação só se concretiza quando as pessoas assumem o papel de agentes de mudança. Para institucionalizar novos padrões comportamentais e processuais, a literatura clássica descreve um processo em três estágios: degelo, mudança e recongelamento.",
+                "p": "No contexto da gestão da mudança organizacional, o estágio de 'Degelo' caracteriza-se por:",
+                "o": {
+                  "A": "consolidar e estabilizar os novos processos implantados por meio de auditorias permanentes.",
+                  "B": "desconstruir comportamentos antigos enraizados na cultura organizacional e conscientizar sobre a necessidade de abandonar o status quo.",
+                  "C": "aplicar treinamentos técnicos intensivos para substituir diretamente os sistemas legados.",
+                  "D": "eliminar toda forma de diversidade geracional para homogeneizar a equipe.",
+                  "E": "fortalecer os drivers de resistência interna para preservar a lógica dominante da empresa."
+                },
+                "c": "B",
+                "e": "O estágio de Degelo consiste em reconhecer e romper a inércia dos comportamentos antigos enraizados (status quo), preparando as pessoas para a transição."
+              },
+              {
+                "t": "Após escândalos financeiros corporativos no início dos anos 2000, a aprovação da Lei Sarbanes-Oxley (SOX) nos Estados Unidos e a difusão do Código das Melhores Práticas do IBGC no Brasil consolidaram os quatro pilares fundamentais da Governança Corporativa.",
+                "p": "Quando uma companhia de capital aberto divulga de forma clara, tempestiva e acessível a todos os stakeholders não apenas seus resultados financeiros obrigatórios, mas também os riscos estratégicos, oportunidades e impactos socioambientais de suas operações, ela está exercendo prioritariamente o princípio da governança denominado:",
+                "o": {
+                  "A": "Fairness (Senso de justiça / equidade).",
+                  "B": "Disclosure (Transparência das informações).",
+                  "C": "Accountability (Prestação responsável de contas).",
+                  "D": "Compliance (Conformidade legal).",
+                  "E": "Outsourcing (Terceirização estratégica)."
+                },
+                "c": "B",
+                "e": "Disclosure refere-se à transparência na divulgação de informações relevantes sobre resultados, oportunidades e riscos às partes interessadas (stakeholders)."
+              },
+              {
+                "t": "Rossetti e Andrade (2022) estruturam as boas práticas de governança corporativa nos chamados '8 Ps': Propriedade, Princípios, Propósitos, Papéis, Poder, Práticas, Pessoas e Perpetuidade. Esse modelo busca harmonizar os interesses de acionistas (shareholders) e demais partes interessadas (stakeholders), mitigando conflitos e custos de agência.",
+                "p": "Sobre o pilar 'Perpetuidade' dos 8 Ps da Governança Corporativa, assinale a alternativa correta:",
+                "o": {
+                  "A": "Refere-se à manutenção vitalícia dos mesmos diretores executivos no cargo, independentemente dos resultados apresentados.",
+                  "B": "Visa assegurar a continuidade e sustentabilidade da organização no longo prazo por meio de coesão societária, propensão à inovação e atenção ao tripé econômico-financeiro, social e ambiental.",
+                  "C": "Proíbe operações de fusão, aquisição ou alteração do modelo de negócios original da empresa.",
+                  "D": "Concentra-se exclusivamente na maximização do lucro trimestral de curto prazo, desconsiderando impactos ambientais.",
+                  "E": "Estabelece que princípios éticos podem ser flexibilizados conforme o ciclo econômico do país."
+                },
+                "c": "B",
+                "e": "A Perpetuidade busca a longevidade sustentável da organização através da coesão societária, capacidade de inovação e equilíbrio no tripé econômico, social e ambiental (triple bottom line)."
+              },
+              {
+                "t": "Para operacionalizar a Governança de TI, o alinhamento estratégico e a qualidade dos serviços e softwares, as organizações adotam frameworks consolidados internacionalmente, destacando-se o COBIT, o ITIL e o CMMI.\n(Adaptado de FERNANDES; ABREU, 2014; MOLINARO; RAMOS, 2010).",
+                "p": "Considere uma organização de TI que pretende: (1) estabelecer mecanismos de governança corporativa de TI, gestão de riscos e controle de processos nos domínios EDM, APO, BAI, DSS e MEA; (2) padronizar o gerenciamento do ciclo de vida dos serviços de TI entregues aos clientes (estratégia, desenho, transição, operação e melhoria contínua); e (3) elevar a maturidade dos seus processos de engenharia e desenvolvimento de software.\n\nOs frameworks mais adequados para atender, respectivamente, às demandas (1), (2) e (3) são:",
+                "o": {
+                  "A": "ITIL, CMMI e COBIT.",
+                  "B": "CMMI, COBIT e ITIL.",
+                  "C": "COBIT, ITIL e CMMI.",
+                  "D": "TOGAF, ISO 31000 e PMBOK.",
+                  "E": "BABOK, BPM CBOK e Scrum."
+                },
+                "c": "C",
+                "e": "O COBIT (1) é o framework abrangente de governança e controle de TI (domínios EDM, APO, BAI, DSS, MEA); a ITIL (2) reúne melhores práticas de gerenciamento de serviços de TI; e o CMMI (3) foca na maturidade dos processos de desenvolvimento de software."
+              }
+            ]
+          }
         ];
 
         // INICIALIZAÇÃO
@@ -256,14 +704,16 @@
                     Object.entries(q.o).forEach(([letra, texto]) => {
                         opcoesHTML += `
                             <label class="option" id="opt-${idInterno}-${letra}">
-                                <input type="radio" name="res-${idInterno}" value="${letra}" onchange="responder('${idInterno}', '${letra}', '${q.c}', '${q.e.replace(/'/g, "\\'")}')">
-                                <strong>${letra})</strong> ${texto}
+                                <input type="radio" name="res-${idInterno}" value="${letra}" onchange="responder('${idInterno}', '${letra}')">
+                                <strong>${letra})</strong> ${esc(texto)}
                             </label>
                         `;
                     });
                     
                     card.innerHTML = `
-                        <span class="q-text">Questão ${qIndexGlobal}. ${q.p}</span>
+                        <span class="q-num">QUESTÃO ${String(qIndexGlobal).padStart(2, '0')}</span>
+                        ${q.t ? `<div class="q-base">${esc(q.t)}</div>` : ''}
+                        <span class="q-text">${esc(q.p)}</span>
                         <div class="options-container">${opcoesHTML}</div>
                         <div class="explanation" id="exp-${idInterno}"></div>
                     `;
@@ -274,7 +724,19 @@
         }
 
         // CORREÇÃO IMEDIATA E FEEDBACK
-        function responder(idInterno, letraSelecionada, letraCorreta, explicacao) {
+        function esc(t) {
+            return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function buscarQuestao(idInterno) {
+            const [, s, q] = idInterno.match(/^s(\d+)q(\d+)$/);
+            return conteudos[+s].questoes[+q];
+        }
+
+        function responder(idInterno, letraSelecionada) {
+            const questao = buscarQuestao(idInterno);
+            const letraCorreta = questao.c;
+            const explicacao = esc(questao.e);
             const caixaExplicacao = document.getElementById(`exp-${idInterno}`);
             const inputs = document.querySelectorAll(`input[name="res-${idInterno}"]`);
             
@@ -331,6 +793,8 @@
             fetch(API_URL)
             .then(response => response.json())
             .then(dados => {
+                // Se a planilha já tem a coluna SIMULADO, mostra só este simulado
+                if (dados.some(l => 'SIMULADO' in l)) dados = dados.filter(l => l.SIMULADO === SIMULADO_ID);
                 dados.sort((a, b) => b.ACERTOS - a.ACERTOS);
                 let tbody = document.getElementById('corpo-ranking');
                 let html = "";
@@ -342,7 +806,7 @@
                     html += `
                         <tr style="${destaque}">
                             <td style="font-weight:bold;">${medalha}</td>
-                            <td>${aluno.NOME}</td>
+                            <td>${esc(aluno.NOME)}</td>
                             <td style="color:var(--success); font-weight:bold;">${aluno.ACERTOS} pt(s)</td>
                         </tr>
                     `;
@@ -377,7 +841,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: [ { "NOME": nomeUsuario, "ACERTOS": acertos } ] })
+                body: JSON.stringify({ data: [ { "NOME": nomeUsuario, "ACERTOS": acertos, "SIMULADO": SIMULADO_ID } ] })
             })
             .then(response => response.json())
             .then(data => {
