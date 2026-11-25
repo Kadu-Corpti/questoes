@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulado ENADE - Inovação e Estratégia em TI</title>
+    <title>Simulado Chatbot e API</title>
     <style>
         :root { --primary: #2563eb; --bg: #f1f5f9; --text: #1e293b; --success: #22c55e; --danger: #ef4444; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; margin: 0; }
@@ -33,6 +33,8 @@
         .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; white-space: pre-line; }
         .q-num { display: block; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
+        .q-code { background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; overflow-x: auto; margin: 0 0 16px 0; white-space: pre; }
+        code.inline { background: #e2e8f0; color: #0f172a; padding: 1px 6px; border-radius: 4px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.9em; }
         .q-base { background: #f8fafc; border-left: 4px solid #94a3b8; padding: 12px 16px; border-radius: 6px; font-size: 0.92rem; color: #475569; margin-bottom: 16px; white-space: pre-line; }
         
         .option { display: block; background: #f8fafc; padding: 14px 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; position: relative; font-size: 0.95rem; }
@@ -63,8 +65,8 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            <h1>Simulado ENADE — Inovação e Estratégia em TI</h1>
-            <p>40 Questões • Inovação, Modelos de Negócios, Planejamento Estratégico e Governança de TI • com Ranking</p>
+            <h1>Simulado — Chatbot, API e KPIs</h1>
+            <p>53 Questões • Arquitetura e API • Funcionalidades • Implementação • Segurança • Código Python • KPIs • com Ranking</p>
         </div>
 
         <div id="tela-login">
@@ -114,548 +116,741 @@
 
     <script>
         const API_URL = "https://sheetdb.io/api/v1/3kdw59bdva45d";
-        const SIMULADO_ID = "INOVACAO_TI"; // gravado na coluna SIMULADO da planilha para separar o ranking
+        const SIMULADO_ID = "CHATBOT_API"; // gravado na coluna SIMULADO da planilha para separar o ranking
         let nomeUsuario = ""; let acertos = 0; let erros = 0; let respondidas = 0; let totalQuestoes = 0;
 
-        // BANCO DE 40 QUESTÕES — SIMULADO ENADE: INOVAÇÃO, MODELOS DE NEGÓCIOS E PLANEJAMENTO ESTRATÉGICO EM TI
+        // BANCO DE QUESTÕES — CHATBOT, API E KPIs (Livro U4 + slides)
         const conteudos = [
           {
-            "titulo": "BLOCO I — Fundamentos de Inovação e Modelos de Negócios Disruptivos",
+            "titulo": "Bloco I — API e Arquitetura do Chatbot (Livro, Aula 1)",
             "questoes": [
               {
-                "t": "Na segunda metade do século XX, a adoção da Tecnologia da Informação (TI) conferia vantagem competitiva imediata às organizações. Contudo, nas primeiras décadas do século XXI, a TI passou a atuar como requisito básico operacional, deslocando o verdadeiro diferencial competitivo para a capacidade de inovar, identificar oportunidades e reconfigurar modelos de negócios em mercados globalizados e hipercompetitivos.\n(Adaptado de SILVA et al., 2018; ROGERS, 2021).",
-                "p": "Considerando o papel estratégico da inovação no contexto organizacional contemporâneo, avalie as afirmações a seguir:\n\nI. A inovação restringe-se à criação de mercados inéditos, uma vez que mercados maduros já possuem cadeias de valor consolidadas que impedem a agregação de valor por modificações de processos.\nII. Organizações que incorporam a inovação à sua cultura corporativa tendem a ampliar sua participação de mercado e obter lucros progressivos em comparação a concorrentes tradicionais.\nIII. O empreendedorismo baseado em inovação pode ocorrer tanto na criação de novos empreendimentos independentes quanto internamente em empresas já estabelecidas, sob a forma de empreendedorismo corporativo.\n\nÉ correto o que se afirma em:",
+                "t": "Segundo o livro (Cruz; Alencar; Schmitz, 2019), um elemento importante na arquitetura dos chatbots é a integração com APIs, que amplia significativamente suas capacidades.",
+                "p": "De acordo com o livro, o que é uma API?",
                 "o": {
-                  "A": "I, apenas.",
-                  "B": "II, apenas.",
-                  "C": "I e III, apenas.",
-                  "D": "II e III, apenas.",
-                  "E": "I, II e III."
-                },
-                "c": "D",
-                "e": "A afirmativa I é incorreta porque a inovação também ocorre em mercados já existentes mediante modificação de produtos e processos para agregar valor. As afirmativas II e III estão corretas conforme os fundamentos de inovação e intraempreendedorismo."
-              },
-              {
-                "t": "De acordo com o Manual de Oslo (OECD, 2018), a inovação consiste em um produto ou processo novo ou aprimorado (ou uma combinação deles) que difere significativamente dos produtos ou processos anteriores da unidade e que foi disponibilizado a usuários potenciais ou colocado em uso pela organização. Além disso, a literatura classifica a inovação segundo seu grau de impacto e novidade nos mercados.",
-                "p": "Uma montadora tradicional de veículos a combustão decide aperfeiçoar o sistema de injeção eletrônica de um modelo já consolidado para reduzir em 8% o consumo de combustível. Paralelamente, uma startup desenvolve uma plataforma digital de mobilidade compartilhada sob demanda que elimina a necessidade de posse do veículo, alterando hábitos sociais e criando um novo mercado ('oceano azul').\n\nEssas duas iniciativas exemplificam, respectivamente, inovações:",
-                "o": {
-                  "A": "incremental e disruptiva.",
-                  "B": "radical e incremental.",
-                  "C": "organizacional e de marketing.",
-                  "D": "fechada e descontínua.",
-                  "E": "de processo e incremental."
-                },
-                "c": "A",
-                "e": "O aperfeiçoamento contínuo de um produto existente caracteriza inovação incremental, enquanto a criação de um novo mercado que quebra paradigmas e modifica hábitos de consumo caracteriza inovação disruptiva."
-              },
-              {
-                "t": "Ao analisar as atitudes que sustentam o empreendedorismo baseado em inovação, Farrell (2019) destaca comportamentos históricos emblemáticos: a criação da lixa (sandpaper) pela 3M a partir de uma demanda prática; a célebre afirmação de Akio Morita (Sony) de que se faz mais em um dia de crise do que em um mês de complacência; e o legado de Thomas Edison de que a invenção envolve 10% de inspiração e 90% de transpiração.",
-                "p": "A partir dessas referências, assinale a opção que apresenta corretamente as três atitudes do empreendedorismo inovador descritas pelo autor:",
-                "o": {
-                  "A": "Evitar riscos operacionais; terceirizar a pesquisa básica; aguardar a estabilidade do mercado.",
-                  "B": "Sentir o calor da necessidade; criar crise e urgência; fazer algo melhor a cada dia.",
-                  "C": "Priorizar o planejamento de longo prazo; manter processos rígidos; proteger patentes fechadas.",
-                  "D": "Reduzir investimentos em P&D; focar exclusivamente em marketing; replicar modelos tradicionais.",
-                  "E": "Centralizar decisões na alta cúpula; eliminar testes de mercado; padronizar rotinas administrativas."
-                },
-                "c": "B",
-                "e": "Farrell (2019) sintetiza as atitudes empreendedoras inovadoras em: sentir o calor da necessidade (3M), criar crise e urgência (Akio Morita) e fazer alguma coisa melhor a cada dia (Thomas Edison)."
-              },
-              {
-                "t": "Para Reis (2008), a ciência constitui o conjunto de conhecimentos organizados sobre os mecanismos de causalidade dos fenômenos empíricos, ao passo que a tecnologia aplica esse acervo científico às artes industriais e processos produtivos, gerando impactos socioeconômicos. Sob o ponto de vista operacional, a tecnologia manifesta-se em três categorias distintas nas organizações.",
-                "p": "Associe as categorias tecnológicas apresentadas na Coluna A aos seus respectivos exemplos ou definições na Coluna B:\n\nColuna A\n1. Tecnologia materializada\n2. Tecnologia documentada\n3. Tecnologia imaterial\n\nColuna B\n( ) Conhecimento tácito, teórico e prático adquirido por formação acadêmica e experiência profissional.\n( ) Equipamentos fabris, artefatos físicos, máquinas e dispositivos com atributos de design e durabilidade.\n( ) Manuais técnicos, plantas industriais, layouts, memórias descritivas e websites de orientação.\n\nA sequência correta, de cima para baixo, é:",
-                "o": {
-                  "A": "1 – 2 – 3.",
-                  "B": "2 – 3 – 1.",
-                  "C": "3 – 1 – 2.",
-                  "D": "3 – 2 – 1.",
-                  "E": "1 – 3 – 2."
-                },
-                "c": "C",
-                "e": "Tecnologia imaterial refere-se ao conhecimento tácito/teórico-prático (3); materializada refere-se a equipamentos e artefatos físicos (1); e documentada refere-se a manuais, plantas e layouts (2)."
-              },
-              {
-                "t": "Mendes (2020) aponta que grandes corporações consolidadas frequentemente enfrentam dificuldades para se reinventar diante das disrupções tecnológicas. Para estruturar modelos de negócios inovadores de sucesso, o autor propõe oito elementos essenciais: aspirar, escolher, descobrir, evoluir, acelerar, escalar, ampliar e mobilizar.",
-                "p": "Sobre esses elementos constitutivos de modelos de negócios inovadores, avalie as asserções a seguir e a relação proposta entre elas:\n\nI. O elemento 'Ampliar' pressupõe a abertura da organização para colaborações externas e a busca por talentos em ecossistemas e ambientes distribuídos.\nPORQUE\nII. O elemento 'Escalar' concentra-se exclusivamente na retenção interna de propriedade intelectual, impedindo parcerias externas para evitar vazamento tecnológico.\n\nA respeito dessas asserções, assinale a opção correta:",
-                "o": {
-                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
-                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
-                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
-                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
-                  "E": "As asserções I e II são proposições falsas."
-                },
-                "c": "C",
-                "e": "A asserção I é verdadeira (Ampliar envolve colaboração externa e talentos distribuídos). A asserção II é falsa, pois 'Escalar' trata da gestão da magnitude, recursos e alcance da inovação, sem proibir parcerias."
-              },
-              {
-                "t": "Segundo Diamandis e Kotler (2018), as tecnologias exponenciais utilizam sistemas automatizados com software para materializar ideias capazes de criar novos mercados e suprir demandas inéditas. Contudo, os autores alertam que o cérebro humano foi condicionado ao pensamento linear, gerando resistência inicial às ideias revolucionárias até que estas se tornem a nova norma social.",
-                "p": "Considerando a relação entre transformação digital, pensamento exponencial e resistência à mudança, assinale a alternativa correta:",
-                "o": {
-                  "A": "As tecnologias exponenciais caracterizam-se por ciclos lentos de adoção, permitindo que empresas tradicionais se adaptem sem alterar seus modelos de negócio.",
-                  "B": "Sistemas integrados tradicionais como ERP, CRM e SCM tornaram-se obsoletos e foram integralmente substituídos por redes sociais na gestão empresarial.",
-                  "C": "A inovação disruptiva geralmente alinha-se ao pensamento linear dos consumidores, razão pela qual é imediatamente compreendida e aceita pelo mercado.",
-                  "D": "Impressoras 3D, dispositivos de Internet das Coisas, realidade virtual e realidade aumentada constituem vetores de novas ondas de disrupção socioeconômica.",
-                  "E": "Empresas exponenciais, como Uber e Airbnb, consolidaram-se pela aquisição massiva de ativos físicos imobilizados como principal barreira de entrada."
-                },
-                "c": "D",
-                "e": "Diamandis e Kotler (2018) destacam smartphones, IoT, impressoras 3D, RV e RA como tecnologias exponenciais que impulsionam novas disrupções, desafiando o pensamento linear."
-              },
-              {
-                "t": "David Rogers (2021) afirma que 'as regras de negócio mudaram' com a transformação digital, exigindo que as organizações revisitem suas estratégias por meio de cinco domínios fundamentais: clientes, competição, dados, inovação e valor.",
-                "p": "Uma rede varejista tradicional decide transformar seu modelo de operação: deixa de atuar apenas como vendedora direta de estoque próprio e cria um marketplace aberto para pequenos lojistas e parceiros logísticos, integrando ferramentas de Business Intelligence ao seu CRM para antecipar necessidades ainda não percebidas pelos consumidores.\n\nDe acordo com os cinco domínios de Rogers (2021), a criação do marketplace aberto e a antecipação de necessidades latentes correspondem, respectivamente, às estratégias dos domínios:",
-                "o": {
-                  "A": "Competição (construir plataformas) e Valor (adaptar e criar propostas de valor disruptivas).",
-                  "B": "Dados (conversão em ativos) e Clientes (gerenciamento de redes sociais).",
-                  "C": "Inovação (experimentação autônoma) e Competição (guerra de preços tradicionais).",
-                  "D": "Clientes (comunidades de leitura) e Dados (armazenamento em nuvem).",
-                  "E": "Valor (redução de custos operacionais) e Inovação (controle hierárquico rígido)."
-                },
-                "c": "A",
-                "e": "No domínio Competição, Rogers recomenda construir plataformas em vez de apenas produtos; no domínio Valor, criar soluções disruptivas para necessidades ainda não percebidas pelos clientes."
-              },
-              {
-                "t": "No âmbito do planejamento estratégico voltado à transformação digital, o tratamento de dados deixou de ser uma atividade meramente operacional de registro contábil para converter-se em ativo estratégico essencial à sobrevivência empresarial.",
-                "p": "Para explorar o domínio 'Dados' de forma inovadora na transformação digital, uma organização deve:",
-                "o": {
-                  "A": "isolar os bancos de dados departamentais para garantir que cada setor tome decisões independentes sem interferência externa.",
-                  "B": "adotar sistemas de Business Analytics e Business Intelligence integrados a plataformas como ERP, SCM e CRM para converter dados em ativos estratégicos.",
-                  "C": "priorizar exclusivamente dados históricos estruturados em planilhas manuais, evitando o processamento de dados não estruturados de Big Data.",
-                  "D": "restringir o acesso às informações analíticas apenas aos acionistas majoritários, impedindo a autonomia operacional das equipes.",
-                  "E": "substituir ferramentas de gestão integrada por controles físicos, reduzindo a dependência da infraestrutura de conectividade."
-                },
-                "c": "B",
-                "e": "A estratégia recomendada para o domínio Dados envolve integrar Business Analytics e BI aos sistemas ERP, SCM e CRM para transformar dados dispersos em ativos estratégicos."
-              },
-              {
-                "t": "Camelo (2018) classifica a inovação sob múltiplas perspectivas: quanto ao objeto (produto, processo, marketing e organizacional), quanto ao grau de novidade (incremental, radical ou disruptiva/revolucionária) e quanto à estratégia de abertura (inovação aberta e inovação fechada).",
-                "p": "Uma indústria farmacêutica que antes conduzia todas as suas pesquisas exclusivamente em laboratórios próprios sob sigilo absoluto decide criar um portal colaborativo para receber propostas de moléculas desenvolvidas por universidades, startups biotecnológicas e pesquisadores independentes, compartilhando riscos e royalties.\n\nQuanto à estratégia adotada, essa mudança representa a transição da:",
-                "o": {
-                  "A": "inovação incremental para a inovação de marketing.",
-                  "B": "inovação fechada para a inovação aberta.",
-                  "C": "inovação de processo para a inovação organizacional.",
-                  "D": "tecnologia imaterial para a tecnologia materializada.",
-                  "E": "análise prescritiva para a análise descritiva."
-                },
-                "c": "B",
-                "e": "A abertura das fronteiras organizacionais para cocriação com universidades, startups e agentes externos caracteriza a transição da inovação fechada para a inovação aberta."
-              },
-              {
-                "t": "Para cultivar o domínio 'Inovação' proposto por Rogers (2021), as organizações precisam superar estruturas excessivamente burocráticas que punem o erro experimental e inibem a criatividade dos colaboradores.",
-                "p": "Assinale a alternativa que expressa uma prática coerente com o fortalecimento do domínio 'Inovação' na era digital:",
-                "o": {
-                  "A": "Exigir planos de negócios exaustivos com retorno financeiro garantido antes de autorizar qualquer teste de conceito.",
-                  "B": "Concentrar o desenvolvimento de novas ideias exclusivamente no departamento jurídico e financeiro.",
-                  "C": "Fomentar a experimentação autônoma dos times, alinhada ao propósito, missão, visão e valores da organização.",
-                  "D": "Eliminar métricas de aprendizado rápido, mantendo apenas indicadores tradicionais de produtividade fabril.",
-                  "E": "Impedir que equipes multidisciplinares interajam diretamente com usuários finais durante o desenvolvimento."
-                },
-                "c": "C",
-                "e": "O domínio Inovação preconiza cultivar uma cultura de experimentação onde os times tenham autonomia para testar ideias, guiados pelo propósito, missão, visão e valores corporativos."
-              }
-            ]
-          },
-          {
-            "titulo": "BLOCO II — Tecnologias Emergentes e seus Impactos em Modelos de Negócios",
-            "questoes": [
-              {
-                "t": "Embora os primeiros estudos teóricos sobre Inteligência Artificial (IA) remontem à década de 1940, sua explosão comercial e estratégica no século XXI decorre da convergência entre alto poder de processamento computacional, conectividade wireless e repositórios massivos de dados (Big Data), inaugurando o que Kai-Fu Lee (2019) denomina 'Terceira Onda da IA'.\n(Adaptado de DAY; SCHOEMAKER; GUNTHER, 2003; LEE, 2019).",
-                "p": "No suporte às decisões gerenciais contemporâneas, a análise de dados evoluiu em complexidade. Analise as definições abaixo:\n\nI. Análise Descritiva: utiliza algoritmos de otimização e simulação para recomendar automaticamente a melhor decisão estratégica futura.\nII. Análise Preditiva: emprega mineração de dados e aprendizado de máquina para projetar cenários e eventos futuros prováveis.\nIII. Análise Prescritiva: apoia decisões complexas por meio de modelos de decisão, simulação, otimização e sistemas especialistas.\n\nÉ correto o que se afirma em:",
-                "o": {
-                  "A": "I, apenas.",
-                  "B": "II, apenas.",
-                  "C": "I e III, apenas.",
-                  "D": "II e III, apenas.",
-                  "E": "I, II e III."
-                },
-                "c": "D",
-                "e": "A afirmativa I está incorreta pois descreve a análise prescritiva; a análise descritiva apenas relata o que ocorreu no passado por meio de consultas e gráficos históricos. II e III estão corretas."
-              },
-              {
-                "t": "Russell e Norvig (2021) definem um agente inteligente como qualquer entidade capaz de perceber seu ambiente por meio de sensores e agir sobre ele por intermédio de atuadores, buscando atingir objetivos segundo diferentes níveis de racionalidade (perfeita, cautelosa, limitada e otimização limitada).",
-                "p": "Um sistema de IA embarcado em um veículo autônomo precisa decidir, em frações de segundo, entre frear bruscamente ou desviar de um obstáculo repentino, operando sob restrições reais de tempo de resposta e capacidade de processamento embarcado para entregar uma solução suficientemente segura.\n\nSegundo a classificação de Russell e Norvig (2021), esse comportamento ilustra o conceito de:",
-                "o": {
-                  "A": "racionalidade perfeita, pois dispõe de tempo infinito e conhecimento onisciente do ambiente.",
-                  "B": "racionalidade limitada, pois delibera o necessário para apresentar uma resposta suficiente em tempo determinado.",
-                  "C": "inteligência artificial superinteligente, pois supera integralmente toda capacidade cognitiva humana.",
-                  "D": "análise descritiva passiva, uma vez que não utiliza atuadores físicos sobre o ambiente.",
-                  "E": "computação estática não adaptativa, incapaz de melhorar seu desempenho com novas observações."
-                },
-                "c": "B",
-                "e": "Na racionalidade limitada, agentes reais atuam por meio da satisfação, deliberando o necessário para entregar uma resposta suficiente dentro de uma janela crítica de tempo."
-              },
-              {
-                "t": "A comunidade científica classifica a Inteligência Artificial em três grandes categorias evolutivas, conforme a amplitude e a capacidade cognitiva dos algoritmos desenvolvidos.",
-                "p": "Sobre as categorias de Inteligência Artificial (Fraca, Forte e Superinteligente), assinale a alternativa correta:",
-                "o": {
-                  "A": "A IA Superinteligente já é amplamente empregada em assistentes virtuais comerciais como Siri, Alexa e Google Assistente.",
-                  "B": "A IA Fraca (Estreita) caracteriza-se pela capacidade de resolver qualquer problema humano generalizado sem necessidade de dados de treinamento.",
-                  "C": "Sistemas especialistas, sistemas de recomendação e assistentes digitais focados em domínios específicos são exemplos de IA Fraca (Estreita).",
-                  "D": "A IA Forte (Generalizada) dispensa o uso de Machine Learning e Deep Learning, operando apenas por regras lógicas fixas.",
-                  "E": "A IA Superinteligente é uma tecnologia consolidada desde os anos 1990 em sistemas bancários de processamento em lote."
-                },
-                "c": "C",
-                "e": "A IA Fraca (Estreita) resolve problemas complexos dentro de um domínio específico bem definido (ex.: assistentes virtuais e sistemas de recomendação). A Superinteligente ainda é teórica."
-              },
-              {
-                "t": "Sharda, Delen e Turban (2019) conceituam a Internet das Coisas (IoT) como o fenômeno de conectar o mundo físico à Internet por meio de dispositivos microeletrônicos dotados de sensores e comunicação sem fio, viabilizando a computação ubíqua em setores como saúde, logística, agricultura, varejo e cidades inteligentes.",
-                "p": "Avalie as asserções a seguir sobre o impacto da Internet das Coisas (IoT) nos modelos de negócios:\n\nI. A proliferação de sensores vestíveis (wearables) e medidores inteligentes permite que empresas migrem da simples venda de produtos físicos para a oferta de serviços contínuos baseados em monitoramento e dados em tempo real.\nPORQUE\nII. A tecnologia de IoT promove a fusão entre os mundos físico e digital, transformando objetos cotidianos em fontes permanentes de coleta e transmissão de informações.\n\nA respeito dessas asserções, assinale a opção correta:",
-                "o": {
-                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
-                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
-                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
-                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
-                  "E": "As asserções I e II são proposições falsas."
-                },
-                "c": "A",
-                "e": "Ambas as asserções são verdadeiras, e a fusão físico-digital promovida pela IoT (II) explica diretamente a possibilidade de modelos de negócios baseados em serviços e monitoramento contínuo (I)."
-              },
-              {
-                "t": "Com a evolução das interfaces homem-computador para além das telas bidimensionais tradicionais, tecnologias como Realidade Virtual (RV) e Realidade Aumentada (RA) vêm sendo incorporadas a treinamentos industriais, medicina diagnóstica, arquitetura e varejo.",
-                "p": "Assinale a alternativa que estabelece corretamente a distinção técnica entre Realidade Virtual (RV) e Realidade Aumentada (RA):",
-                "o": {
-                  "A": "A RV mistura elementos virtuais ao ambiente físico real captado por câmeras, enquanto a RA isola completamente o usuário em um mundo sintético.",
-                  "B": "A RV promove a imersão total do usuário em ambientes virtuais tridimensionais simulados por computador, enquanto a RA sobrepõe informações e objetos virtuais ao mundo real.",
-                  "C": "Ambas exigem obrigatoriamente o uso de capacetes opacos fechados, sendo impossível executar RA em smartphones ou tablets.",
-                  "D": "A RA é utilizada exclusivamente para jogos digitais, ao passo que a RV restringe-se ao controle de estoque em armazéns logísticos.",
-                  "E": "A RV e a RA eliminam a necessidade de processamento gráfico em tempo real, operando apenas com imagens estáticas pré-renderizadas."
-                },
-                "c": "B",
-                "e": "A Realidade Virtual imerge o usuário em mundos virtuais 3D gerados por computador, enquanto a Realidade Aumentada combina informações reais (captadas por câmeras/IoT) com projeções virtuais."
-              },
-              {
-                "t": "De acordo com Lenz et al. (2020), o desenvolvimento de soluções baseadas em Aprendizado de Máquina (Machine Learning - ML) segue um fluxo estruturado composto por sete etapas sequenciais: seleção, preparação, modelo, treino, avaliação, ajuste e aplicação.",
-                "p": "Durante o desenvolvimento de um algoritmo de ML para detecção de fraudes bancárias, a equipe de cientistas de dados realiza a limpeza de registros inconsistentes, a conversão de escalas monetárias e a normalização das variáveis numéricas antes de submeter os dados aos algoritmos de classificação.\n\nSegundo Lenz et al. (2020), essa atividade corresponde à etapa de:",
-                "o": {
-                  "A": "Aplicação.",
-                  "B": "Ajuste de hiperparâmetros.",
-                  "C": "Preparação dos dados.",
-                  "D": "Avaliação de precisão.",
-                  "E": "Seleção do modelo preditivo."
-                },
-                "c": "C",
-                "e": "Transformações de unidades, conversão de escalas, limpeza e normalização ocorrem na fase de Preparação dos dados, logo após a Seleção e antes da escolha do Modelo."
-              },
-              {
-                "t": "No ciclo de Aprendizado de Máquina, após a etapa de treinamento do algoritmo, é indispensável verificar se o modelo matemático generaliza adequadamente o conhecimento adquirido antes de colocá-lo em produção comercial.",
-                "p": "Na etapa de 'Avaliação' do processo de Aprendizado de Máquina, o procedimento técnico adequado consiste em:",
-                "o": {
-                  "A": "utilizar exatamente os mesmos dados empregados no treinamento para garantir 100% de acurácia aparente.",
-                  "B": "testar o modelo treinado com um conjunto de dados separado previamente (desconhecido pelo modelo) para aferir sua precisão na predição.",
-                  "C": "descartar os parâmetros ajustados na equação e reiniciar a coleta de dados brutos sem validação estatística.",
-                  "D": "alterar a taxa de aprendizado em tempo real durante o uso pelo cliente final sem testes prévios.",
-                  "E": "substituir algoritmos de classificação por planilhas descritivas estáticas."
-                },
-                "c": "B",
-                "e": "A etapa de Avaliação utiliza os dados separados no início do processo (conjunto de teste desconhecido) para verificar se o modelo apresenta a precisão esperada de predição."
-              },
-              {
-                "t": "A Análise de Sentimentos combina Processamento de Linguagem Natural (PLN), mineração de texto e Aprendizado de Máquina para identificar opiniões favoráveis, neutras ou desfavoráveis expressas por usuários em redes sociais, avaliações de e-commerce ou dispositivos IoT.",
-                "p": "Associe as aplicações da Análise de Sentimentos (Coluna A) aos seus respectivos focos gerenciais (Coluna B):\n\nColuna A\n1. Voz do Consumidor (VOC)\n2. Voz dos Funcionários (VOE)\n3. Gestão da Marca\n4. Mercados Financeiros\n\nColuna B\n( ) Monitorar percepções globais em redes sociais para moldar a imagem institucional além da experiência pontual.\n( ) Analisar resenhas de produtos e serviços no CRM analítico para administrar queixas e elogios de clientes.\n( ) Prever oscilações futuras de ações observando notícias, blogs, redes sociais e grupos de discussão.\n( ) Captar e interpretar continuamente o clima interno e o que os colaboradores expressam sobre a organização.\n\nA sequência correta, de cima para baixo, é:",
-                "o": {
-                  "A": "3 – 1 – 4 – 2.",
-                  "B": "1 – 3 – 2 – 4.",
-                  "C": "3 – 4 – 1 – 2.",
-                  "D": "2 – 1 – 4 – 3.",
-                  "E": "4 – 2 – 3 – 1."
-                },
-                "c": "A",
-                "e": "Gestão da Marca (3) molda percepções nas redes sociais; VOC (1) analisa resenhas de clientes no CRM; Mercados Financeiros (4) prevê ações; VOE (2) ouve os funcionários."
-              },
-              {
-                "t": "Gerd Leonhard (2018, p. 33) afirma: 'a tecnologia, por mais máquina que seja, é simplesmente uma ferramenta que usamos para atingir um fim: a tecnologia não é o que procuramos, mas como procuramos!'. Em outra passagem, o autor alerta que o maior perigo da Inteligência Artificial reside no fato de as pessoas concluírem prematuramente que já a compreendem.",
-                "p": "Considerando as implicações éticas e estratégicas apontadas por Leonhard (2018) e Russell e Norvig (2021) sobre a Inteligência Artificial, assinale a alternativa correta:",
-                "o": {
-                  "A": "A automação por IA deve substituir integralmente o julgamento ético humano nas decisões estratégicas das organizações.",
-                  "B": "Os sistemas de IA são neutros por natureza e não oferecem riscos à autonomia, privacidade ou liberdade humana.",
-                  "C": "A IA deve ser empregada como meio para ampliar o potencial humano e automatizar tarefas mecanizadas, exigindo governança ética contínua.",
-                  "D": "A compreensão completa dos algoritmos de Deep Learning já foi atingida, eliminando o fenômeno de 'caixa-preta' decisória.",
-                  "E": "O avanço da IA torna desnecessária a formação interdisciplinar entre engenheiros, administradores e profissionais de TI."
-                },
-                "c": "C",
-                "e": "Os autores destacam que a tecnologia é uma ferramenta para ampliar a existência humana e reduzir tarefas mecanizadas, mas exige cautela ética quanto à autonomia e privacidade."
-              },
-              {
-                "t": "No varejo moderno, a integração entre Internet das Coisas (IoT), computação móvel e Inteligência Artificial tem viabilizado o surgimento de lojas autônomas sem caixas tradicionais, nas quais sensores de prateleira, câmeras com visão computacional e aplicativos móveis identificam automaticamente os itens retirados pelo consumidor.",
-                "p": "Nesse modelo de negócio varejista baseado em tecnologias emergentes, qual é o principal ganho estratégico proporcionado pela integração entre IoT e IA?",
-                "o": {
-                  "A": "Eliminação completa da necessidade de gestão da cadeia de suprimentos (SCM).",
-                  "B": "Coleta automatizada de dados comportamentais em tempo real para personalização de ofertas, otimização de estoque e redução de atrito na jornada de compra.",
-                  "C": "Substituição da conectividade sem fio por registros manuais em papel para aumentar a segurança cibernética.",
-                  "D": "Restrição do acesso de consumidores que não possuam conhecimentos avançados de programação.",
-                  "E": "Padronização rígida do mix de produtos sem considerar variações regionais de demanda."
-                },
-                "c": "B",
-                "e": "A integração IoT + IA no varejo captura dados em tempo real sobre o comportamento de consumo, otimizando o SCM, personalizando ofertas e eliminando filas no checkout."
-              }
-            ]
-          },
-          {
-            "titulo": "BLOCO III — Implementação de Modelos Disruptivos, Lean Startup, Design Thinking e Modelagem Ágil",
-            "questoes": [
-              {
-                "t": "Silva et al. (2018) observam que muitas ideias inovadoras fracassam antes de chegar ao mercado por escassez de recursos e isolamento. Para mitigar esse risco, organizações inserem-se em ecossistemas de inovação — ambientes colaborativos que articulam pesquisadores, startups, investidores, universidades e indústrias, tendo o Vale do Silício como referência clássica.",
-                "p": "Segundo Silva et al. (2018), são características essenciais dos participantes de um ecossistema de inovação colaborativo:\n\nI. Valorização da diversidade de atores na rede para potencializar ideias disruptivas.\nII. Conexão entre líderes para promoção do capital social e articulação institucional.\nIII. Relacionamentos baseados na confiança mútua para superar conflitos naturais de ideação.\nIV. Isolamento competitivo entre demandantes e ofertantes para proteger segredos industriais.\n\nÉ correto apenas o que se afirma em:",
-                "o": {
-                  "A": "I e II.",
-                  "B": "III e IV.",
-                  "C": "I, II e III.",
-                  "D": "II, III e IV.",
-                  "E": "I, III e IV."
-                },
-                "c": "C",
-                "e": "As quatro características listadas por Silva et al. (2018) são: valorização da diversidade, ambiente de conexão, conexão entre líderes e relacionamento baseado na confiança. O item IV contraria o conceito de ecossistema."
-              },
-              {
-                "t": "Eric Ries (2019), ao sistematizar a metodologia Lean Startup (Startup Enxuta) inspirada no Sistema Toyota de Produção, define uma startup como uma instituição humana projetada para criar novos produtos e serviços sob condições de extrema incerteza, utilizando o método científico para validar hipóteses de negócio.",
-                "p": "No ciclo de aprendizado da Startup Enxuta ('Construir – Medir – Aprender'), o planejamento estratégico ocorre de maneira invertida em relação à administração tradicional porque:",
-                "o": {
-                  "A": "elabora-se primeiro um plano de negócios de 50 páginas para depois buscar clientes.",
-                  "B": "identifica-se primeiro o que é preciso aprender, define-se o que medir (contabilidade para inovação) e, por fim, constrói-se o produto mínimo para testar.",
-                  "C": "prioriza-se a execução perfeita de cronogramas plurianuais sem tolerância a falhas iniciais.",
-                  "D": "elimina-se a coleta de métricas quantitativas, baseando-se apenas na intuição dos fundadores.",
-                  "E": "desenvolve-se o produto completo com todas as funcionalidades antes de qualquer contato com usuários."
-                },
-                "c": "B",
-                "e": "Na Lean Startup, embora a execução siga Construir-Medir-Aprender, o planejamento ocorre de trás para frente: define-se o que se quer aprender, o que medir e, então, o que construir (MVP)."
-              },
-              {
-                "t": "Caroli (2015) define o Minimum Viable Product (MVP) como a versão mais simples de um produto capaz de ser disponibilizada para validar um conjunto reduzido de hipóteses de negócio. Como ilustra a clássica analogia da evolução da mobilidade (skate → patinete → bicicleta → moto → carro, em vez de construir roda isolada → eixo → chassi → carro), o MVP deve entregar valor funcional desde a primeira iteração.",
-                "p": "Após lançar um MVP de aplicativo de entregas e analisar as métricas de retenção, uma startup constata que os restaurantes aderiram bem à plataforma, mas os consumidores finais abandonam o pedido devido à taxa de entrega. A equipe decide manter a tecnologia base desenvolvida, mas altera o segmento de clientes para entregas corporativas B2B de documentos e insumos médicos.\n\nNa terminologia da Startup Enxuta (RIES, 2019), essa decisão estratégica denomina-se:",
-                "o": {
-                  "A": "Perseverar.",
-                  "B": "Pivotar.",
-                  "C": "Desagrupar.",
-                  "D": "Recongelar.",
-                  "E": "Padronizar."
-                },
-                "c": "B",
-                "e": "Pivotar consiste em manter a base ou visão original do que foi aprendido, realizando uma mudança estruturada de direção (como alteração de segmento de clientes ou proposta de valor) após validação."
-              },
-              {
-                "t": "Para Eric Ries (2019), o crescimento sustentável de uma startup enxuta é impulsionado por mecanismos que garantem que novos clientes surjam a partir das ações de clientes antigos, estruturados em três motores de crescimento.",
-                "p": "Assinale a alternativa que apresenta corretamente os três motores de crescimento definidos na metodologia Lean Startup:",
-                "o": {
-                  "A": "Motor hierárquico, motor burocrático e motor financeiro.",
-                  "B": "Motor de crescimento recorrente, motor de crescimento viral e motor de crescimento pago.",
-                  "C": "Motor de diversificação, motor de penetração e motor de liderança em custo.",
-                  "D": "Motor descritivo, motor preditivo e motor prescritivo.",
-                  "E": "Motor de digitalização, motor de desmonetização e motor de desmaterialização."
-                },
-                "c": "B",
-                "e": "Ries (2019) define três motores de crescimento: recorrente (retenção e uso repetitivo), viral (divulgação orgânica entre usuários) e pago (reinvestimento de receita em aquisição/publicidade)."
-              },
-              {
-                "t": "O Design Thinking, popularizado por Tim Brown (2020), é uma abordagem centrada no ser humano que integra desejabilidade humana, viabilidade econômica e praticabilidade tecnológica ('construir para pensar'), estruturando-se em espaços de inspiração, ideação e implementação, ou em cinco etapas operacionais: Empatia, Definição, Ideação, Prototipagem e Teste.",
-                "p": "Durante um projeto de redesenho de serviços hospitalares utilizando Design Thinking, a equipe passa dias acompanhando pacientes na recepção, observando suas angústias, ouvindo suas queixas sem julgamento e vivenciando o fluxo de atendimento antes de formular qualquer solução tecnológica.\n\nEssa prática corresponde à fase de:",
-                "o": {
-                  "A": "Teste, pois valida a eficácia final do software de triagem.",
-                  "B": "Prototipagem, pois materializa a interface digital do totem de atendimento.",
-                  "C": "Empatia, pois busca compreender profundamente o mundo, a linguagem e as necessidades do usuário.",
-                  "D": "Implementação, pois escala a solução para toda a rede hospitalar.",
-                  "E": "Contabilidade para inovação, pois mensura o retorno financeiro do projeto."
-                },
-                "c": "C",
-                "e": "A fase de Empatia envolve observar, ouvir e vivenciar o mundo do usuário para compreender suas dores reais antes da definição do problema e ideação."
-              },
-              {
-                "t": "Ao comparar o paradigma tradicional de planos de negócios textuais extensos (50+ páginas) com a modelagem ágil contemporânea baseada em ferramentas visuais como o Business Model Canvas (BMC) e o Lean Canvas, observa-se uma mudança profunda na gestão da incerteza.",
-                "p": "Analise as afirmações sobre a modelagem ágil de negócios:\n\nI. Enquanto o plano de negócios tradicional pressupõe tolerância zero ao erro e foco na execução de um plano estático, a modelagem ágil adota alta tolerância inicial ao erro ('errar rápido para corrigir cedo').\nII. O Business Model Canvas organiza-se em nove blocos lógicos que integram o 'cérebro direito' (valor, clientes, canais, relacionamento e receitas) e o 'cérebro esquerdo' (parcerias, atividades, recursos e estrutura de custos).\nIII. A principal vantagem dos painéis visuais (canvas) reside na substituição definitiva da validação com clientes reais por simulações internas de gabinete.\n\nÉ correto o que se afirma em:",
-                "o": {
-                  "A": "I, apenas.",
-                  "B": "II, apenas.",
-                  "C": "I e II, apenas.",
-                  "D": "II e III, apenas.",
-                  "E": "I, II e III."
-                },
-                "c": "C",
-                "e": "As afirmativas I e II estão corretas. A afirmativa III é incorreta porque o canvas deve ser seguido pela pesquisa primária e validação real com o público-alvo, não substituindo o contato com o cliente."
-              },
-              {
-                "t": "Desenvolvido por Jake Knapp (2017) na Google Ventures, o Design Sprint é um método intensivo de cinco dias projetado para encurtar drasticamente o ciclo de ideação, prototipagem e teste de hipóteses críticas antes de investimentos massivos em engenharia e codificação.",
-                "p": "Assinale a alternativa que apresenta a sequência cronológica correta das cinco etapas de um Design Sprint:",
-                "o": {
-                  "A": "Dia 1: Prototipar; Dia 2: Testar; Dia 3: Mapear; Dia 4: Esboçar; Dia 5: Decidir.",
-                  "B": "Dia 1: Mapear; Dia 2: Esboçar; Dia 3: Decidir; Dia 4: Prototipar; Dia 5: Testar.",
-                  "C": "Dia 1: Decidir; Dia 2: Mapear; Dia 3: Prototipar; Dia 4: Testar; Dia 5: Escalar.",
-                  "D": "Dia 1: Esboçar; Dia 2: Decidir; Dia 3: Testar; Dia 4: Mapear; Dia 5: Prototipar.",
-                  "E": "Dia 1: Testar; Dia 2: Prototipar; Dia 3: Decidir; Dia 4: Esboçar; Dia 5: Mapear."
-                },
-                "c": "B",
-                "e": "A anatomia rigorosa de 5 dias do Design Sprint segue a ordem: Dia 1 (Mapear), Dia 2 (Esboçar), Dia 3 (Decidir), Dia 4 (Prototipar) e Dia 5 (Testar com small data — cerca de 5 clientes)."
-              },
-              {
-                "t": "No 5º dia de um Design Sprint, a equipe submete o protótipo de alta fidelidade aparente ('fachada') construído no dia anterior à avaliação qualitativa profunda com uma amostra enxuta de usuários-alvo (small data, tipicamente 5 clientes).",
-                "p": "Qual é o principal objetivo estratégico da realização do teste no 5º dia do Design Sprint com apenas 5 clientes?",
-                "o": {
-                  "A": "Obter significância estatística censitária para lançar o produto em escala global imediatamente.",
-                  "B": "Identificar rapidamente padrões recorrentes de usabilidade e aderência de valor, reduzindo riscos antes de codificar o sistema real.",
-                  "C": "Comprovar que o protótipo não possui defeitos, dispensando ajustes futuros no modelo de negócios.",
-                  "D": "Substituir integralmente a pesquisa de mercado quantitativa e a análise financeira de viabilidade.",
-                  "E": "Realizar o treinamento operacional da equipe de vendas para comercialização em massa."
-                },
-                "c": "B",
-                "e": "Testes qualitativos profundos com 5 clientes revelam rapidamente padrões de comportamento, falhas de compreensão e validação de valor antes de investir na codificação completa."
-              },
-              {
-                "t": "Matsumoto (2020) propõe um roteiro prático em sete passos para o desenvolvimento de um MVP alinhado ao Design Thinking e à Startup Enxuta: (1) Objetivos, (2) Clientes, (3) Eleição, (4) Criação, (5) Lapidação, (6) Validação e (7) Melhoria.",
-                "p": "Na etapa de 'Lapidação' (Passo 5) proposta por Matsumoto (2020), a orientação central para a equipe de desenvolvimento é:",
-                "o": {
-                  "A": "adicionar o máximo possível de funcionalidades acessórias para impressionar investidores.",
-                  "B": "aplicar o princípio de que 'menos é mais', examinando arestas e simplificando a ideia ao essencial viável.",
-                  "C": "interromper o contato com potenciais clientes até que o código-fonte esteja 100% otimizado.",
-                  "D": "expandir o escopo inicial para atender simultaneamente a todos os segmentos demográficos.",
-                  "E": "elaborar um contrato jurídico definitivo de propriedade intelectual antes de testar a ideia."
-                },
-                "c": "B",
-                "e": "No Passo 5 (Lapidação), o foco é detalhar o MVP aplicando o conceito 'menos é mais', aparando arestas e mantendo apenas o núcleo indispensável para testar a proposta de valor."
-              },
-              {
-                "t": "Na era ágil e da Inteligência Artificial Generativa (como modelos de linguagem de grande escala), ferramentas digitais como Miro, Trello, Canva e interfaces de IA passaram a atuar como 'multiplicadores de força' cognitivos na modelagem de negócios.",
-                "p": "Sobre o papel da Inteligência Artificial Generativa na etapa de ideação e construção do Business Model Canvas ('Prompt-to-Canvas'), avalie as asserções a seguir:\n\nI. A IA Generativa elimina o 'bloqueio da tela em branco' ao gerar rapidamente primeiras iterações estruturadas de modelos de negócios e cenários.\nPORQUE\nII. A IA Generativa substitui integralmente o julgamento crítico humano e a validação empírica com clientes reais no mercado.\n\nA respeito dessas asserções, assinale a opção correta:",
-                "o": {
-                  "A": "As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.",
-                  "B": "As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.",
-                  "C": "A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.",
-                  "D": "A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.",
-                  "E": "As asserções I e II são proposições falsas."
-                },
-                "c": "C",
-                "e": "A asserção I é verdadeira (a IA acelera a primeira iteração e supera o bloqueio inicial). A asserção II é falsa, pois a saída da IA exige crítica, ajuste, refino humano e validação real com clientes."
-              }
-            ]
-          },
-          {
-            "titulo": "BLOCO IV — Planejamento Estratégico, Ferramentas de Gestão, Governança Corporativa e de TI",
-            "questoes": [
-              {
-                "t": "Segundo Oliveira (2013), o planejamento estratégico não deve ser confundido com previsão, projeção ou simples plano operacional; trata-se de um conjunto de providências para construir uma situação futura desejada. Ele se desdobra nos níveis estratégico (longo prazo, visão sistêmica, missão/visão/valores), tático (médio prazo, departamental) e operacional (curto prazo, rotinas e cronogramas).",
-                "p": "Para fundamentar o planejamento estratégico em TI e negócios, Oliveira (2013) estabelece quatro princípios fundamentais. Quando uma organização assegura que o planejamento anteceda as funções de organização, direção e controle — definindo previamente 'o que e como será feito' —, ela está aplicando o princípio da:",
-                "o": {
-                  "A": "contribuição aos objetivos.",
-                  "B": "precedência do planejamento.",
-                  "C": "maior eficiência, eficácia e efetividade.",
-                  "D": "maior influência e abrangência.",
-                  "E": "segregação funcional."
-                },
-                "c": "B",
-                "e": "O princípio da precedência do planejamento estabelece que o planejamento vem antes das demais funções administrativas, definindo 'o que e como vai ser feito'."
-              },
-              {
-                "t": "Na análise estratégica empresarial, diversas matrizes auxiliam os gestores a diagnosticar o ambiente competitivo, o portfólio de produtos e as oportunidades de expansão mercadológica.",
-                "p": "Uma empresa de software de gestão (ERP) tradicionalmente focada em indústrias brasileiras decide lançar um novo módulo de Inteligência Artificial preditiva direcionado especificamente à sua base atual de clientes industriais para aumentar o ticket médio.\n\nDe acordo com a Matriz Ansoff (Produto x Mercado), essa estratégia classifica-se como:",
-                "o": {
-                  "A": "Penetração de mercado (produtos existentes em mercados existentes).",
-                  "B": "Desenvolvimento de mercado (produtos existentes em novos mercados).",
-                  "C": "Desenvolvimento de produtos (novos produtos em mercados existentes).",
-                  "D": "Diversificação (novos produtos em novos mercados).",
-                  "E": "Liderança em custo (estratégia genérica de Porter)."
-                },
-                "c": "C",
-                "e": "Na Matriz Ansoff, oferecer um produto novo (módulo de IA) para um mercado já existente (base atual de clientes industriais) configura estratégia de Desenvolvimento de Produtos."
-              },
-              {
-                "t": "A Matriz BCG (Boston Consulting Group) classifica o portfólio de produtos ou unidades de negócio de uma empresa em quatro quadrantes com base na participação relativa de mercado e na taxa de crescimento do mercado.",
-                "p": "Um produto tecnológico consolidado que detém altíssima participação em um mercado maduro de baixo crescimento, gerando grande fluxo de caixa excedente com baixa necessidade de investimento adicional para financiar novas startups internas, é classificado na Matriz BCG como:",
-                "o": {
-                  "A": "Estrela.",
-                  "B": "Em questionamento (Ponto de interrogação).",
-                  "C": "Vaca leiteira.",
-                  "D": "Abacaxi (Cão).",
-                  "E": "Oceano azul."
-                },
-                "c": "C",
-                "e": "Na Matriz BCG, produtos com alta participação de mercado e baixo crescimento de mercado são 'Vacas Leiteiras', responsáveis pela geração sólida de caixa."
-              },
-              {
-                "t": "Laudon e Laudon (2014) classificam os Sistemas de Informação conforme os níveis organizacionais que atendem: Sistemas de Processamento de Transações (SPT/OLTP), Sistemas de Informações Gerenciais (SIG), Sistemas de Apoio à Decisão (SAD) e Sistemas de Apoio ao Executivo (SAE/SIE).",
-                "p": "Associe os sistemas de informação (Coluna A) às suas respectivas funções organizacionais (Coluna B):\n\nColuna A\n1. SPT (Processamento de Transações)\n2. SIG (Informações Gerenciais)\n3. SAD (Apoio à Decisão)\n4. SAE (Apoio ao Executivo)\n\nColuna B\n( ) Monitora tendências de longo prazo, indicadores externos de mercado e performance global para a alta direção.\n( ) Registra operações rotineiras em tempo real, como vendas no caixa, emissão de notas e movimentação de estoque.\n( ) Consolida dados operacionais em relatórios periódicos e de exceção para controle administrativo da média gerência.\n( ) Oferece modelos analíticos e simulações interativas para resolver problemas gerenciais semiestruturados específicos.\n\nA sequência correta, de cima para baixo, é:",
-                "o": {
-                  "A": "4 – 1 – 2 – 3.",
-                  "B": "1 – 4 – 3 – 2.",
-                  "C": "4 – 2 – 1 – 3.",
-                  "D": "3 – 1 – 2 – 4.",
-                  "E": "2 – 3 – 4 – 1."
-                },
-                "c": "A",
-                "e": "SAE (4) atende executivos/estratégico; SPT (1) registra transações operacionais; SIG (2) gera relatórios gerenciais de controle; SAD (3) apoia decisões específicas com modelos e dados."
-              },
-              {
-                "t": "O Balanced Scorecard (BSC), desenvolvido por Robert Kaplan e David Norton, traduz a missão e a estratégia organizacional em um conjunto equilibrado de objetivos, indicadores, metas e iniciativas distribuídos em quatro perspectivas interdependentes.",
-                "p": "No mapa estratégico do BSC, a perspectiva que sustenta todas as demais ao focar na capacitação de talentos, gestão do conhecimento, infraestrutura de TI e cultura de inovação responde à questão fundamental:",
-                "o": {
-                  "A": "'Para ter sucesso financeiramente, como devemos aparecer para nossos investidores?' (Perspectiva Financeira).",
-                  "B": "'Para alcançar nossa visão, como devemos ser vistos pelos clientes?' (Perspectiva do Cliente).",
-                  "C": "'Para satisfazer os clientes e acionistas, em quais processos devemos sobressair?' (Perspectiva de Processos Internos).",
-                  "D": "'Para alcançar nossa visão, como sustentar a habilidade de mudar e progredir?' (Perspectiva de Aprendizado e Crescimento).",
-                  "E": "'Para cumprir a legislação vigente, quais auditorias externas devemos contratar?' (Perspectiva de Compliance)."
-                },
-                "c": "D",
-                "e": "A perspectiva de Aprendizado e Crescimento (ou Aprendizagem e Renovação) sustenta a habilidade de mudar, inovar e progredir por meio de pessoas, sistemas e cultura."
-              },
-              {
-                "t": "Popularizados pela Google e sistematizados por John Doerr (2019), os OKRs (Objectives and Key Results) constituem uma metodologia ágil de gestão de metas em ciclos curtos (geralmente trimestrais), articulando 'Onde quero ir?' (Objetivos qualitativos e inspiradores) e 'Como sei que estou chegando lá?' (Resultados-chave quantitativos e verificáveis).",
-                "p": "Considerando as boas práticas de formulação de OKRs descritas por Doerr (2019) e Herrero Filho (2021), avalie as afirmações a seguir:\n\nI. Um Resultado-Chave (KR) eficaz deve ser mensurável, específico e limitado no tempo, não deixando margem para ambiguidade quanto ao seu cumprimento.\nII. Diferentemente dos modelos tradicionais secretos, os OKRs promovem transparência e alinhamento organizacional ao serem compartilhados entre todos os níveis da empresa.\nIII. Os objetivos estratégicos devem atender aos critérios SMART (Específico, Mensurável, Realizável, Relevante e Temporal) e estar vinculados a iniciativas concretas.\n\nÉ correto o que se afirma em:",
-                "o": {
-                  "A": "I, apenas.",
-                  "B": "II, apenas.",
-                  "C": "I e III, apenas.",
-                  "D": "II e III, apenas.",
-                  "E": "I, II e III."
+                  "A": "Um banco de dados local onde o chatbot guarda as respostas prontas.",
+                  "B": "Um tipo de chatbot híbrido que usa aprendizado de máquina.",
+                  "C": "A tela (interface gráfica) onde o usuário digita suas perguntas.",
+                  "D": "Uma biblioteca de Python usada exclusivamente para processamento de linguagem natural.",
+                  "E": "Um conjunto de regras e protocolos que possibilita que sistemas ou aplicativos troquem dados de forma padronizada e segura."
                 },
                 "c": "E",
-                "e": "Todas as três afirmativas refletem fielmente os preceitos dos OKRs: KRs mensuráveis sem zona cinzenta, transparência organizacional e objetivos alinhados aos critérios SMART e iniciativas."
+                "e": "API = Interface de Programação de Aplicações. O livro define como 'um conjunto de regras e protocolos, possibilitando que sistemas ou aplicativos troquem dados de forma padronizada e segura'. Palavras-chave para a prova: REGRAS + PROTOCOLOS + TROCA DE DADOS PADRONIZADA E SEGURA."
               },
               {
-                "t": "Na gestão da mudança organizacional impulsionada pela cultura digital, Levorato e Woida (2021) destacam que a transformação só se concretiza quando as pessoas assumem o papel de agentes de mudança. Para institucionalizar novos padrões comportamentais e processuais, a literatura clássica descreve um processo em três estágios: degelo, mudança e recongelamento.",
-                "p": "No contexto da gestão da mudança organizacional, o estágio de 'Degelo' caracteriza-se por:",
+                "t": "",
+                "p": "Qual é o principal ganho que a integração com APIs traz para um chatbot, segundo o livro?",
                 "o": {
-                  "A": "consolidar e estabilizar os novos processos implantados por meio de auditorias permanentes.",
-                  "B": "desconstruir comportamentos antigos enraizados na cultura organizacional e conscientizar sobre a necessidade de abandonar o status quo.",
-                  "C": "aplicar treinamentos técnicos intensivos para substituir diretamente os sistemas legados.",
-                  "D": "eliminar toda forma de diversidade geracional para homogeneizar a equipe.",
-                  "E": "fortalecer os drivers de resistência interna para preservar a lógica dominante da empresa."
+                  "A": "Permite acessar sistemas externos e obter dados em tempo real, como estoque, status de pedidos ou dados meteorológicos.",
+                  "B": "Substitui a camada de interface do chatbot.",
+                  "C": "Garante que o chatbot nunca precise escalonar para um humano.",
+                  "D": "Faz o chatbot funcionar sem conexão com a internet.",
+                  "E": "Elimina a necessidade de processamento de linguagem natural."
                 },
-                "c": "B",
-                "e": "O estágio de Degelo consiste em reconhecer e romper a inércia dos comportamentos antigos enraizados (status quo), preparando as pessoas para a transição."
+                "c": "A",
+                "e": "A integração com APIs 'permite que o chatbot acesse sistemas externos para obter dados em tempo real' (estoque, pedidos, clima) e 'amplia significativamente as capacidades do chatbot'."
               },
               {
-                "t": "Após escândalos financeiros corporativos no início dos anos 2000, a aprovação da Lei Sarbanes-Oxley (SOX) nos Estados Unidos e a difusão do Código das Melhores Práticas do IBGC no Brasil consolidaram os quatro pilares fundamentais da Governança Corporativa.",
-                "p": "Quando uma companhia de capital aberto divulga de forma clara, tempestiva e acessível a todos os stakeholders não apenas seus resultados financeiros obrigatórios, mas também os riscos estratégicos, oportunidades e impactos socioambientais de suas operações, ela está exercendo prioritariamente o princípio da governança denominado:",
+                "t": "",
+                "p": "Um chatbot de banco mostra o saldo e o extrato do cliente. Segundo o livro, como ele consegue esses dados?",
                 "o": {
-                  "A": "Fairness (Senso de justiça / equidade).",
-                  "B": "Disclosure (Transparência das informações).",
-                  "C": "Accountability (Prestação responsável de contas).",
-                  "D": "Compliance (Conformidade legal).",
-                  "E": "Outsourcing (Terceirização estratégica)."
-                },
-                "c": "B",
-                "e": "Disclosure refere-se à transparência na divulgação de informações relevantes sobre resultados, oportunidades e riscos às partes interessadas (stakeholders)."
-              },
-              {
-                "t": "Rossetti e Andrade (2022) estruturam as boas práticas de governança corporativa nos chamados '8 Ps': Propriedade, Princípios, Propósitos, Papéis, Poder, Práticas, Pessoas e Perpetuidade. Esse modelo busca harmonizar os interesses de acionistas (shareholders) e demais partes interessadas (stakeholders), mitigando conflitos e custos de agência.",
-                "p": "Sobre o pilar 'Perpetuidade' dos 8 Ps da Governança Corporativa, assinale a alternativa correta:",
-                "o": {
-                  "A": "Refere-se à manutenção vitalícia dos mesmos diretores executivos no cargo, independentemente dos resultados apresentados.",
-                  "B": "Visa assegurar a continuidade e sustentabilidade da organização no longo prazo por meio de coesão societária, propensão à inovação e atenção ao tripé econômico-financeiro, social e ambiental.",
-                  "C": "Proíbe operações de fusão, aquisição ou alteração do modelo de negócios original da empresa.",
-                  "D": "Concentra-se exclusivamente na maximização do lucro trimestral de curto prazo, desconsiderando impactos ambientais.",
-                  "E": "Estabelece que princípios éticos podem ser flexibilizados conforme o ciclo econômico do país."
-                },
-                "c": "B",
-                "e": "A Perpetuidade busca a longevidade sustentável da organização através da coesão societária, capacidade de inovação e equilíbrio no tripé econômico, social e ambiental (triple bottom line)."
-              },
-              {
-                "t": "Para operacionalizar a Governança de TI, o alinhamento estratégico e a qualidade dos serviços e softwares, as organizações adotam frameworks consolidados internacionalmente, destacando-se o COBIT, o ITIL e o CMMI.\n(Adaptado de FERNANDES; ABREU, 2014; MOLINARO; RAMOS, 2010).",
-                "p": "Considere uma organização de TI que pretende: (1) estabelecer mecanismos de governança corporativa de TI, gestão de riscos e controle de processos nos domínios EDM, APO, BAI, DSS e MEA; (2) padronizar o gerenciamento do ciclo de vida dos serviços de TI entregues aos clientes (estratégia, desenho, transição, operação e melhoria contínua); e (3) elevar a maturidade dos seus processos de engenharia e desenvolvimento de software.\n\nOs frameworks mais adequados para atender, respectivamente, às demandas (1), (2) e (3) são:",
-                "o": {
-                  "A": "ITIL, CMMI e COBIT.",
-                  "B": "CMMI, COBIT e ITIL.",
-                  "C": "COBIT, ITIL e CMMI.",
-                  "D": "TOGAF, ISO 31000 e PMBOK.",
-                  "E": "BABOK, BPM CBOK e Scrum."
+                  "A": "Guardando uma cópia do saldo de todos os clientes dentro do próprio código do bot.",
+                  "B": "Pedindo ao cliente que digite o próprio saldo.",
+                  "C": "Acessando a base de dados do banco em tempo real por meio de uma API segura.",
+                  "D": "Usando apenas as regras predefinidas do NLTK.",
+                  "E": "Lendo o saldo direto da tela do aplicativo do cliente."
                 },
                 "c": "C",
-                "e": "O COBIT (1) é o framework abrangente de governança e controle de TI (domínios EDM, APO, BAI, DSS, MEA); a ITIL (2) reúne melhores práticas de gerenciamento de serviços de TI; e o CMMI (3) foca na maturidade dos processos de desenvolvimento de software."
+                "e": "Exemplo literal do livro: 'um chatbot de um banco que consulta saldos ou extratos faz isso ao acessar a base de dados do banco em tempo real por meio de uma API segura'."
+              },
+              {
+                "t": "O livro descreve a arquitetura do chatbot organizada em camadas que trabalham em conjunto.",
+                "p": "Qual é a ordem correta do caminho de uma mensagem dentro do chatbot?",
+                "o": {
+                  "A": "Lógica de negócios → Interface → NLP → Resposta.",
+                  "B": "NLP → Interface → Resposta → Lógica de negócios.",
+                  "C": "Interface → Resposta → NLP → Lógica de negócios.",
+                  "D": "Interface → Processamento de linguagem natural (NLP) → Lógica de negócios → Resposta.",
+                  "E": "Resposta → Lógica de negócios → NLP → Interface."
+                },
+                "c": "D",
+                "e": "1) INTERFACE recebe a mensagem (site, app, Alexa); 2) NLP interpreta, achando intenção e entidades; 3) LÓGICA DE NEGÓCIOS decide e consulta bancos de dados ou APIs; 4) RESPOSTA devolve ao usuário. Macete: 'I-N-L-R', 'Imagina Nós Lendo Respostas'."
+              },
+              {
+                "t": "",
+                "p": "Na arquitetura do chatbot, qual camada o livro chama de 'o cérebro do chatbot', onde se consultam bancos de dados e APIs?",
+                "o": {
+                  "A": "Processamento de linguagem natural.",
+                  "B": "Interface.",
+                  "C": "Camada de apresentação visual.",
+                  "D": "Resposta.",
+                  "E": "Lógica de negócios."
+                },
+                "c": "E",
+                "e": "O livro diz: 'a camada de lógica de negócios [...] é como o cérebro do chatbot, onde são tomadas decisões'. É nela que o bot consulta o banco de pedidos ou chama uma API. No mini projeto, é a parte que consulta o CRM."
+              },
+              {
+                "t": "",
+                "p": "O usuário escreve: 'Quero saber onde está meu pedido 1001'. Nesse caso, quais são a INTENÇÃO e a ENTIDADE?",
+                "o": {
+                  "A": "Intenção: consultar o status do pedido. Entidade: o número 1001.",
+                  "B": "Intenção: a resposta do bot. Entidade: a interface.",
+                  "C": "Intenção e entidade são a mesma coisa: a frase inteira.",
+                  "D": "Intenção: o número 1001. Entidade: consultar o pedido.",
+                  "E": "Intenção: a palavra 'quero'. Entidade: a palavra 'saber'."
+                },
+                "c": "A",
+                "e": "INTENÇÃO = o que o usuário quer fazer (ex.: 'consultar o saldo', 'enviar reclamação'). ENTIDADE = a informação específica que completa a intenção (número do pedido, data da compra). A RESPOSTA é o resultado da interação."
+              },
+              {
+                "t": "",
+                "p": "No mini projeto, o site, o app e o WhatsApp chamam a MESMA rota POST /mensagem. Que vantagem isso traz, considerando o desafio de 'funcionar em múltiplos canais' citado no livro?",
+                "o": {
+                  "A": "A API passa a funcionar apenas para o canal que fez a primeira chamada.",
+                  "B": "A regra e a lógica ficam em um só lugar (a API); cada canal é só uma interface diferente consumindo o mesmo serviço.",
+                  "C": "Cada canal passa a ter suas próprias regras, sem precisar de API.",
+                  "D": "Os canais deixam de precisar de conexão com a internet.",
+                  "E": "O chatbot deixa de precisar de testes."
+                },
+                "c": "B",
+                "e": "O livro cita como desafio de implementação 'funcionar em múltiplos canais, como websites, aplicativos móveis e redes sociais'. Com uma API central, os canais são só interfaces diferentes chamando a mesma lógica. É o chatbot omnichannel do caso TechSolutions."
+              },
+              {
+                "t": "",
+                "p": "No contexto de APIs web, o que é um ENDPOINT?",
+                "o": {
+                  "A": "O servidor de banco de dados.",
+                  "B": "O último usuário que conversou com o chatbot.",
+                  "C": "A biblioteca usada para fazer testes.",
+                  "D": "Um endereço (rota) da API que responde a um método HTTP, por exemplo GET /pedidos/1001.",
+                  "E": "A mensagem final de despedida do bot."
+                },
+                "c": "D",
+                "e": "Endpoint = método + caminho que a API expõe. No mini projeto: GET /status, POST /mensagem, GET /pedidos/<numero>, POST /avaliacao, DELETE /usuarios/<usuario>, GET /kpis."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco II — Funcionalidades do Chatbot (Livro, Aula 2)",
+            "questoes": [
+              {
+                "t": "O livro apresenta três funcionalidades das soluções de atendimento ao cliente com chatbot, usando a analogia de um restaurante moderno.",
+                "p": "Quais são essas três funcionalidades?",
+                "o": {
+                  "A": "Interface, NLP e lógica de negócios.",
+                  "B": "Criptografia, autenticação multifator e anonimização.",
+                  "C": "Automação de tarefas comuns, personalização/contextualização e escalonamento para atendentes humanos.",
+                  "D": "Engajamento, CSAT e transbordo.",
+                  "E": "Planejamento, desenvolvimento e testes."
+                },
+                "c": "C",
+                "e": "Aula 2 = AUTOMAÇÃO (o tablet que faz o pedido), PERSONALIZAÇÃO/CONTEXTUALIZAÇÃO (o chef que lembra suas preferências) e ESCALONAMENTO (o garçom que assume quando o tablet não resolve). Cuidado: as outras alternativas são listas de outras aulas."
+              },
+              {
+                "t": "",
+                "p": "O chatbot lembra que o cliente pediu um prato vegano na última visita e sugere novas opções veganas. Qual funcionalidade é essa?",
+                "o": {
+                  "A": "Teste de funcionalidade.",
+                  "B": "Anonimização de dados.",
+                  "C": "Escalonamento para humanos.",
+                  "D": "Automação de tarefas comuns.",
+                  "E": "Personalização e contextualização."
+                },
+                "c": "E",
+                "e": "Usar informações de interações passadas para adaptar a resposta é PERSONALIZAÇÃO. O livro: 'o chatbot usa informações sobre interações passadas para sugerir pratos ou promoções específicas'."
+              },
+              {
+                "t": "",
+                "p": "Segundo o livro, quais fatores costumam acionar o escalonamento para um atendente humano?",
+                "o": {
+                  "A": "Quando o usuário avalia o atendimento com nota 5.",
+                  "B": "Somente quando o servidor da API está fora do ar.",
+                  "C": "Apenas o horário comercial da empresa.",
+                  "D": "Palavras-chave, feedback do usuário (respostas negativas ou repetitivas) ou quando o bot não tem uma resposta clara.",
+                  "E": "Toda mensagem que contenha um número."
+                },
+                "c": "D",
+                "e": "Texto do livro: o escalonamento 'é geralmente acionado por determinados fatores, como: palavras-chave, feedback do usuário (por meio de respostas negativas ou repetitivas), ou quando o chatbot não tem uma resposta clara'. O mini projeto faz dois desses: palavras-chave ('atendente', 'humano') e 'nenhuma regra casou'."
+              },
+              {
+                "t": "O livro recomenda que o sistema colete informações preliminares do cliente durante a fase automatizada (tipo de problema, número do pedido) antes de passar para o humano.",
+                "p": "Qual é o objetivo disso?",
+                "o": {
+                  "A": "Guardar os dados para vender a terceiros.",
+                  "B": "Impedir que o cliente fale com um humano.",
+                  "C": "Aumentar a taxa de transbordo do chatbot.",
+                  "D": "Substituir o atendente humano por completo.",
+                  "E": "Evitar que o cliente tenha que repetir dados já fornecidos, tornando a transição mais fluida."
+                },
+                "c": "E",
+                "e": "'Isso garante que o cliente não tenha que repetir dados já fornecidos, economizando tempo'. Exemplo de mercado do livro: a Zendesk usa bots de regras para coletar nome, número do pedido e descrição do problema antes de encaminhar ao agente."
+              },
+              {
+                "t": "",
+                "p": "Qual afirmação compara corretamente o chatbot BASEADO EM REGRAS e o HÍBRIDO, segundo o livro?",
+                "o": {
+                  "A": "O de regras segue padrões predefinidos (previsível, bom para tarefas simples); o híbrido combina regras com NLP e aprendizado de máquina para lidar com perguntas complexas.",
+                  "B": "O de regras é o mais indicado para perguntas ambíguas e fora do padrão.",
+                  "C": "O de regras aprende sozinho com o tempo; o híbrido só segue um fluxo fixo.",
+                  "D": "Os dois são iguais; muda apenas o nome comercial.",
+                  "E": "O híbrido dispensa totalmente as regras, usando só IA."
+                },
+                "c": "A",
+                "e": "REGRAS: conjuntos predefinidos de padrões criados manualmente, previsível, limitado ao que foi programado. HÍBRIDO: módulo de regras para situações específicas + módulo de NLP/ML para perguntas complexas, e melhora com o tempo."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco III — Implementação do Chatbot (Livro e Slide, Aula 3)",
+            "questoes": [
+              {
+                "t": "Segundo o livro, o planejamento e o design de um chatbot começam com a definição clara dos objetivos do sistema.",
+                "p": "Quais perguntas guiam esse planejamento inicial?",
+                "o": {
+                  "A": "Qual linguagem de programação é mais rápida? Qual servidor é mais barato?",
+                  "B": "Qual será o CSAT na primeira semana?",
+                  "C": "Quantos atendentes humanos serão demitidos?",
+                  "D": "O que o chatbot precisa resolver? Quem são os usuários? Quais problemas ele deve abordar?",
+                  "E": "Qual criptografia usar nos dados armazenados?"
+                },
+                "c": "D",
+                "e": "Ponto de partida da Aula 3: 'O que o chatbot precisa resolver? Quem são os usuários? Quais problemas ele deve abordar?'. Essas perguntas guiam o desenho do fluxo de conversa. No slide, esta etapa é 'Planejamento: definição de personas e objetivos'."
+              },
+              {
+                "t": "",
+                "p": "O livro compara o desenvolvimento do chatbot com a construção de uma CASA. Nessa analogia, o que corresponde à fase de DESIGN?",
+                "o": {
+                  "A": "Fazer a manutenção do telhado: as atualizações regulares.",
+                  "B": "Definir quantos cômodos a casa terá: o objetivo e as funções do bot.",
+                  "C": "A inspeção final antes de morar: a validação com usuários reais.",
+                  "D": "Criar o projeto da casa: decidir o tom, o estilo de linguagem e como o bot reage às solicitações, prevendo problemas.",
+                  "E": "Comprar os tijolos e o cimento: escolher Dialogflow, Rasa ou Bot Framework."
+                },
+                "c": "D",
+                "e": "Na analogia da casa: PLANEJAMENTO = quantos cômodos (objetivo e funções); DESIGN = o projeto da casa (tom, estilo, reações, prever problemas); FERRAMENTAS = materiais de construção; TESTES = verificar encanamento e eletricidade; VALIDAÇÃO = a inspeção final antes de morar."
+              },
+              {
+                "t": "",
+                "p": "Quais ferramentas o livro cita para DESENVOLVER chatbots que compreendem linguagem natural?",
+                "o": {
+                  "A": "ManyChat e Chatfuel.",
+                  "B": "Dialogflow, Rasa e Microsoft Bot Framework.",
+                  "C": "Botpress e Chatbot Analytics.",
+                  "D": "Excel e Power BI.",
+                  "E": "COBIT e ITIL."
+                },
+                "c": "B",
+                "e": "DESENVOLVIMENTO com NLP: Dialogflow, Rasa e Microsoft Bot Framework. MONITORAMENTO e análise: Botpress e Chatbot Analytics. Bots de REGRAS com fluxos prontos (Aula 5): ManyChat e Chatfuel. O slide cita as bibliotecas Python NLTK e spaCy."
+              },
+              {
+                "t": "",
+                "p": "Para AVALIAR O DESEMPENHO do chatbot depois de pronto, corrigindo falhas, o livro cita quais ferramentas?",
+                "o": {
+                  "A": "NLTK e spaCy.",
+                  "B": "TLS e PCI-DSS.",
+                  "C": "Botpress e Chatbot Analytics.",
+                  "D": "Dialogflow e Rasa.",
+                  "E": "Unittest e CI/CD."
+                },
+                "c": "C",
+                "e": "'As ferramentas de análise e monitoramento, como Botpress ou Chatbot Analytics, são usadas para avaliar o desempenho do chatbot'. Macete: ANALYTICS = análise."
+              },
+              {
+                "t": "",
+                "p": "Segundo o slide da Aula 3, qual é a ordem do fluxo de trabalho de implementação?",
+                "o": {
+                  "A": "Planejamento → Desenvolvimento → Teste → Implantação → Monitoramento.",
+                  "B": "Desenvolvimento → Planejamento → Implantação → Teste → Monitoramento.",
+                  "C": "Teste → Desenvolvimento → Planejamento → Implantação → Monitoramento.",
+                  "D": "Planejamento → Teste → Desenvolvimento → Monitoramento → Implantação.",
+                  "E": "Monitoramento → Planejamento → Desenvolvimento → Teste → Implantação."
+                },
+                "c": "A",
+                "e": "Slide: 1. Planejamento (personas e objetivos); 2. Desenvolvimento (Python: NLTK, spaCy); 3. Teste (Unittest); 4. Implantação (CI/CD); 5. Monitoramento (ajustes pelo uso real). Macete: 'PeDe TIM': Planeja, Desenvolve, Testa, Implanta, Monitora."
+              },
+              {
+                "t": "",
+                "p": "Observe o código do slide. O que a lista `pares` representa?",
+                "code": "import nltk\nfrom nltk.chat.util import Chat\n\npares = [\n  [r\"oi|olá\", [\"Olá, como posso ajudar?\"]],\n  [r\"tchau\", [\"Até mais!\"]]\n]\n\nchatbot = Chat(pares)\nchatbot.converse()",
+                "o": {
+                  "A": "As regras do bot: cada item tem um padrão (expressão regular) e uma lista de respostas possíveis.",
+                  "B": "Os pares de chaves de criptografia do chatbot.",
+                  "C": "Os dados de treinamento de uma rede neural.",
+                  "D": "As rotas (endpoints) da API.",
+                  "E": "A lista de usuários que já conversaram com o bot."
+                },
+                "c": "A",
+                "e": "Cada par é [padrão, [respostas]]. Quando a mensagem casa com o padrão (regex), o bot escolhe uma das respostas. Por isso este é um chatbot BASEADO EM REGRAS: não aprende, só segue padrões definidos à mão."
+              },
+              {
+                "t": "",
+                "p": "No código do slide, o padrão é `r\"oi|olá\"`. O que significa a barra vertical `|`?",
+                "code": "import nltk\nfrom nltk.chat.util import Chat\n\npares = [\n  [r\"oi|olá\", [\"Olá, como posso ajudar?\"]],\n  [r\"tchau\", [\"Até mais!\"]]\n]\n\nchatbot = Chat(pares)\nchatbot.converse()",
+                "o": {
+                  "A": "Indica um comentário no código.",
+                  "B": "'OU': o padrão casa com 'oi' ou com 'olá'.",
+                  "C": "Faz o bot ignorar a mensagem.",
+                  "D": "Separa o padrão da resposta.",
+                  "E": "'E': a mensagem precisa ter 'oi' e 'olá' ao mesmo tempo."
+                },
+                "c": "B",
+                "e": "Em expressão regular, | é a alternância (OU). r\"oi|olá\" casa com mensagens que começam com 'oi' ou com 'olá'. O r antes das aspas indica uma string 'raw', comum em regex no Python."
+              },
+              {
+                "t": "",
+                "p": "Usando as regras do slide, o que `chatbot.respond(\"Oi, tudo bem?\")` retorna?",
+                "code": "import nltk\nfrom nltk.chat.util import Chat\n\npares = [\n  [r\"oi|olá\", [\"Olá, como posso ajudar?\"]],\n  [r\"tchau\", [\"Até mais!\"]]\n]\n\nchatbot = Chat(pares)\nchatbot.converse()",
+                "o": {
+                  "A": "\"Oi, tudo bem?\" (repete a mensagem).",
+                  "B": "Um erro, porque a frase tem uma vírgula.",
+                  "C": "\"Até mais!\"",
+                  "D": "None, porque 'Oi' tem letra maiúscula.",
+                  "E": "\"Olá, como posso ajudar?\""
+                },
+                "c": "E",
+                "e": "O Chat do NLTK compara ignorando maiúsculas e minúsculas e verifica o padrão a partir do INÍCIO da frase. 'Oi, tudo bem?' começa com 'oi', então casa com o primeiro par. Testado no mini projeto."
+              },
+              {
+                "t": "",
+                "p": "E o que `chatbot.respond(\"bom dia, oi\")` retorna?",
+                "code": "import nltk\nfrom nltk.chat.util import Chat\n\npares = [\n  [r\"oi|olá\", [\"Olá, como posso ajudar?\"]],\n  [r\"tchau\", [\"Até mais!\"]]\n]\n\nchatbot = Chat(pares)\nchatbot.converse()",
+                "o": {
+                  "A": "\"Até mais!\"",
+                  "B": "None: o NLTK testa o padrão a partir do início da frase, e a frase começa com 'bom dia'.",
+                  "C": "\"Olá, como posso ajudar?\", porque a frase contém 'oi'.",
+                  "D": "Um erro de sintaxe.",
+                  "E": "\"bom dia\""
+                },
+                "c": "B",
+                "e": "O Chat usa regex.match(), que só casa se o padrão estiver no COMEÇO. Como nenhuma regra casou, respond() devolve None. Na API do mini projeto, None vira escalonamento para humano. É a limitação do bot de regras: 'não consegue lidar com perguntas fora de seus padrões'."
+              },
+              {
+                "t": "",
+                "p": "Pegadinha: com as regras do slide, o que acontece se o usuário digitar \"oito\"?",
+                "code": "import nltk\nfrom nltk.chat.util import Chat\n\npares = [\n  [r\"oi|olá\", [\"Olá, como posso ajudar?\"]],\n  [r\"tchau\", [\"Até mais!\"]]\n]\n\nchatbot = Chat(pares)\nchatbot.converse()",
+                "o": {
+                  "A": "O bot responde \"Olá, como posso ajudar?\", porque 'oito' começa com 'oi'.",
+                  "B": "O Python lança uma exceção.",
+                  "C": "O bot retorna None.",
+                  "D": "O bot transfere para um humano automaticamente.",
+                  "E": "O bot responde \"Até mais!\"."
+                },
+                "c": "A",
+                "e": "O padrão r\"oi|olá\" só exige que a frase COMECE com 'oi', e 'oito' começa. Para corrigir, use limite de palavra: r\"(oi|olá)\\b\". É um ótimo exemplo de por que o TESTE de NLP (variações, erros de digitação) é necessário."
+              },
+              {
+                "t": "",
+                "p": "Qual a diferença entre `chatbot.converse()` (usado no slide) e `chatbot.respond(texto)` (usado na API)?",
+                "o": {
+                  "A": "converse() treina o bot; respond() apaga as regras.",
+                  "B": "converse() só funciona em inglês; respond() só em português.",
+                  "C": "Não há diferença; são dois nomes para a mesma função.",
+                  "D": "converse() abre um loop no terminal lendo o que o usuário digita até 'quit'; respond() recebe um texto e DEVOLVE a resposta, o que serve para uma API.",
+                  "E": "respond() abre o terminal; converse() devolve um JSON."
+                },
+                "c": "D",
+                "e": "Para a API precisamos de uma função que receba a mensagem e devolva a resposta (respond), para colocá-la no JSON. converse() é interativo, bom só para testar no terminal."
+              },
+              {
+                "t": "O livro diferencia dois tipos de teste: o de FUNCIONALIDADE e o de PROCESSAMENTO DE LINGUAGEM NATURAL.",
+                "p": "Qual situação é um teste de PROCESSAMENTO DE LINGUAGEM NATURAL?",
+                "o": {
+                  "A": "Verificar se a navegação entre os menus funciona.",
+                  "B": "Verificar se o servidor aguenta mil acessos ao mesmo tempo.",
+                  "C": "Verificar se a consulta do status de um pedido retorna o dado correto.",
+                  "D": "Verificar se o bot entende a intenção mesmo com gírias, erros de digitação ou mensagens ambíguas.",
+                  "E": "Verificar se o agendamento de compromissos é salvo no banco."
+                },
+                "c": "D",
+                "e": "FUNCIONALIDADE = interações básicas funcionam (FAQ, navegação, consultar pedido, agendar). NLP = entender a intenção 'mesmo quando a mensagem é informal, ambígua', com 'gírias ou erros de digitação'. Carga (mil acessos) é um teste citado na Aula 4."
+              },
+              {
+                "t": "",
+                "p": "Complete a linha que falta para o teste verificar que o bot respondeu 'Até mais!':",
+                "code": "class TestChatbot(unittest.TestCase):\n    def setUp(self):\n        self.cliente = app.test_client()\n\n    def test_despedida(self):\n        r = self.cliente.post(\"/mensagem\", json={\"texto\": \"tchau\"})\n        ______________________________",
+                "o": {
+                  "A": "self.assertEqual(r.get_json()[\"resposta\"], \"Até mais!\")",
+                  "B": "print(\"Até mais!\")",
+                  "C": "chatbot.converse()",
+                  "D": "self.assertEqual(r.status_code, 404)",
+                  "E": "self.assertTrue(r.get_json()[\"transferido\"])"
+                },
+                "c": "A",
+                "e": "O unittest compara o valor obtido com o esperado: assertEqual(obtido, esperado). r.get_json() transforma a resposta da API em dicionário, e [\"resposta\"] pega o texto do bot. O setUp() roda antes de cada teste, e app.test_client() simula as chamadas sem subir o servidor."
+              },
+              {
+                "t": "",
+                "p": "Depois dos testes, o livro fala em VALIDAÇÃO e apresenta o ciclo PDCA. O que é o PDCA?",
+                "o": {
+                  "A": "Uma norma de segurança para cartões de pagamento.",
+                  "B": "Um tipo de teste de carga.",
+                  "C": "Um protocolo de criptografia de dados em trânsito.",
+                  "D": "Um framework de desenvolvimento de chatbots como o Rasa.",
+                  "E": "Um ciclo de melhoria contínua: Planejar, Executar (Do), Verificar (Check) e Agir."
+                },
+                "c": "E",
+                "e": "PDCA: PLANEJAR (metas e soluções), EXECUTAR (colocar em prática), VERIFICAR (monitorar e comparar com as metas) e AGIR (ajustar e padronizar o que funcionou). O ciclo se repete. A validação também envolve 'testes com usuários reais'."
+              },
+              {
+                "t": "",
+                "p": "No slide, a etapa de Implantação usa 'CI/CD'. O que isso significa?",
+                "o": {
+                  "A": "Um tipo de chatbot híbrido.",
+                  "B": "Uma ferramenta de análise de sentimentos.",
+                  "C": "Criptografia de Informação e Dados de Cliente.",
+                  "D": "Controle de Interface e Design de Conversa.",
+                  "E": "Integração Contínua e Entrega/Implantação Contínua: a cada mudança no código, os testes rodam e o sistema é publicado de forma automática."
+                },
+                "c": "E",
+                "e": "CI (Continuous Integration) roda os testes automaticamente a cada alteração. CD (Continuous Delivery/Deployment) publica a nova versão automaticamente. Liga com a etapa 3: os testes de unittest são o que o CI executa."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco IV — Limitações, Desafios e Segurança (Livro, Aula 4)",
+            "questoes": [
+              {
+                "t": "O livro usa a analogia de um PARQUE DE DIVERSÕES para explicar as limitações técnicas dos chatbots.",
+                "p": "Na analogia, as 'longas filas no parque que frustram os visitantes' correspondem a qual limitação?",
+                "o": {
+                  "A": "Integração com o CRM.",
+                  "B": "Falta de criptografia.",
+                  "C": "Tempo de resposta lento, especialmente em momentos de alta demanda.",
+                  "D": "Ausência de autenticação multifator.",
+                  "E": "Dificuldade de entender gírias."
+                },
+                "c": "C",
+                "e": "'Assim como longas filas em um parque podem frustrar os visitantes, tempos de resposta lentos de um chatbot podem afastar os usuários', principalmente com muitas interações simultâneas. Outras comparações: infraestrutura de água e luz = integração com APIs; atender multidões no pico = escalabilidade."
+              },
+              {
+                "t": "",
+                "p": "Por que a integração com sistemas externos (bancos de dados, CRMs, APIs) é citada como LIMITAÇÃO técnica?",
+                "o": {
+                  "A": "Porque APIs só funcionam com chatbots híbridos.",
+                  "B": "Porque CRMs não guardam dados de clientes.",
+                  "C": "Porque o chatbot não pode se conectar à internet.",
+                  "D": "Porque integrar com APIs elimina a necessidade de testes.",
+                  "E": "Porque as tecnologias desses sistemas podem ser incompatíveis com a plataforma do chatbot, limitando tarefas como acessar o histórico do cliente."
+                },
+                "c": "E",
+                "e": "O livro: 'muitas vezes as tecnologias utilizadas nesses sistemas podem ser incompatíveis com as plataformas de chatbots, o que limita a capacidade do bot de realizar tarefas complexas, como acessar o histórico do cliente ou verificar o status de um pedido'. Também 'pode exigir personalizações significativas'."
+              },
+              {
+                "t": "",
+                "p": "Qual destes é um DESAFIO DE IMPLEMENTAÇÃO citado no livro?",
+                "o": {
+                  "A": "Definir as personas no planejamento.",
+                  "B": "Responder perguntas de horário de funcionamento.",
+                  "C": "Escalabilidade: atender muitas interações simultâneas sem perder desempenho.",
+                  "D": "Usar a barra vertical | nas expressões regulares.",
+                  "E": "Calcular a média das notas do CSAT."
+                },
+                "c": "C",
+                "e": "Desafios de implementação (o parque já em operação): treinar o bot para entender intenções, atualizações regulares, escalabilidade e funcionar em múltiplos canais. A escalabilidade 'requer uma infraestrutura robusta que permita ao chatbot lidar com picos de uso'."
+              },
+              {
+                "t": "",
+                "p": "Um hacker tenta interceptar a conversa entre o chatbot e o usuário para roubar dados ou se passar por um deles. Qual é o nome desse risco e a proteção indicada pelo livro?",
+                "o": {
+                  "A": "Anonimização; proteção: apagar o banco de dados.",
+                  "B": "Transbordo; proteção: aumentar o número de atendentes.",
+                  "C": "Escalonamento; proteção: usar palavras-chave.",
+                  "D": "Sequestro de sessão; proteção: criptografar toda a comunicação.",
+                  "E": "Ambiguidade; proteção: usar NLP."
+                },
+                "c": "D",
+                "e": "'Um dos principais riscos é o sequestro de sessões [...] Para evitar isso, é essencial garantir que toda a comunicação entre o chatbot e o usuário seja criptografada.' Na prática, a API deve usar HTTPS (TLS)."
+              },
+              {
+                "t": "",
+                "p": "O que é AUTENTICAÇÃO MULTIFATOR (MFA), segundo o livro?",
+                "o": {
+                  "A": "Transferir o atendimento para vários humanos.",
+                  "B": "Criptografar os dados guardados no banco.",
+                  "C": "Além da senha, o usuário fornece outra forma de verificação, como um código enviado ao telefone.",
+                  "D": "Ter várias senhas iguais em sistemas diferentes.",
+                  "E": "Permitir que vários usuários usem a mesma conta."
+                },
+                "c": "C",
+                "e": "MFA = senha + outro fator (código no celular, por exemplo). É uma forma de CONTROLE DE ACESSO: 'assim como os parques têm áreas restritas onde apenas funcionários autorizados podem entrar'. No mini projeto, o token Bearer da rota /kpis é um controle de acesso simples."
+              },
+              {
+                "t": "",
+                "p": "Sobre PRIVACIDADE, o que significa ANONIMIZAR os dados do chatbot?",
+                "o": {
+                  "A": "Apagar todos os dados assim que a conversa termina.",
+                  "B": "Guardar os dados de forma que não fiquem diretamente vinculados a um usuário específico, reduzindo o risco em caso de vazamento.",
+                  "C": "Criptografar a comunicação com TLS.",
+                  "D": "Pedir senha e código no celular.",
+                  "E": "Não responder usuários que não se identificam."
+                },
+                "c": "B",
+                "e": "O livro: 'é possível anonimizar os dados, de forma que eles não sejam diretamente vinculados a um usuário específico. Isso reduz o risco de exposição em caso de um vazamento'. No mini projeto, anonimizar() troca o nome por um código (hash)."
+              },
+              {
+                "t": "",
+                "p": "Observe o código do mini projeto. O que fica gravado no campo \"usuario\" da auditoria?",
+                "code": "def anonimizar(usuario):\n    return hashlib.sha256(usuario.encode()).hexdigest()[:10]\n\ndados[\"auditoria\"].append({\"usuario\": anonimizar(\"kadu\"),\n                           \"texto\": texto, \"transferido\": False})",
+                "o": {
+                  "A": "A senha do usuário.",
+                  "B": "Um código de 10 caracteres gerado a partir do nome (hash), e não o nome 'kadu'.",
+                  "C": "O número de telefone do usuário.",
+                  "D": "O nome 'kadu' em texto puro.",
+                  "E": "Nada; a auditoria fica sempre vazia."
+                },
+                "c": "B",
+                "e": "sha256 gera um resumo (hash) do nome, e [:10] pega os 10 primeiros caracteres. Dá para contar usuários e auditar sem guardar o nome real, unindo ANONIMIZAÇÃO e AUDITORIA, duas recomendações da Aula 4."
+              },
+              {
+                "t": "",
+                "p": "O livro diz que os chatbots devem permitir que o usuário exclua seus dados. No mini projeto existe `DELETE /usuarios/<usuario>`. Que status essa rota devolve quando dá certo, e o que ele significa?",
+                "o": {
+                  "A": "401 Unauthorized: exclusão nunca é permitida.",
+                  "B": "201 Created: um usuário novo foi criado.",
+                  "C": "204 No Content: deu certo e não há conteúdo para devolver.",
+                  "D": "404 Not Found: o usuário sempre é desconhecido.",
+                  "E": "500 Internal Server Error: excluir dados quebra a API."
+                },
+                "c": "C",
+                "e": "DELETE é o método HTTP para remover um recurso. 204 = sucesso sem corpo na resposta. Atende ao direito de 'excluir seus dados ou solicitar a correção de informações pessoais' (LGPD), que a Aula 4 cita para gerar confiança."
+              },
+              {
+                "t": "Desafio da Aula 4: você foi contratado para desenvolver um chatbot para uma INSTITUIÇÃO FINANCEIRA que fornece informações de conta e realiza transações.",
+                "p": "Qual conjunto de medidas o livro recomenda?",
+                "o": {
+                  "A": "APIs seguras para integrar com o banco, norma PCI-DSS, criptografia com TLS (em trânsito) e nos dados armazenados, MFA, monitoramento, auditoria das interações, testes de intrusão e testes de carga.",
+                  "B": "Desativar o escalonamento para humanos, para reduzir custos.",
+                  "C": "Guardar senhas em texto puro para facilitar a recuperação de conta.",
+                  "D": "Usar apenas a senha, já que MFA atrapalha a experiência do usuário.",
+                  "E": "Usar apenas regras do NLTK, sem integração com o sistema do banco, para evitar riscos."
+                },
+                "c": "A",
+                "e": "Resumo do livro: 'APIs seguras, criptografia forte, MFA, monitoramento e testes rigorosos'. Detalhes: PCI-DSS (norma para dados de cartão), TLS nos dados em trânsito, criptografia nos dados armazenados, AUDITORIA (registrar acessos e transações), testes de INTRUSÃO (achar vulnerabilidades) e de CARGA (alta demanda). E redirecionar ao humano quando for complexo."
+              },
+              {
+                "t": "",
+                "p": "No chatbot bancário, para que servem os TESTES DE INTRUSÃO e os TESTES DE CARGA, respectivamente?",
+                "o": {
+                  "A": "Intrusão: testar gírias. Carga: testar erros de digitação.",
+                  "B": "Intrusão: identificar vulnerabilidades de segurança. Carga: garantir que o bot aguente muitas solicitações ao mesmo tempo.",
+                  "C": "Intrusão: medir o CSAT. Carga: calcular o transbordo.",
+                  "D": "Intrusão: medir o tempo de digitação do usuário. Carga: carregar o NLTK.",
+                  "E": "Os dois são o mesmo teste com nomes diferentes."
+                },
+                "c": "B",
+                "e": "'Os testes de intrusão podem ser uma metodologia para identificar vulnerabilidades, enquanto testes de carga asseguram que o chatbot possa lidar com muitas solicitações, especialmente em períodos de alta demanda.'"
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco V — Lendo o Código da API (Mini Projeto)",
+            "questoes": [
+              {
+                "t": "Métodos HTTP:\n1. GET\n2. POST\n3. DELETE\n\n( ) Enviar uma mensagem nova para o chatbot\n( ) Consultar o status do pedido 1001\n( ) Apagar os dados de um usuário",
+                "p": "Associe cada ação ao método HTTP usado na API. A sequência correta, de cima para baixo, é:",
+                "o": {
+                  "A": "2 – 3 – 1",
+                  "B": "2 – 1 – 3",
+                  "C": "3 – 1 – 2",
+                  "D": "1 – 2 – 3",
+                  "E": "1 – 3 – 2"
+                },
+                "c": "B",
+                "e": "GET = buscar/consultar, sem alterar nada (GET /pedidos/1001). POST = enviar/criar algo novo (POST /mensagem, POST /avaliacao). DELETE = remover (DELETE /usuarios/kadu). Existe também PUT/PATCH = atualizar."
+              },
+              {
+                "t": "",
+                "p": "Um aplicativo envia para a API: `POST /mensagem` com o corpo `{}` (vazio). O que a API devolve?",
+                "code": "@app.post(\"/mensagem\")\ndef mensagem():\n    corpo = request.get_json(silent=True) or {}\n    texto = corpo.get(\"texto\", \"\").strip()\n\n    if not texto:\n        return jsonify({\"erro\": \"Campo 'texto' é obrigatório\"}), 400\n\n    resposta = chatbot.respond(texto)\n    if resposta is None:\n        return jsonify({\"resposta\": \"Vou te transferir para um atendente humano.\",\n                        \"transferido\": True}), 200\n\n    return jsonify({\"resposta\": resposta, \"transferido\": False}), 200",
+                "o": {
+                  "A": "Status 200 com \"Olá, como posso ajudar?\".",
+                  "B": "Status 404, porque a rota não existe.",
+                  "C": "Status 500, porque o Python quebra.",
+                  "D": "Status 200 transferindo para um humano.",
+                  "E": "Status 400 com {\"erro\": \"Campo 'texto' é obrigatório\"}."
+                },
+                "c": "E",
+                "e": "corpo.get(\"texto\", \"\") devolve \"\" quando a chave não existe; .strip() continua \"\"; e `if not texto` é verdadeiro. Por isso a API devolve 400 Bad Request, que significa que o CLIENTE mandou uma requisição inválida."
+              },
+              {
+                "t": "",
+                "p": "Ainda no código abaixo, se a mensagem for \"quero cancelar meu cartão\" (nenhuma regra casa), qual é a resposta?",
+                "code": "@app.post(\"/mensagem\")\ndef mensagem():\n    corpo = request.get_json(silent=True) or {}\n    texto = corpo.get(\"texto\", \"\").strip()\n\n    if not texto:\n        return jsonify({\"erro\": \"Campo 'texto' é obrigatório\"}), 400\n\n    resposta = chatbot.respond(texto)\n    if resposta is None:\n        return jsonify({\"resposta\": \"Vou te transferir para um atendente humano.\",\n                        \"transferido\": True}), 200\n\n    return jsonify({\"resposta\": resposta, \"transferido\": False}), 200",
+                "o": {
+                  "A": "Status 400 com uma mensagem de erro.",
+                  "B": "Status 200 com {\"resposta\": null, \"transferido\": false}.",
+                  "C": "Status 200 com {\"resposta\": \"Vou te transferir para um atendente humano.\", \"transferido\": true}.",
+                  "D": "Status 401 Não autorizado.",
+                  "E": "Status 404 com \"Pedido não encontrado\"."
+                },
+                "c": "C",
+                "e": "respond() devolve None quando nenhuma regra casa, e aí a API ESCALONA para o humano (funcionalidade da Aula 2). O status é 200 porque a requisição foi processada com sucesso; o 'problema' é de negócio, não de HTTP."
+              },
+              {
+                "t": "",
+                "p": "Qual comando `curl` envia corretamente a mensagem \"oi\" para a API?",
+                "o": {
+                  "A": "curl -X POST http://127.0.0.1:5000/mensagem -H \"Content-Type: application/json\" -d '{\"texto\": \"oi\"}'",
+                  "B": "curl -X DELETE http://127.0.0.1:5000/mensagem -d 'oi'",
+                  "C": "curl http://127.0.0.1:5000/mensagem?oi",
+                  "D": "curl -X GET http://127.0.0.1:5000/oi",
+                  "E": "curl -X POST http://127.0.0.1:5000/kpis -d '{\"texto\": \"oi\"}'"
+                },
+                "c": "A",
+                "e": "Precisa de: método POST (-X POST), a rota certa (/mensagem), o cabeçalho dizendo que o corpo é JSON (-H \"Content-Type: application/json\") e o corpo em JSON (-d '{\"texto\": \"oi\"}')."
+              },
+              {
+                "t": "",
+                "p": "Com o código abaixo, o que a API responde para `GET /pedidos/9999`?",
+                "code": "CRM = {\n    \"1001\": {\"cliente\": \"Ana\", \"status\": \"Enviado\"},\n    \"1002\": {\"cliente\": \"Bruno\", \"status\": \"Em separação\"},\n}\n\n@app.get(\"/pedidos/<numero>\")\ndef consultar_pedido(numero):\n    pedido = CRM.get(numero)\n    if pedido is None:\n        return jsonify({\"erro\": \"Pedido não encontrado\"}), 404\n    return jsonify(pedido), 200",
+                "o": {
+                  "A": "Status 201, porque cria o pedido 9999.",
+                  "B": "Status 200 com {\"cliente\": \"Ana\", \"status\": \"Enviado\"}.",
+                  "C": "Status 404 com {\"erro\": \"Pedido não encontrado\"}.",
+                  "D": "Status 400, porque 9999 não é um número válido.",
+                  "E": "Status 500, porque CRM.get() quebra quando a chave não existe."
+                },
+                "c": "C",
+                "e": "<numero> na rota é um PARÂMETRO DE CAMINHO: o Flask passa '9999' para a função. CRM.get('9999') devolve None (o .get() não quebra, diferente de CRM['9999']), e a função responde 404 Not Found."
+              },
+              {
+                "t": "",
+                "p": "O que a API responde para `GET /kpis` quando a requisição NÃO tem o cabeçalho Authorization?",
+                "code": "@app.get(\"/kpis\")\ndef kpis():\n    if request.headers.get(\"Authorization\") != \"Bearer segredo123\":\n        return jsonify({\"erro\": \"Não autorizado\"}), 401\n    ...",
+                "o": {
+                  "A": "201 Created.",
+                  "B": "200 OK com os KPIs zerados.",
+                  "C": "401 Unauthorized: falta a credencial de acesso.",
+                  "D": "404 Not Found: a rota não existe.",
+                  "E": "405 Method Not Allowed."
+                },
+                "c": "C",
+                "e": "Sem o token 'Bearer segredo123', a comparação falha e a API devolve 401 (não autenticado). É o CONTROLE DE ACESSO da Aula 4: só a gestão vê as métricas. Na vida real, o token não fica escrito no código; fica em variável de ambiente."
+              },
+              {
+                "t": "",
+                "p": "Se alguém chamar `DELETE /status` (a rota /status só aceita GET), qual status o Flask devolve?",
+                "o": {
+                  "A": "200 OK.",
+                  "B": "405 Method Not Allowed.",
+                  "C": "404 Not Found.",
+                  "D": "401 Unauthorized.",
+                  "E": "204 No Content."
+                },
+                "c": "B",
+                "e": "A ROTA existe, mas não aceita aquele MÉTODO, então a resposta é 405. Se a rota não existisse, seria 404. Os códigos para a prova: 200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 404 Not Found, 405 Method Not Allowed e 500 Internal Server Error."
+              },
+              {
+                "t": "",
+                "p": "Esta versão de /avaliacao tem um problema. O que acontece se o cliente enviar `{}` (sem \"nota\")?",
+                "code": "@app.post(\"/avaliacao\")\ndef avaliacao():\n    corpo = request.get_json()\n    nota = corpo[\"nota\"]\n    dados[\"notas\"].append(nota)\n    return jsonify({\"mensagem\": \"Obrigado!\"}), 201",
+                "o": {
+                  "A": "A API devolve 201 e grava a nota 0.",
+                  "B": "A API devolve 404, porque a nota não foi encontrada.",
+                  "C": "Nada acontece: o Python ignora chaves que faltam.",
+                  "D": "A API devolve 401, porque falta o token.",
+                  "E": "corpo[\"nota\"] lança KeyError e a API devolve 500 (erro interno). O certo é validar com .get() e devolver 400."
+                },
+                "c": "E",
+                "e": "Acessar dict[\"chave\"] quando a chave não existe gera KeyError, e o Flask transforma isso em 500. Também não há validação (uma nota 7 seria aceita). A versão correta do mini projeto usa corpo.get(\"nota\") e verifica se a nota está entre 1 e 5; senão, devolve 400. Regra: erro do cliente = 4xx; erro do servidor = 5xx."
+              },
+              {
+                "t": "",
+                "p": "Neste trecho do mini projeto, em quais situações o chatbot ESCALONA para o atendente humano?",
+                "code": "PALAVRAS_ESCALONAMENTO = [\"atendente\", \"humano\", \"reclamação\"]\n\nif any(p in texto.lower() for p in PALAVRAS_ESCALONAMENTO):\n    return escalonar(usuario, texto)\n\nresposta = chatbot.respond(texto)\nif resposta is None:\n    return escalonar(usuario, texto)",
+                "o": {
+                  "A": "Nunca: o código só registra a mensagem.",
+                  "B": "Somente quando a API devolve status 500.",
+                  "C": "Em todas as mensagens, para garantir a qualidade.",
+                  "D": "Quando a mensagem contém 'atendente', 'humano' ou 'reclamação', OU quando nenhuma regra do NLTK casa.",
+                  "E": "Somente quando o usuário digita 'tchau'."
+                },
+                "c": "D",
+                "e": "Dois gatilhos do livro (Aula 2) implementados: PALAVRAS-CHAVE e 'quando o chatbot não tem uma resposta clara' (resposta None). any(...) devolve True se pelo menos uma palavra da lista aparecer no texto."
+              },
+              {
+                "t": "",
+                "p": "O que a função `jsonify({...})` do Flask faz?",
+                "o": {
+                  "A": "Criptografa a resposta com TLS.",
+                  "B": "Transforma o dicionário Python em uma resposta HTTP no formato JSON (com o cabeçalho Content-Type: application/json).",
+                  "C": "Executa os testes do unittest.",
+                  "D": "Lê o JSON enviado pelo cliente.",
+                  "E": "Salva o dicionário no banco de dados."
+                },
+                "c": "B",
+                "e": "jsonify = monta a RESPOSTA em JSON. Para LER o JSON que o cliente enviou, usa-se request.get_json(). JSON é o formato texto de chave e valor que APIs usam para trocar dados, como {\"resposta\": \"Até mais!\"}."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco VI — Medindo o Sucesso: KPIs (Slide)",
+            "questoes": [
+              {
+                "t": "",
+                "p": "Um chatbot teve 1.200 interações e 300 delas foram transferidas para um humano. Qual é o TRANSBORDO?",
+                "o": {
+                  "A": "300%",
+                  "B": "25%",
+                  "C": "4%",
+                  "D": "40%",
+                  "E": "75%"
+                },
+                "c": "B",
+                "e": "Transbordo = (Transf. Humano / Total Interações) × 100 = 300 / 1200 × 100 = 25%. Quanto MENOR, melhor: é a meta do caso TechSolutions de 'reduzir volume de chamadas humanas'."
+              },
+              {
+                "t": "",
+                "p": "O site recebeu 15.000 visitantes e 450 deles usaram o chat. Qual é o ENGAJAMENTO?",
+                "o": {
+                  "A": "3%",
+                  "B": "0,3%",
+                  "C": "33%",
+                  "D": "4,5%",
+                  "E": "30%"
+                },
+                "c": "A",
+                "e": "Engajamento = (Usuários Chat / Total Visitantes) × 100 = 450 / 15000 × 100 = 3%."
+              },
+              {
+                "t": "",
+                "p": "Os clientes deram as notas 5, 4, 3 e 4 depois do atendimento. Qual é o CSAT?",
+                "o": {
+                  "A": "3,5",
+                  "B": "16",
+                  "C": "4,0",
+                  "D": "5,0",
+                  "E": "4,5"
+                },
+                "c": "C",
+                "e": "CSAT = média das notas pós-atendimento = (5 + 4 + 3 + 4) / 4 = 16 / 4 = 4,0."
+              },
+              {
+                "t": "",
+                "p": "Depois da sequência de chamadas abaixo, qual é o resultado de GET /kpis no mini projeto?",
+                "code": "# Sequência de chamadas feitas na API:\n10 x  POST /visita\nPOST /mensagem {\"texto\": \"oi\",        \"usuario\": \"ana\"}   -> bot respondeu\nPOST /mensagem {\"texto\": \"tchau\",     \"usuario\": \"ana\"}   -> bot respondeu\nPOST /mensagem {\"texto\": \"oi\",        \"usuario\": \"bia\"}   -> bot respondeu\nPOST /mensagem {\"texto\": \"reembolso\", \"usuario\": \"bia\"}   -> transferido\nPOST /avaliacao {\"nota\": 5}\nPOST /avaliacao {\"nota\": 4}\n\nGET /kpis   (com o token correto)",
+                "o": {
+                  "A": "engajamento 20.0, conclusão 100.0, csat 5.0, transbordo 0.0",
+                  "B": "engajamento 20.0, conclusão 75.0, csat 4.5, transbordo 25.0",
+                  "C": "engajamento 2.0, conclusão 3.0, csat 4.5, transbordo 1.0",
+                  "D": "engajamento 40.0, conclusão 75.0, csat 4.5, transbordo 25.0",
+                  "E": "engajamento 20.0, conclusão 25.0, csat 9.0, transbordo 75.0"
+                },
+                "c": "B",
+                "e": "Engajamento: 2 usuários DIFERENTES (ana, bia) / 10 visitantes = 20%. Cuidado: são 4 mensagens, mas só 2 usuários. Conclusão: 3 resolvidas / 4 interações = 75%. CSAT: (5 + 4) / 2 = 4,5. Transbordo: 1 / 4 = 25%. Este é exatamente o teste test_calculo_dos_kpis do projeto."
+              },
+              {
+                "t": "",
+                "p": "Qual destas metas segue o método SMART?",
+                "o": {
+                  "A": "Reduzir o transbordo do chatbot de 30% para 20% até 30 de junho.",
+                  "B": "Diminuir o transbordo o quanto for possível.",
+                  "C": "Melhorar muito o chatbot.",
+                  "D": "Ter o melhor chatbot do mundo.",
+                  "E": "Deixar os clientes mais felizes no futuro."
+                },
+                "c": "A",
+                "e": "SMART = Específica, Mensurável, Alcançável, Relevante e Temporal. 'De 30% para 20%' é específica e mensurável; 'até 30 de junho' é temporal; e reduzir o transbordo é relevante. As outras são vagas: sem número e sem prazo."
               }
             ]
           }
@@ -705,15 +900,16 @@
                         opcoesHTML += `
                             <label class="option" id="opt-${idInterno}-${letra}">
                                 <input type="radio" name="res-${idInterno}" value="${letra}" onchange="responder('${idInterno}', '${letra}')">
-                                <strong>${letra})</strong> ${esc(texto)}
+                                <strong>${letra})</strong> ${fmt(texto)}
                             </label>
                         `;
                     });
                     
                     card.innerHTML = `
                         <span class="q-num">QUESTÃO ${String(qIndexGlobal).padStart(2, '0')}</span>
-                        ${q.t ? `<div class="q-base">${esc(q.t)}</div>` : ''}
-                        <span class="q-text">${esc(q.p)}</span>
+                        ${q.t ? `<div class="q-base">${fmt(q.t)}</div>` : ''}
+                        <span class="q-text">${fmt(q.p)}</span>
+                        ${q.code ? `<pre class="q-code">${esc(q.code)}</pre>` : ''}
                         <div class="options-container">${opcoesHTML}</div>
                         <div class="explanation" id="exp-${idInterno}"></div>
                     `;
@@ -728,6 +924,11 @@
             return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        // Escapa o texto e transforma `trecho` em código destacado
+        function fmt(t) {
+            return esc(t).replace(/`([^`]+)`/g, '<code class="inline">$1</code>');
+        }
+
         function buscarQuestao(idInterno) {
             const [, s, q] = idInterno.match(/^s(\d+)q(\d+)$/);
             return conteudos[+s].questoes[+q];
@@ -736,7 +937,7 @@
         function responder(idInterno, letraSelecionada) {
             const questao = buscarQuestao(idInterno);
             const letraCorreta = questao.c;
-            const explicacao = esc(questao.e);
+            const explicacao = fmt(questao.e);
             const caixaExplicacao = document.getElementById(`exp-${idInterno}`);
             const inputs = document.querySelectorAll(`input[name="res-${idInterno}"]`);
             
