@@ -1,5 +1,52 @@
 # Mini projeto: API de Chatbot (Aulas 3, 4 e 5)
 
+Aqui há dois exemplos:
+
+1. **`chatbot_clima.py`**: um chatbot que **consome** uma API de verdade (Open-Meteo), no mesmo estilo dos exercícios do professor. Veja a seção logo abaixo.
+2. **`chatbot_api.py`**: um chatbot que **é** uma API (Flask). Veja a partir de "Chatbot como API".
+
+## Chatbot do clima (consome uma API real, sem chave)
+
+```bash
+pip install requests
+```
+
+```bash
+python chatbot_clima.py
+```
+
+Pergunte, por exemplo: `Como está o tempo em São Paulo?`, `Vai chover no Rio de Janeiro?` ou `Esse bot é péssimo`.
+
+**Como ele funciona, passo a passo:**
+
+1. `identificar_intencao()` descobre a **intenção**: `consultar_clima`, `saudacao`, `falar_com_humano` ou `desconhecida`.
+2. `extrair_cidade()` encontra a **entidade**, que é a cidade.
+3. `buscar_coordenadas()` faz a **1ª chamada à API**: `GET /v1/search?name=...`, que transforma a cidade em latitude e longitude. É o `/geoname` do exercício 1.
+4. `buscar_clima()` faz a **2ª chamada à API**: `GET /v1/forecast?latitude=...&longitude=...`, que devolve o clima atual. É o `/radius` do exercício 1.
+5. `dica()` escolhe a mensagem por **faixas de valores**: chuva, calor ou frio. É como as faixas de pedido do exercício 2.
+6. O bot **escalona para humano** se o usuário pedir atendente ou se o sentimento for negativo (livro, Aula 2).
+
+**O que ele faz melhor que os exercícios:**
+
+| Problema no exercício | Como ficou aqui |
+|---|---|
+| `split()` deixava a pontuação (`'oi,'`) | `re.findall(r"\w+")` pega só as palavras |
+| `"oi" in texto` achava "oi" dentro de "dois" e "noite" | compara com a lista de **palavras** (tokens) |
+| "em Paris no inverno" virava a cidade "Paris no inverno" | a regex pega só as palavras com **letra maiúscula** |
+| o `sentimento` era calculado e não era usado | sentimento negativo → **escalona** |
+| a chave da API era necessária | a Open-Meteo **não usa chave** |
+| `"sair "` com espaço não encerrava | usa `.strip()` |
+
+**Testes sem internet:** `test_clima.py` usa `unittest.mock` para fingir as respostas da API.
+
+```bash
+python -m unittest test_clima -v
+```
+
+---
+
+## Chatbot como API (Flask)
+
 Uma API em **Flask** para um chatbot **baseado em regras** com NLTK, usando o mesmo exemplo do slide da Aula 3.
 O código segue o livro da Unidade 4:
 
