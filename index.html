@@ -34,7 +34,7 @@
         .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; display: block; border-left: 4px solid var(--primary); padding-left: 15px; white-space: pre-line; }
         .q-num { display: block; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
         .q-code { background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; overflow-x: auto; margin: 0 0 16px 0; white-space: pre; }
-        code.inline { background: #e2e8f0; color: #0f172a; padding: 1px 6px; border-radius: 4px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.9em; }
+        code.inline { overflow-wrap: anywhere; background: #e2e8f0; color: #0f172a; padding: 1px 6px; border-radius: 4px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.9em; }
         .q-base { background: #f8fafc; border-left: 4px solid #94a3b8; padding: 12px 16px; border-radius: 6px; font-size: 0.92rem; color: #475569; margin-bottom: 16px; white-space: pre-line; }
         
         .option { display: block; background: #f8fafc; padding: 14px 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; position: relative; font-size: 0.95rem; }
@@ -66,7 +66,7 @@
     <div class="wrapper">
         <div class="header">
             <h1>Simulado — Chatbot, API e KPIs</h1>
-            <p>53 Questões • Arquitetura e API • Funcionalidades • Implementação • Segurança • Código Python • KPIs • com Ranking</p>
+            <p>75 Questões • Arquitetura e API • Funcionalidades • Implementação • Segurança • Código Python • KPIs • Exercícios do Professor • com Ranking</p>
         </div>
 
         <div id="tela-login">
@@ -851,6 +851,318 @@
                 },
                 "c": "A",
                 "e": "SMART = Específica, Mensurável, Alcançável, Relevante e Temporal. 'De 30% para 20%' é específica e mensurável; 'até 30 de junho' é temporal; e reduzir o transbordo é relevante. As outras são vagas: sem número e sem prazo."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco VII — Exercício 1: Chatbot Turístico com a API OpenTripMap",
+            "questoes": [
+              {
+                "t": "",
+                "p": "No chatbot turístico, qual é a ordem correta do processamento de uma pergunta?",
+                "code": "def chatbot():\n    ...\n    cidade, categoria = identificar_informacoes(pergunta)   # (1)\n    dados = consultar_cidade(cidade)                        # (2)  GET /geoname\n    latitude = dados[\"lat\"]\n    longitude = dados[\"lon\"]\n    lugares = buscar_pontos(latitude, longitude, categoria) # (3)  GET /radius\n    for lugar in lugares:                                   # (4)\n        print(lugar.get(\"name\"))",
+                "o": {
+                  "A": "Identificar a cidade → GET /radius direto com o nome da cidade → GET /geoname para conferir.",
+                  "B": "GET /radius → GET /geoname → identificar a cidade → mostrar os nomes.",
+                  "C": "Identificar cidade e categoria (NLP) → GET /geoname para obter latitude e longitude → GET /radius para buscar os pontos perto dessas coordenadas → mostrar os nomes.",
+                  "D": "GET /geoname e GET /radius ao mesmo tempo, sem precisar identificar a cidade.",
+                  "E": "Mostrar os nomes → identificar a cidade → GET /geoname → GET /radius."
+                },
+                "c": "C",
+                "e": "A rota /radius não aceita o nome da cidade: ela precisa de lat e lon. Por isso primeiro se chama /geoname (nome → coordenadas) e depois /radius (coordenadas → lugares). É um encadeamento de chamadas: a saída de uma API vira entrada da outra."
+              },
+              {
+                "t": "",
+                "p": "Relacionando o código com as camadas da arquitetura do livro, a função `identificar_informacoes()` (spaCy + regex + palavras-chave) corresponde a qual camada?",
+                "o": {
+                  "A": "Lógica de negócios: é onde a API é chamada.",
+                  "B": "Processamento de linguagem natural (NLP): interpreta a pergunta e extrai a entidade (cidade) e a categoria.",
+                  "C": "Interface: é onde o usuário digita.",
+                  "D": "Resposta: é onde os lugares são impressos.",
+                  "E": "Segurança: é onde a chave é protegida."
+                },
+                "c": "B",
+                "e": "Interface = input() e print(); NLP = identificar_informacoes(); Lógica de negócios e integração com API = consultar_cidade() e buscar_pontos(); Resposta = imprimir a lista de pontos."
+              },
+              {
+                "t": "",
+                "p": "Por que a chave da API é lida com `getpass()` em vez de ficar escrita no código?",
+                "code": "from getpass import getpass\n\nAPI_KEY = getpass(\"Digite sua chave da OpenTripMap: \")",
+                "o": {
+                  "A": "Porque a API OpenTripMap só aceita chaves digitadas pelo teclado.",
+                  "B": "Para o chatbot gerar uma chave nova a cada execução.",
+                  "C": "Para a chave não ficar exposta no código-fonte (por exemplo, num repositório no GitHub) nem aparecer na tela enquanto é digitada.",
+                  "D": "Para criptografar a chave antes de enviá-la para a API.",
+                  "E": "Porque getpass() deixa o programa mais rápido."
+                },
+                "c": "C",
+                "e": "getpass() lê o texto sem mostrar o que é digitado. A chave é uma CREDENCIAL: quem tiver ela usa a API em seu nome. Deixá-la no código é um risco de segurança (Aula 4: controle de acesso). Na vida real também se usa variável de ambiente."
+              },
+              {
+                "t": "",
+                "p": "No trecho abaixo, o que o argumento `params=parametros` faz em `requests.get`?",
+                "code": "def consultar_cidade(cidade):\n    url = f\"{BASE_URL}/geoname\"\n    parametros = {\"name\": cidade, \"apikey\": API_KEY}\n\n    resposta = requests.get(url, params=parametros, timeout=20)\n    resposta.raise_for_status()\n    dados = resposta.json()\n\n    if dados.get(\"status\") == \"OK\":\n        return dados\n    return None",
+                "o": {
+                  "A": "Salva os parâmetros num arquivo local.",
+                  "B": "Transforma a resposta da API em dicionário.",
+                  "C": "Define o tempo máximo de espera da requisição.",
+                  "D": "Monta a query string da URL, ou seja, a requisição vira algo como .../geoname?name=Paris&apikey=SUA_CHAVE.",
+                  "E": "Envia os parâmetros no corpo da requisição em formato JSON."
+                },
+                "c": "D",
+                "e": "Em um GET, os parâmetros vão na própria URL, depois do ?, separados por &. O requests monta isso a partir do dicionário. Atenção: por isso a apikey aparece na URL. Para mandar JSON no corpo (como num POST) usa-se json=..."
+              },
+              {
+                "t": "",
+                "p": "Se a chave digitada estiver ERRADA, a API devolve um erro HTTP (como 401 ou 403). O que acontece no programa?",
+                "code": "def consultar_cidade(cidade):\n    url = f\"{BASE_URL}/geoname\"\n    parametros = {\"name\": cidade, \"apikey\": API_KEY}\n\n    resposta = requests.get(url, params=parametros, timeout=20)\n    resposta.raise_for_status()\n    dados = resposta.json()\n\n    if dados.get(\"status\") == \"OK\":\n        return dados\n    return None\n\ntry:\n    ...\nexcept requests.exceptions.RequestException as erro:\n    print(\"Erro na consulta da API:\", erro)\nexcept Exception as erro:\n    print(\"Ocorreu um erro:\", erro)",
+                "o": {
+                  "A": "O programa mostra 'Cidade não encontrada.'",
+                  "B": "raise_for_status() lança uma exceção, que cai no except RequestException e imprime 'Erro na consulta da API: ...'. O chatbot continua rodando.",
+                  "C": "O chatbot encerra com a mensagem 'Até logo!'",
+                  "D": "O Python ignora o erro e mostra uma lista vazia de pontos turísticos.",
+                  "E": "O programa trava esperando para sempre."
+                },
+                "c": "B",
+                "e": "raise_for_status() não faz nada quando o status é 2xx, mas LANÇA uma exceção (HTTPError) para 4xx e 5xx. HTTPError é um tipo de RequestException, então cai no primeiro except. Como tudo está dentro do while True, o loop continua e o usuário pode perguntar de novo."
+              },
+              {
+                "t": "",
+                "p": "Para que serve `timeout=20` nas chamadas `requests.get`?",
+                "o": {
+                  "A": "Define que a chave da API expira em 20 minutos.",
+                  "B": "Faz o chatbot esperar 20 segundos antes de cada pergunta.",
+                  "C": "Repete a requisição 20 vezes se ela falhar.",
+                  "D": "Limita a resposta a 20 lugares.",
+                  "E": "Se a API não responder em 20 segundos, o requests desiste e lança uma exceção, em vez de deixar o chatbot travado esperando."
+                },
+                "c": "E",
+                "e": "Sem timeout, uma API lenta ou fora do ar deixaria o chatbot 'pendurado'. Liga com a limitação de TEMPO DE RESPOSTA do livro (Aula 4, as 'filas do parque'). Quem limita os 20 lugares é o parâmetro limit da rota /radius."
+              },
+              {
+                "t": "",
+                "p": "Com a regex abaixo, qual cidade é extraída da pergunta \"Museus em Paris no inverno?\"",
+                "code": "resultado = re.search(\n    r\"\\b(?:em|no|na)\\s+(.+?)(?:\\?|!|\\.|$)\",\n    pergunta,\n    re.IGNORECASE\n)\nif resultado:\n    cidade = resultado.group(1).strip()",
+                "o": {
+                  "A": "\"Museus\"",
+                  "B": "\"inverno\"",
+                  "C": "\"Paris no inverno\"",
+                  "D": "\"Paris\"",
+                  "E": "None (nenhuma cidade)"
+                },
+                "c": "C",
+                "e": "A regex procura a PRIMEIRA ocorrência de em/no/na e captura tudo até ?, !, . ou o fim do texto. Depois de 'em' vem 'Paris no inverno?', então a captura é 'Paris no inverno' e a busca na API provavelmente falha. Também 'na cidade de Curitiba' vira 'cidade de Curitiba'. Testado em Python."
+              },
+              {
+                "t": "",
+                "p": "Na pergunta \"Me fala de museus de Roma\", a regex não encontra 'em', 'no' nem 'na'. De onde a cidade pode vir nesse caso?",
+                "code": "nlp = spacy.load(\"pt_core_news_sm\")\n\ndoc = nlp(pergunta)\nfor entidade in doc.ents:\n    if entidade.label_ in [\"LOC\", \"GPE\"]:\n        cidade = entidade.text",
+                "o": {
+                  "A": "Do reconhecimento de entidades nomeadas (NER) do spaCy: doc.ents pode marcar 'Roma' como um local (LOC).",
+                  "B": "De lugar nenhum: o spaCy só funciona em inglês.",
+                  "C": "Da API OpenTripMap, que adivinha a cidade sozinha.",
+                  "D": "Da lista de categorias, porque 'museus' é uma categoria.",
+                  "E": "Da função tokenizar(), que separa as palavras."
+                },
+                "c": "A",
+                "e": "doc.ents traz as ENTIDADES NOMEADAS que o modelo reconheceu, com um rótulo (label_). LOC = local. É o conceito de ENTIDADE do livro (Aula 1), agora feito por NLP. Detalhe: quando a regex também encontra algo, ela SOBRESCREVE o que o spaCy achou, porque vem depois no código."
+              },
+              {
+                "t": "",
+                "p": "Qual categoria é escolhida para a pergunta \"igrejas e templos em Kyoto\"?",
+                "code": "categorias = {\n    \"museums\": [\"museu\", \"museus\"],\n    \"historic\": [\"histórico\", \"historico\", \"monumento\", \"monumentos\"],\n    \"natural\": [\"natureza\", \"parque\", \"parques\", \"cachoeira\"],\n    \"architecture\": [\"arquitetura\", \"igreja\", \"igrejas\"],\n    \"cultural\": [\"cultura\", \"teatro\", \"teatros\"],\n    \"religion\": [\"templo\", \"templos\"]\n}\nfor tipo, palavras in categorias.items():\n    if any(palavra in texto for palavra in palavras):\n        categoria = tipo\n        break",
+                "o": {
+                  "A": "\"religion\", porque 'templos' é mais específico.",
+                  "B": "\"architecture\": o dicionário é percorrido em ordem e o break para no primeiro tipo que combina.",
+                  "C": "None, porque a pergunta tem duas categorias.",
+                  "D": "As duas, \"architecture\" e \"religion\".",
+                  "E": "\"cultural\""
+                },
+                "c": "B",
+                "e": "'igrejas' aparece em architecture, que vem antes de religion no dicionário. Quando acha, o break encerra o for. Com 'pontos turísticos em Paris', nenhuma palavra combina, a categoria fica None e nada é filtrado: aparecem todos os lugares."
+              },
+              {
+                "t": "",
+                "p": "Observe a rota /radius. Qual é o raio da busca e qual é o problema de filtrar a categoria DEPOIS de receber a resposta?",
+                "code": "parametros = {\n    \"radius\": 10000,\n    \"lon\": longitude,\n    \"lat\": latitude,\n    \"limit\": 20,\n    \"rate\": 2,\n    \"format\": \"json\",\n    \"apikey\": API_KEY\n}\nlugares = requests.get(url, params=parametros, timeout=20).json()\n\nif categoria:\n    lugares = [lugar for lugar in lugares\n               if categoria in lugar.get(\"kinds\", \"\").lower()]",
+                "o": {
+                  "A": "Raio de 20 km. O problema é que a categoria precisa estar em maiúsculas.",
+                  "B": "Raio de 10.000 km. Não há problema nenhum em filtrar depois.",
+                  "C": "Raio de 1 km. O problema é que o filtro apaga a chave da API.",
+                  "D": "Raio de 10 metros. O problema é que o filtro deixa o programa lento.",
+                  "E": "Raio de 10 km (10000 metros). Como a API devolve só 20 lugares (limit), filtrar depois pode deixar a lista vazia; o melhor é enviar a categoria na própria requisição (a OpenTripMap aceita o parâmetro kinds)."
+                },
+                "c": "E",
+                "e": "radius é em metros, então 10000 = 10 km. A API devolve no máximo 20 lugares (limit), e só então o código filtra pela categoria. Se nenhum desses 20 for museu, por exemplo, aparece 'Nenhum ponto turístico encontrado', mesmo existindo museus na cidade. Filtrar no servidor (parâmetro kinds) resolve."
+              },
+              {
+                "t": "",
+                "p": "Por que o `except requests.exceptions.RequestException` precisa vir ANTES do `except Exception`?",
+                "code": "try:\n    ...\nexcept requests.exceptions.RequestException as erro:\n    print(\"Erro na consulta da API:\", erro)\nexcept Exception as erro:\n    print(\"Ocorreu um erro:\", erro)",
+                "o": {
+                  "A": "Porque RequestException é mais genérica que Exception.",
+                  "B": "Não faz diferença a ordem dos except.",
+                  "C": "Porque Exception só funciona no final do arquivo.",
+                  "D": "O Python usa o primeiro except que combina. Exception pega quase tudo, então se viesse primeiro o tratamento específico de erro da API nunca rodaria.",
+                  "E": "Por ordem alfabética."
+                },
+                "c": "D",
+                "e": "Regra: exceções mais ESPECÍFICAS primeiro, mais GENÉRICAS no final. RequestException cobre falhas de rede, timeout e erros HTTP vindos de raise_for_status(). Exception é a 'rede de segurança' para todo o resto (como KeyError)."
+              },
+              {
+                "t": "",
+                "p": "O que `resposta.json()` faz, e por que o código consegue usar `dados[\"lat\"]` e `for lugar in lugares`?",
+                "o": {
+                  "A": "Verifica se a chave da API está correta.",
+                  "B": "Converte o texto JSON devolvido pela API em objetos Python: /geoname vira um dicionário (dados[\"lat\"]) e /radius com format=json vira uma lista de dicionários (for lugar in lugares).",
+                  "C": "Transforma a resposta em uma string.",
+                  "D": "Envia um JSON para a API.",
+                  "E": "Salva a resposta num arquivo .json."
+                },
+                "c": "B",
+                "e": "A API responde texto no formato JSON. O .json() faz o 'parse': objeto JSON {...} vira dict, e lista JSON [...] vira list. Por isso usa-se .get(\"name\") e .get(\"kinds\", \"\"): se a chave não existir, .get() devolve None ou o padrão, em vez de dar erro."
+              }
+            ]
+          },
+          {
+            "titulo": "Bloco VIII — Exercício 2: Intenção, Entidade e Sentimento",
+            "questoes": [
+              {
+                "t": "",
+                "p": "O que é impresso pelo código abaixo?",
+                "code": "def tokenizar(texto):\n    return texto.lower().split()\n\nprint(tokenizar(\"Oi, tudo bem?\"))",
+                "o": {
+                  "A": "['oi tudo bem']",
+                  "B": "['oi,', 'tudo', 'bem?']",
+                  "C": "['Oi', 'tudo', 'bem']",
+                  "D": "['oi', ',', 'tudo', 'bem', '?']",
+                  "E": "['o', 'i', 't', 'u', 'd', 'o']"
+                },
+                "c": "B",
+                "e": "lower() deixa tudo minúsculo e split() separa SÓ pelos espaços. A pontuação fica grudada nas palavras ('oi,' e 'bem?'). Um tokenizador de NLP de verdade, como o do spaCy ou do NLTK, separaria a pontuação em tokens próprios."
+              },
+              {
+                "t": "",
+                "p": "Qual intenção o código identifica para a mensagem \"Quanto custa a entrega?\"",
+                "code": "def identificar_intencao(texto):\n    texto = texto.lower()\n    if any(p in texto for p in [\"pedido\", \"entrega\", \"encomenda\", \"rastrear\"]):\n        return \"consultar_pedido\"\n    elif any(p in texto for p in [\"horário\", \"horario\", \"aberto\", \"funcionamento\"]):\n        return \"horario_funcionamento\"\n    elif any(p in texto for p in [\"preço\", \"preco\", \"valor\", \"custa\"]):\n        return \"consultar_preco\"\n    elif any(p in texto for p in [\"oi\", \"olá\", \"ola\", \"bom dia\", \"boa tarde\"]):\n        return \"saudacao\"\n    else:\n        return \"desconhecida\"",
+                "o": {
+                  "A": "\"desconhecida\"",
+                  "B": "\"consultar_preco\", porque a pergunta é sobre valor.",
+                  "C": "\"consultar_pedido\", porque 'entrega' é testado primeiro, antes de 'custa'.",
+                  "D": "As duas: consultar_pedido e consultar_preco.",
+                  "E": "\"saudacao\""
+                },
+                "c": "C",
+                "e": "Os if/elif são testados em ORDEM, e o primeiro verdadeiro vence. 'entrega' está na lista de pedido, que vem antes da de preço. Resultado: o bot responde 'Informe o número do seu pedido', o que não faz sentido aqui. É uma limitação dos bots de regras."
+              },
+              {
+                "t": "",
+                "p": "Pegadinha: qual intenção é identificada para \"Quero comprar dois sapatos\"?",
+                "code": "def identificar_intencao(texto):\n    texto = texto.lower()\n    if any(p in texto for p in [\"pedido\", \"entrega\", \"encomenda\", \"rastrear\"]):\n        return \"consultar_pedido\"\n    elif any(p in texto for p in [\"horário\", \"horario\", \"aberto\", \"funcionamento\"]):\n        return \"horario_funcionamento\"\n    elif any(p in texto for p in [\"preço\", \"preco\", \"valor\", \"custa\"]):\n        return \"consultar_preco\"\n    elif any(p in texto for p in [\"oi\", \"olá\", \"ola\", \"bom dia\", \"boa tarde\"]):\n        return \"saudacao\"\n    else:\n        return \"desconhecida\"",
+                "o": {
+                  "A": "\"horario_funcionamento\"",
+                  "B": "\"consultar_preco\"",
+                  "C": "\"desconhecida\"",
+                  "D": "\"saudacao\", porque a palavra 'dois' contém 'oi'.",
+                  "E": "\"consultar_pedido\""
+                },
+                "c": "D",
+                "e": "`\"oi\" in texto` verifica se 'oi' aparece EM QUALQUER LUGAR do texto, inclusive dentro de outras palavras: d-OI-s. O mesmo acontece com 'Boa n-OI-te'. Para corrigir, use os tokens (\"oi\" in tokens) ou regex com limite de palavra (\\boi\\b). Testado em Python."
+              },
+              {
+                "t": "",
+                "p": "Qual resposta o chatbot dá para \"Meu pedido 123\"?",
+                "code": "def extrair_numero_pedido(texto):\n    resultado = re.search(r\"\\b\\d{4,}\\b\", texto)\n    if resultado:\n        return resultado.group()\n    return None\n\n# dentro de gerar_resposta, quando a intenção é \"consultar_pedido\":\nnumero = int(numero_pedido)\nif numero <= 1000:\n    return f\"Pedimos desculpas. O pedido {numero_pedido} está atrasado.\"\nelif numero <= 10000:\n    return f\"Pedimos desculpas. O pedido {numero_pedido} foi perdido e será reembolsado.\"\nelse:\n    return f\"O pedido {numero_pedido} foi entregue.\"",
+                "o": {
+                  "A": "\"Pedimos desculpas. O pedido 123 está atrasado.\"",
+                  "B": "Um erro, porque int(None) quebra.",
+                  "C": "\"Claro! Informe o número do seu pedido.\", porque a regex exige 4 dígitos ou mais e 123 tem só 3.",
+                  "D": "\"Desculpe, ainda não consegui entender sua solicitação.\"",
+                  "E": "\"O pedido 123 foi entregue.\""
+                },
+                "c": "C",
+                "e": "\\d{4,} = 4 ou mais dígitos, e \\b = limite de palavra. Com 123 não há match, então extrair_numero_pedido devolve None e o código cai no return final da intenção de pedido. Não dá erro porque o int() só roda quando há número."
+              },
+              {
+                "t": "",
+                "p": "Segundo as faixas do código, qual associação está CORRETA?",
+                "code": "def extrair_numero_pedido(texto):\n    resultado = re.search(r\"\\b\\d{4,}\\b\", texto)\n    if resultado:\n        return resultado.group()\n    return None\n\n# dentro de gerar_resposta, quando a intenção é \"consultar_pedido\":\nnumero = int(numero_pedido)\nif numero <= 1000:\n    return f\"Pedimos desculpas. O pedido {numero_pedido} está atrasado.\"\nelif numero <= 10000:\n    return f\"Pedimos desculpas. O pedido {numero_pedido} foi perdido e será reembolsado.\"\nelse:\n    return f\"O pedido {numero_pedido} foi entregue.\"",
+                "o": {
+                  "A": "Pedido 1000 → entregue; pedido 10000 → atrasado; pedido 10001 → perdido.",
+                  "B": "Pedido 1001 → atrasado; pedido 10000 → entregue; pedido 10001 → perdido.",
+                  "C": "Pedido 1000 → atrasado; pedido 10000 → entregue; pedido 10001 → entregue.",
+                  "D": "Pedido 1000 → perdido; pedido 10000 → entregue; pedido 10001 → entregue.",
+                  "E": "Pedido 1000 → atrasado; pedido 10000 → perdido e reembolsado; pedido 10001 → entregue."
+                },
+                "c": "E",
+                "e": "Os limites usam <= (menor OU IGUAL): até 1000 inclusive = atrasado; de 1001 até 10000 inclusive = perdido e reembolsado; acima de 10000 = entregue. Cuidado nos valores de borda: 1000 e 10000 ficam na faixa de baixo."
+              },
+              {
+                "t": "",
+                "p": "Neste código, os conceitos de INTENÇÃO e ENTIDADE do livro aparecem onde?",
+                "o": {
+                  "A": "Os dois são o resultado de analisar_sentimento().",
+                  "B": "Intenção: o número do pedido. Entidade: a resposta do chatbot.",
+                  "C": "Intenção: a lista de tokens. Entidade: o sentimento.",
+                  "D": "O código não trabalha com intenção nem entidade.",
+                  "E": "Intenção: o resultado de identificar_intencao() (ex.: \"consultar_pedido\"). Entidade: o número do pedido extraído por extrair_numero_pedido()."
+                },
+                "c": "E",
+                "e": "Livro, Aula 1: INTENÇÃO = o que o usuário quer ('consultar pedido'); ENTIDADE = a informação específica que completa a intenção ('o número do pedido'). Com as duas, o bot consegue dar a resposta certa."
+              },
+              {
+                "t": "",
+                "p": "Observe `gerar_resposta`. Qual é o problema com a variável `sentimento`?",
+                "code": "def gerar_resposta(texto):\n    intencao = identificar_intencao(texto)\n    sentimento = analisar_sentimento(texto)\n\n    if intencao == \"saudacao\":\n        return \"Olá! Como posso ajudar você?\"\n    elif intencao == \"horario_funcionamento\":\n        ...\n    else:\n        return \"Desculpe, ainda não consegui entender sua solicitação.\"",
+                "o": {
+                  "A": "Ela causa um erro de sintaxe.",
+                  "B": "Ela é calculada, mas nunca é usada: nenhuma resposta muda conforme o cliente esteja satisfeito ou frustrado.",
+                  "C": "Não há problema: o sentimento é impresso na tela.",
+                  "D": "Ela é usada para escolher o número do pedido.",
+                  "E": "Ela apaga a intenção identificada."
+                },
+                "c": "B",
+                "e": "analisar_sentimento() roda, mas o resultado não é usado em nenhum if. Uma melhoria alinhada ao livro (Aula 2): se o sentimento for 'negativo', ESCALONAR para um atendente humano, porque 'feedback negativo' é um dos gatilhos de escalonamento."
+              },
+              {
+                "t": "",
+                "p": "Qual sentimento `analisar_sentimento` retorna para \"Estou frustrado, mas obrigado\"?",
+                "code": "def analisar_sentimento(texto):\n    texto = texto.lower()\n    palavras_negativas = [\"frustrado\", \"atrasado\", \"problema\", \"insatisfeito\", \"ruim\", ...]\n    palavras_positivas = [\"ótimo\", \"excelente\", \"bom\", \"boa\", \"obrigado\", ...]\n\n    if any(p in texto for p in palavras_negativas):\n        return \"negativo\"\n    elif any(p in texto for p in palavras_positivas):\n        return \"positivo\"\n    return \"neutro\"",
+                "o": {
+                  "A": "\"positivo\", porque 'obrigado' é a última palavra.",
+                  "B": "\"negativo\", porque as palavras negativas são verificadas primeiro.",
+                  "C": "Um erro, porque há duas emoções.",
+                  "D": "\"neutro\", porque uma palavra anula a outra.",
+                  "E": "\"misto\""
+                },
+                "c": "B",
+                "e": "Como no reconhecimento de intenção, a ORDEM dos if/elif decide. Encontrou 'frustrado', então retorna 'negativo' e nem chega a olhar as positivas. É uma análise de sentimento BASEADA EM REGRAS (lista de palavras), não um modelo de aprendizado de máquina."
+              },
+              {
+                "t": "",
+                "p": "Como esse chatbot do Exercício 2 é classificado, segundo o livro?",
+                "o": {
+                  "A": "Baseado em IA generativa.",
+                  "B": "Baseado em regras: intenção, entidade e sentimento são decididos por listas de palavras-chave e regex escritas à mão, sem aprendizado.",
+                  "C": "Híbrido, porque usa análise de sentimento.",
+                  "D": "Baseado em redes neurais treinadas com dados de clientes.",
+                  "E": "Superinteligente, porque entende emoções."
+                },
+                "c": "B",
+                "e": "Mesmo com nomes como 'análise de sentimento', tudo é regra fixa (if palavra in texto). Ele é previsível e bom para tarefas simples, mas falha com variações ('dois' vira saudação). Já o Exercício 1, que usa o modelo do spaCy (NER) junto com regras, se aproxima de um HÍBRIDO."
+              },
+              {
+                "t": "",
+                "p": "Quando a intenção é \"desconhecida\" (ex.: \"Quero cancelar minha compra\"), o bot só responde 'Desculpe, ainda não consegui entender'. Segundo o livro, qual seria a melhoria adequada?",
+                "o": {
+                  "A": "Escalonar para um atendente humano (e, de preferência, já passar o que o cliente escreveu), porque o bot não tem uma resposta clara.",
+                  "B": "Responder com a saudação, já que é a intenção mais comum.",
+                  "C": "Repetir 'Desculpe' até o cliente desistir.",
+                  "D": "Pedir para o cliente digitar 'sair'.",
+                  "E": "Encerrar o programa automaticamente."
+                },
+                "c": "A",
+                "e": "Livro, Aula 2: o escalonamento é acionado 'quando o chatbot não tem uma resposta clara', e o sistema deve passar as informações já coletadas para o cliente 'não ter que repetir dados'. É o que o mini projeto faz com escalonar()."
               }
             ]
           }
