@@ -1,5 +1,9 @@
 # Mini projeto: API de Chatbot (Aulas 3, 4 e 5)
 
+[![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Kadu-Corpti/questoes/blob/claude/blissful-ritchie-lwm7be/pratica-api/chatbot_colab.ipynb)
+
+**No Google Colab:** abra o notebook `chatbot_colab.ipynb` pelo botão acima e rode as células de cima para baixo. Ele já tem os dois chatbots, os testes e exemplos de chamadas às rotas.
+
 Aqui há dois exemplos:
 
 1. **`chatbot_clima.py`**: um chatbot que **consome** uma API de verdade (Open-Meteo), no mesmo estilo dos exercícios do professor. Veja a seção logo abaixo.
